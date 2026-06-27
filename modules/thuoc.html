@@ -72,7 +72,7 @@
     .accordion-btn.btn-renal.active { border-bottom-color: transparent; }
     .accordion-content.content-renal { border-color: #fca5a5; padding: 0; overflow: hidden; background: #ffffff; }
 
-    /* Bảng eGFR Ma trận (Bên trong Accordion Thận) */
+    /* Bảng eGFR Ma trận */
     .egfr-table-wrapper { width: 100%; overflow-x: auto; }
     .egfr-table { width: 100%; border-collapse: collapse; font-size: 14px; }
     .egfr-table th { background: #fee2e2; color: #991b1b; padding: 12px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid #fca5a5; }
@@ -105,6 +105,13 @@
     .box-warning .info-box-title { color: #b45309; }
     .box-note { background-color: #f8fafc; border-left-color: #64748b; }
     .box-note .info-box-title { color: #334155; }
+
+    /* QUY CHUẨN THAM CHIẾU Y KHOA TUYỆT ĐỐI THEO MỤC III.3 */
+    .ref-card { margin-top: 24px; background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 16px; border-radius: 8px; }
+    .ref-title { font-size: 15px; font-weight: bold; color: #334155; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .ref-list { padding-left: 20px; font-size: 13px; color: #475569; line-height: 1.6; margin: 0; }
+    .ref-list li { margin-bottom: 8px; }
+    .ref-source { font-size: 11px; color: #94a3b8; margin-top: 16px; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
 </style>
 
 <div class="header">
@@ -120,6 +127,19 @@
         <input type="text" id="drugSearch" placeholder="Gõ tên hoạt chất, biệt dược hoặc nhóm thuốc..." oninput="handleSearch()" onclick="this.select()" autocomplete="off">
     </div>
     <div id="drugSuggestions" class="suggestions-box"></div>
+</div>
+
+<div class="ref-card" id="referenceCard">
+    <div class="ref-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Tham chiếu Y khoa Lâm sàng
+    </div>
+    <ul class="ref-list">
+        <li>Nguồn dữ liệu: Liều lượng thuốc cho trẻ em (Ngoài tuổi sơ sinh).</li>
+        <li>Bảng Hiệu chỉnh liều Kháng sinh theo eGFR ở Trẻ suy thận áp dụng theo 3 phương pháp tiêu chuẩn: <b>D</b> (Giảm liều), <b>I</b> (Tăng khoảng cách) và <b>DI</b> (Kết hợp).</li>
+        <li><b>Lưu ý cực kỳ quan trọng:</b> Mọi dữ liệu tại đây mang tính chất tham khảo Point-of-Care. Bác sĩ lâm sàng luôn phải đối chiếu với tình trạng thực tế của bệnh nhân.</li>
+    </ul>
+    <div class="ref-source">Phiên bản Cập nhật: 2026 | Nhi Khoa - Công cụ Lâm sàng</div>
 </div>
 
 <div id="drugResultCard" class="card" style="display: none; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
@@ -198,20 +218,7 @@
 
 </div>
 
-<div class="ref-card">
-    <div class="ref-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-        Tham chiếu Y khoa
-    </div>
-    <ul class="ref-list">
-        <li>Liều lượng thuốc Nhi khoa (Ngoài tuổi sơ sinh).</li>
-        <li>Bảng Hiệu chỉnh liều Kháng sinh theo eGFR ở Trẻ suy thận.</li>
-    </ul>
-    <div class="ref-source">Cập nhật: 2026 | Công cụ Lâm sàng Thận Nhi</div>
-</div>
-
 <script>
-    // Định nghĩa SVG String cho Gan và Thận để tái sử dụng
     const svgKidney = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.813 10.252A5.5 5.5 0 0 1 12 5.5v-1a4 4 0 0 0-7.618-1.745c-.886 1.83-1.026 4.316.035 6.404C5.55 11.4 7.6 13 10 13c.277 0 .55-.022.813-.064Z"/><path d="M13.187 13.748A5.5 5.5 0 0 1 12 18.5v1a4 4 0 0 0 7.618 1.745c.886-1.83 1.026-4.316-.035-6.404C18.45 12.6 16.4 11 14 11c-.277 0-.55.022-.813.064Z"/></svg>`;
     const svgLiver = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.923 18.667c-1.42 1.42-3.69 1.42-5.11 0l-2.48-2.48a6.52 6.52 0 0 1-1.91-4.61V7.5a2 2 0 0 1 2-2h2.5c2.19 0 4.31.7 6.06 1.98l.68.5a11.13 11.13 0 0 0 6.64 2.19c1.07 0 1.85 1 1.63 2.05-.53 2.5-1.9 4.7-3.86 6.35l-2.03 1.64c-1.25 1-2.88 1.44-4.12.45Z"/></svg>`;
 
@@ -230,9 +237,12 @@
         const sugBox = document.getElementById('drugSuggestions');
         sugBox.innerHTML = '';
         
-        if (query.length < 2) { 
-            sugBox.style.display = 'none'; 
-            return; 
+        // Logic mới: Khi người dùng xóa hết chữ trong ô tìm kiếm, tự động reset giao diện về ban đầu
+        if (query.length === 0) {
+            sugBox.style.display = 'none';
+            document.getElementById('drugResultCard').style.display = 'none';
+            document.getElementById('referenceCard').style.display = 'block';
+            return;
         }
 
         if (typeof drugDatabase === 'undefined') {
@@ -268,6 +278,9 @@
     function displayDrugProfile(drug) {
         document.getElementById('drugSearch').value = drug.activeIngredient;
         document.getElementById('drugSuggestions').style.display = 'none';
+        
+        // ẨN KHỐI THAM CHIẾU Y KHOA KHI CÓ KẾT QUẢ
+        document.getElementById('referenceCard').style.display = 'none';
 
         // Đóng Accordion
         document.querySelectorAll('.accordion-btn').forEach(btn => btn.classList.remove('active'));
@@ -286,7 +299,7 @@
             brandBox.style.display = 'none';
         }
 
-        // Icon Cơ quan (SVG Image)
+        // Icon Cơ quan
         const iconsBox = document.getElementById('drOrganIcons');
         iconsBox.innerHTML = '';
         if (drug.organWarnings?.renal?.isWarning) {
@@ -381,14 +394,14 @@
         if (drug.monitoring) monArr.push(`<b style="color:#334155;">👁️ Theo dõi:</b><br>${drug.monitoring.replace(/\n/g, '<br>')}`);
         setBox('boxMonitoring', 'drMonitoring', monArr);
 
-        // Hiển thị kết quả
+        // Hiển thị Card
         const card = document.getElementById('drugResultCard');
         card.style.display = 'block';
         card.style.animation = 'none';
         setTimeout(() => card.style.animation = 'fadeIn 0.3s ease', 10);
     }
 
-    // Đóng danh sách gợi ý khi click ra ngoài
+    // Đóng dropdown khi click ra ngoài
     document.addEventListener('click', function(e) {
         const searchInput = document.getElementById('drugSearch');
         const sugBox = document.getElementById('drugSuggestions');
