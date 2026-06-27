@@ -1,8 +1,8 @@
 <style>
-    /* CSS TỐI ƯU HÓA GIAO DIỆN HIỂN THỊ THUỐC */
+    /* Kế thừa các biến màu từ Hệ thống Thiết kế (Design System) của SPA */
+    
     .search-wrapper { position: relative; margin-bottom: 20px; z-index: 100; }
     
-    /* Ô tìm kiếm có icon kính lúp */
     .search-input-container { position: relative; }
     .search-input-container input {
         width: 100%; padding: 14px 14px 14px 40px; border: 2px solid var(--border);
@@ -12,7 +12,6 @@
     .search-input-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); outline: none; }
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); opacity: 0.5; font-size: 16px; pointer-events: none; }
 
-    /* Khung Dropdown nổi bật hơn */
     .suggestions-box {
         position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px;
         background: #ffffff; border: 1px solid var(--border); border-radius: 12px;
@@ -24,77 +23,150 @@
     .sug-name { font-size: 16px; font-weight: 600; color: var(--primary-dark); }
     .sug-class { font-size: 12px; color: var(--text-light); margin-top: 2px; }
 
-    /* Thẻ thông tin thuốc dạng Block (Hộp) */
-    .drug-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px dashed var(--border); }
-    .drug-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    /* VÙNG HEADER: Nhận diện & Icon Cảnh báo */
+    .drug-header { position: relative; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+    .drug-title { font-size: 26px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; padding-right: 90px; }
+    .drug-class { font-size: 14px; color: var(--text-light); margin-bottom: 8px; font-weight: 500; }
+    .drug-brands { font-size: 13px; color: var(--text-light); line-height: 1.5; }
     
+    .organ-icons-container { position: absolute; top: 0; right: 0; display: flex; gap: 8px; }
+    .organ-icon { 
+        width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+        font-weight: bold; font-size: 18px; cursor: help; border: 2px solid transparent; transition: all 0.2s;
+    }
+    .organ-icon.kidney { background-color: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+    .organ-icon.liver { background-color: #fff7ed; color: #f97316; border-color: #fdba74; }
+
+    /* VÙNG ACCORDION: Học thuật & Cảnh báo Tạng */
+    .accordion-group { margin-bottom: 20px; }
+    /* Override cho phần Accordion Thận (Màu Đỏ) */
+    .accordion-btn.btn-renal { background-color: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
+    .accordion-btn.btn-renal.active { background-color: #dc2626; color: white; border-color: #dc2626; }
+    .accordion-content.content-renal { background-color: #fff; border-color: #dc2626; padding: 0; }
+    
+    /* Bảng eGFR Ma trận */
+    .egfr-table-wrapper { width: 100%; overflow-x: auto; }
+    .egfr-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .egfr-table th { background: #fee2e2; color: #991b1b; padding: 10px; text-align: left; border-bottom: 1px solid #f87171; }
+    .egfr-table td { padding: 12px 10px; border-bottom: 1px solid #fecaca; color: #1f2937; }
+    .egfr-table tr:last-child td { border-bottom: none; }
+    .loading-dose-warning { background: #fee2e2; padding: 12px; font-weight: bold; color: #991b1b; border-bottom: 2px solid #f87171; text-align: center; font-size: 14px; }
+
+    /* VÙNG TAB: Đường dùng */
+    .tabs-header { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
+    .tab-btn { padding: 8px 16px; background: transparent; border: 1px solid var(--border); border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--text-light); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+    
+    .dosing-item { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed #bfdbfe; }
+    .dosing-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .dosing-ind { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; text-decoration: underline; }
+    
+    /* Cấu trúc Info Box gốc */
     .info-box { padding: 16px; border-radius: 10px; margin-bottom: 16px; background-color: #f9fafb; border-left: 4px solid var(--border); }
     .info-box-title { font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-    .info-box-content { font-size: 15px; color: var(--text); line-height: 1.6; white-space: pre-line; }
+    .info-box-content { font-size: 14px; color: var(--text); line-height: 1.6; white-space: pre-line; }
 
-    /* Phân màu cho từng chức năng */
     .box-primary { background-color: #eff6ff; border-left-color: var(--primary); }
     .box-primary .info-box-title { color: var(--primary-dark); }
-    
-    .box-danger { background-color: #fef2f2; border-left-color: var(--danger); }
+    .box-danger { background-color: #fef2f2; border-left-color: #dc2626; }
     .box-danger .info-box-title { color: #b91c1c; }
-
-    .box-warning { background-color: #fffbeb; border-left-color: var(--warning); }
+    .box-warning { background-color: #fffbeb; border-left-color: #f59e0b; }
     .box-warning .info-box-title { color: #b45309; }
-
     .box-note { background-color: #f8fafc; border-left-color: #94a3b8; }
     .box-note .info-box-title { color: #475569; }
 </style>
 
 <div class="header">
-    <h1>Tra cứu Thuốc</h1>
-    <p>Cơ sở dữ liệu khoa Thận nhi</p>
+    <h1>Tra cứu Thuốc Nhi Khoa</h1>
+    <p>Chuyên sâu Liều lượng & Hiệu chỉnh eGFR</p>
 </div>
 
 <div class="search-wrapper">
     <div class="search-input-container">
         <span class="search-icon">🔍</span>
-        <input type="text" id="drugSearch" placeholder="Gõ tên thuốc, nhóm, hoặc biệt dược..." oninput="handleSearch()" onclick="this.select()">
+        <input type="text" id="drugSearch" placeholder="Gõ tên hoạt chất, biệt dược hoặc nhóm thuốc..." oninput="handleSearch()" onclick="this.select()">
     </div>
     <div id="drugSuggestions" class="suggestions-box"></div>
 </div>
 
 <div id="drugResultCard" class="card" style="display: none; padding: 24px;">
+    
     <div class="drug-header">
+        <div class="organ-icons-container" id="drOrganIcons"></div>
         <div class="drug-title" id="drName">--</div>
-        <span id="drClass" class="badge bg-primary" style="font-size: 13px; padding: 4px 10px;">--</span>
-        <div id="drBrandNames" style="font-size: 14px; color: var(--text-light); margin-top: 12px; font-weight: 500;">
-            <span style="opacity: 0.7;">💊 Biệt dược:</span> <span id="drBrandText" style="color: var(--text);">--</span>
+        <div class="drug-class" id="drClass">--</div>
+        <div class="drug-brands" id="drBrands">--</div>
+    </div>
+
+    <div class="accordion-group">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span>🧬 Cơ chế tác dụng</span>
+            <span>▼</span>
+        </button>
+        <div class="accordion-content" id="drMechanism">--</div>
+
+        <div id="renalAccordionContainer" style="display: none;">
+            <button class="accordion-btn btn-renal" onclick="toggleAccordion(this)" id="btnRenalAccord">
+                <span id="renalAccordTitle">⚠️ [THẬN] Hiệu chỉnh liều</span>
+                <span>▼</span>
+            </button>
+            <div class="accordion-content content-renal">
+                <div class="loading-dose-warning">
+                    ⚠️ NGUYÊN TẮC: KHÔNG hiệu chỉnh Liều tải (Loading Dose) đầu tiên.
+                </div>
+                <div class="egfr-table-wrapper" id="drRenalTable">
+                    </div>
+            </div>
         </div>
     </div>
 
-    <div class="info-box box-primary" id="boxDosing">
-        <div class="info-box-title">⚡ Liều lượng & Chỉ định</div>
-        <div class="info-box-content" id="drDosing">--</div>
-    </div>
-
-    <div class="info-box box-danger" id="boxRenal">
-        <div class="info-box-title">⚠️ Chỉnh liều & Tổn thương Thận</div>
-        <div class="info-box-content" id="drRenal">--</div>
-    </div>
-
-    <div class="info-box box-warning" id="boxSideEffects">
-        <div class="info-box-title">🔥 Tác dụng phụ</div>
-        <div class="info-box-content" id="drSideEffects">--</div>
+    <div class="info-box box-primary" style="padding-top: 20px;">
+        <div class="info-box-title" style="margin-bottom: 16px;">⚡ Liều lượng & Khoảng cách</div>
+        <div class="tabs-header" id="drTabsHeader"></div>
+        <div id="drTabsContent"></div>
     </div>
 
     <div class="info-box box-danger" id="boxContra">
         <div class="info-box-title">⛔ Chống chỉ định</div>
-        <div class="info-box-content" id="drContraindications">--</div>
+        <div class="info-box-content" id="drContra">--</div>
     </div>
 
-    <div class="info-box box-note" id="boxNote">
-        <div class="info-box-title">📌 Lưu ý Lâm sàng & Theo dõi</div>
-        <div class="info-box-content" id="drNote">--</div>
+    <div class="info-box box-warning" id="boxSideEffects">
+        <div class="info-box-title">🔥 Tác dụng phụ & Tương tác</div>
+        <div class="info-box-content" id="drSideEffects">--</div>
     </div>
+
+    <div class="info-box box-note" id="boxMonitoring">
+        <div class="info-box-title">📌 Giám sát Y khoa</div>
+        <div class="info-box-content" id="drMonitoring">--</div>
+    </div>
+
+</div>
+
+<div class="ref-card">
+    <div class="ref-title">📋 Tham chiếu Y khoa</div>
+    <ul class="ref-list">
+        <li>Liều lượng thuốc Nhi khoa (Ngoài tuổi sơ sinh).</li>
+        <li>Bảng Hiệu chỉnh liều Kháng sinh theo eGFR ở Trẻ suy thận (Phương pháp Giảm liều/Giãn cách).</li>
+    </ul>
+    <div class="ref-source">Cập nhật: 2026 | Công cụ Lâm sàng Thận Nhi</div>
 </div>
 
 <script>
+    // 1. Logic Giao diện: Accordion
+    function toggleAccordion(btn) {
+        const content = btn.nextElementSibling;
+        btn.classList.toggle('active');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+        } else {
+            content.style.display = 'block';
+        }
+    }
+
+    // 2. Thuật toán tìm kiếm
     function handleSearch() {
         const query = document.getElementById('drugSearch').value.toLowerCase().trim();
         const sugBox = document.getElementById('drugSuggestions');
@@ -111,11 +183,12 @@
             return;
         }
 
-        const matches = drugDatabase.filter(d => 
-            (d.name && d.name.toLowerCase().includes(query)) || 
-            (d.class && d.class.toLowerCase().includes(query)) ||
-            (d.brand_names && d.brand_names.toLowerCase().includes(query))
-        );
+        const matches = drugDatabase.filter(d => {
+            const matchName = d.activeIngredient.toLowerCase().includes(query);
+            const matchClass = d.drugClass.toLowerCase().includes(query);
+            const matchBrand = d.brandNames && d.brandNames.some(b => b.name.toLowerCase().includes(query));
+            return matchName || matchClass || matchBrand;
+        });
 
         if (matches.length === 0) {
             sugBox.innerHTML = '<div class="suggestion-item"><span class="sug-class">Không tìm thấy thuốc phù hợp...</span></div>';
@@ -126,7 +199,7 @@
         matches.forEach(drug => {
             const div = document.createElement('div');
             div.className = 'suggestion-item';
-            div.innerHTML = `<span class="sug-name">${drug.name}</span><span class="sug-class">${drug.class}</span>`;
+            div.innerHTML = `<span class="sug-name">${drug.activeIngredient}</span><span class="sug-class">${drug.drugClass}</span>`;
             div.onclick = () => displayDrugProfile(drug);
             sugBox.appendChild(div);
         });
@@ -134,50 +207,131 @@
         sugBox.style.display = 'block';
     }
 
+    // 3. Render Dữ liệu lên Card
     function displayDrugProfile(drug) {
-        // Cập nhật ô tìm kiếm (Tự động bôi đen khi click vào đã được xử lý bằng onclick="this.select()" ở HTML)
-        document.getElementById('drugSearch').value = drug.name;
+        document.getElementById('drugSearch').value = drug.activeIngredient;
         document.getElementById('drugSuggestions').style.display = 'none';
 
-        // Điền Header
-        document.getElementById('drName').innerText = drug.name || '--';
-        document.getElementById('drClass').innerText = drug.class || '--';
+        // Đóng tất cả Accordion cũ
+        document.querySelectorAll('.accordion-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
+
+        // A. Header
+        document.getElementById('drName').innerText = drug.activeIngredient;
+        document.getElementById('drClass').innerText = drug.drugClass;
         
-        const brandBox = document.getElementById('drBrandNames');
-        if (drug.brand_names && drug.brand_names.trim() !== "") {
-            document.getElementById('drBrandText').innerText = drug.brand_names;
-            brandBox.style.display = 'block';
-        } else {
-            brandBox.style.display = 'none';
+        let brandsHTML = "";
+        if (drug.brandNames && drug.brandNames.length > 0) {
+            const list = drug.brandNames.map(b => `<b>${b.name}</b> (${b.strength} - ${b.form})`).join('; ');
+            brandsHTML = `💊 <i>Biệt dược:</i> ${list}`;
+        }
+        document.getElementById('drBrands').innerHTML = brandsHTML;
+
+        // B. Icon Cảnh báo
+        const iconsBox = document.getElementById('drOrganIcons');
+        iconsBox.innerHTML = '';
+        if (drug.organWarnings?.renal?.isWarning) {
+            iconsBox.innerHTML += `<div class="organ-icon kidney" title="Có cảnh báo Suy thận">Th</div>`;
+        }
+        if (drug.organWarnings?.hepatic?.isWarning) {
+            iconsBox.innerHTML += `<div class="organ-icon liver" title="Có cảnh báo Suy gan">Ga</div>`;
         }
 
-        // Hàm thông minh ẩn/hiện các Hộp thông tin (Blocks)
-        const setBox = (boxId, contentId, val) => {
+        // C. Accordion: Cơ chế & Thận
+        document.getElementById('drMechanism').innerText = drug.mechanism || "Chưa có dữ liệu cơ chế.";
+        
+        const renalAccordContainer = document.getElementById('renalAccordionContainer');
+        if (drug.organWarnings?.renal?.isWarning && drug.organWarnings.renal.eGFRTable) {
+            document.getElementById('renalAccordTitle').innerText = `⚠️ [THẬN] Hiệu chỉnh eGFR - Phương pháp ${drug.organWarnings.renal.method}`;
+            
+            let tableHTML = `<table class="egfr-table">
+                                <tr><th>Mốc eGFR</th><th>Hướng dẫn duy trì</th></tr>`;
+            drug.organWarnings.renal.eGFRTable.forEach(row => {
+                tableHTML += `<tr><td><b>${row.moc}</b></td><td>${row.lieu}</td></tr>`;
+            });
+            tableHTML += `</table>`;
+            document.getElementById('drRenalTable').innerHTML = tableHTML;
+            renalAccordContainer.style.display = 'block';
+        } else {
+            renalAccordContainer.style.display = 'none';
+        }
+
+        // D. Tabs Đường dùng
+        const tabsHeader = document.getElementById('drTabsHeader');
+        const tabsContent = document.getElementById('drTabsContent');
+        tabsHeader.innerHTML = '';
+        tabsContent.innerHTML = '';
+
+        if (drug.routes && drug.routes.length > 0) {
+            drug.routes.forEach((route, index) => {
+                // Tạo nút Tab
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                btn.innerText = route.routeType;
+                btn.onclick = () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(`tab-content-${index}`).classList.add('active');
+                };
+                tabsHeader.appendChild(btn);
+
+                // Tạo Content Tab
+                let contentHTML = `<div class="tab-content ${index === 0 ? 'active' : ''}" id="tab-content-${index}">`;
+                route.dosingList.forEach(dose => {
+                    contentHTML += `<div class="dosing-item">`;
+                    if (dose.indication && dose.indication !== "Chung") {
+                        contentHTML += `<div class="dosing-ind">📍 ${dose.indication}</div>`;
+                    }
+                    contentHTML += `• <b>Liều:</b> ${dose.dose}<br>
+                                    • <b>Lặp lại:</b> ${dose.interval}<br>`;
+                    if (dose.maxDose) {
+                        contentHTML += `• <b>Max:</b> ${dose.maxDose}`;
+                    }
+                    contentHTML += `</div>`;
+                });
+                contentHTML += `</div>`;
+                tabsContent.innerHTML += contentHTML;
+            });
+        } else {
+            tabsContent.innerHTML = "<div class='info-box-content'>Chưa có dữ liệu liều.</div>";
+        }
+
+        // E. Hộp Cảnh báo & Giám sát
+        const setBox = (boxId, contentId, valArr) => {
             const box = document.getElementById(boxId);
             const content = document.getElementById(contentId);
-            if (val && val.trim() !== "") {
-                content.innerText = val;
+            // valArr là mảng các string, lọc bỏ cái rỗng rồi join lại
+            const validText = valArr.filter(v => v && v.trim() !== "").join('\n\n');
+            
+            if (validText) {
+                content.innerHTML = validText.replace(/\n/g, '<br>');
                 box.style.display = 'block';
             } else {
                 box.style.display = 'none';
             }
         };
 
-        // Ánh xạ dữ liệu vào các Hộp
-        setBox('boxDosing', 'drDosing', drug.dosing);
-        setBox('boxRenal', 'drRenal', drug.renal_adj);
-        setBox('boxSideEffects', 'drSideEffects', drug.side_effects);
-        setBox('boxContra', 'drContraindications', drug.contraindications);
-        setBox('boxNote', 'drNote', drug.note);
+        setBox('boxContra', 'drContra', [drug.contraindications]);
+        
+        let sideEfArr = [];
+        if (drug.sideEffects) sideEfArr.push(`<b>Tác dụng phụ:</b> ${drug.sideEffects}`);
+        if (drug.administration) sideEfArr.push(`<b>Tương tác/Pha tiêm:</b> ${drug.administration}`);
+        setBox('boxSideEffects', 'drSideEffects', sideEfArr);
 
-        // Hiển thị Card
+        let monArr = [];
+        if (drug.targetLevel) monArr.push(`<b>🎯 TDM:</b> ${drug.targetLevel}`);
+        if (drug.monitoring) monArr.push(`<b>👁️ Theo dõi:</b> ${drug.monitoring}`);
+        setBox('boxMonitoring', 'drMonitoring', monArr);
+
+        // Hiển thị Card với Animation
         const card = document.getElementById('drugResultCard');
         card.style.display = 'block';
         card.style.animation = 'none';
         setTimeout(() => card.style.animation = 'fadeIn 0.3s ease', 10);
     }
 
-    // Đóng danh sách gợi ý khi bấm ra vùng khác trên màn hình
+    // Đóng dropdown khi click ngoài
     document.addEventListener('click', function(e) {
         const searchInput = document.getElementById('drugSearch');
         const sugBox = document.getElementById('drugSuggestions');
