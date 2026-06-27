@@ -248,12 +248,13 @@
             return;
         }
 
+        // Đã cập nhật tính năng sắp xếp theo trật tự Alphabet (A-Z)
         const matches = drugDatabase.filter(d => {
             const matchName = d.activeIngredient.toLowerCase().includes(query);
             const matchClass = d.drugClass.toLowerCase().includes(query);
             const matchBrand = d.brandNames && d.brandNames.some(b => b.name.toLowerCase().includes(query));
             return matchName || matchClass || matchBrand;
-        });
+        }).sort((a, b) => a.activeIngredient.localeCompare(b.activeIngredient));
 
         if (matches.length === 0) {
             sugBox.innerHTML = '<div class="suggestion-item"><span class="sug-class">Không tìm thấy thuốc phù hợp...</span></div>';
@@ -306,7 +307,7 @@
         // Accordion Cơ chế
         document.getElementById('drMechanism').innerText = drug.mechanism || "Chưa có dữ liệu cơ chế.";
         
-        // ACCORDION SUY TẠNG THÔNG MINH (LOGIC MỚI)
+        // ACCORDION SUY TẠNG THÔNG MINH
         const organAccordContainer = document.getElementById('organAccordionContainer');
         const hasRenal = drug.organWarnings?.renal?.isWarning;
         const hasHepatic = drug.organWarnings?.hepatic?.isWarning;
