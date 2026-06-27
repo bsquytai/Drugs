@@ -878,5 +878,376 @@ const drugDatabase = [
         "targetLevel": "Mục tiêu Hb duy trì từ 10 - 11.5 g/dL ở bệnh nhi bệnh thận mạn.",
         "administration": "Tiêm dưới da có thời gian tác dụng kéo dài hơn tiêm tĩnh mạch.",
         "monitoring": "Kiểm tra dự trữ Sắt (Ferritin, TSAT) trước khi dùng. Đo huyết áp sát sao, theo dõi Hb định kỳ để tránh Hb tăng quá nhanh."
+    },
+    {
+        "id": "amikacin",
+        "activeIngredient": "Amikacin",
+        "drugClass": "Kháng sinh - Nhóm Aminoglycoside",
+        "brandNames": [
+            { "name": "Amikin", "strength": "250mg/2ml, 500mg/2ml", "form": "Ống tiêm/truyền tĩnh mạch" },
+            { "name": "Amikacin (Generic)", "strength": "500mg/2ml", "form": "Ống tiêm" }
+        ],
+        "mechanism": "Gắn vào tiểu đơn vị 30S của ribosome vi khuẩn, ức chế quá trình tổng hợp protein và gây dịch mã sai, dẫn đến tác dụng diệt khuẩn mạnh.",
+        "routes": [
+            {
+                "routeType": "Tiêm bắp (TB) / Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nặng", "dose": "15 - 22.5 mg/kg/ngày", "interval": "Chia mỗi 8 - 24 giờ", "maxDose": "Căn cứ theo TDM" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "I (Tăng khoảng cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Mỗi 12 - 18 giờ (Liều không đổi)" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "Mỗi 18 - 24 giờ (Liều không đổi)" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "Mỗi 48 - 72 giờ (Liều không đổi)" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Bệnh nhược cơ (Myasthenia gravis) do nguy cơ phong bế thần kinh cơ. Quá mẫn với nhóm Aminoglycoside.",
+        "sideEffects": "Độc tính cao trên thận (Nephrotoxicity) gây hoại tử ống thận cấp. Độc tính trên tai (Ototoxicity) gây điếc không hồi phục và tổn thương tiền đình.",
+        "targetLevel": "Đo nồng độ đỉnh (Peak) 20 - 30 mcg/mL và nồng độ đáy (Trough) < 5 mcg/mL để tránh độc thận.",
+        "administration": "KHÔNG trộn chung bơm tiêm hoặc đường truyền với kháng sinh Beta-lactam do nguy cơ kết tủa và làm bất hoạt thuốc.",
+        "monitoring": "Đo TDM, theo dõi sát Creatinin máu, lượng nước tiểu và thính lực."
+    },
+    {
+        "id": "amoxicillin",
+        "activeIngredient": "Amoxicillin",
+        "drugClass": "Kháng sinh - Nhóm Penicillin",
+        "brandNames": [
+            { "name": "Clamoxyl", "strength": "250mg, 500mg", "form": "Gói bột, Viên nang" },
+            { "name": "Ospamox", "strength": "500mg", "form": "Viên nén" }
+        ],
+        "mechanism": "Gắn vào PBP, ức chế tổng hợp peptidoglycan của thành tế bào vi khuẩn.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Liều chuẩn", "dose": "40 - 45 mg/kg/ngày", "interval": "Chia mỗi 8 - 12 giờ", "maxDose": "4 g/ngày" },
+                    { "indication": "Liều cao (Nhiễm khuẩn nặng)", "dose": "80 - 90 mg/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "4 g/ngày" },
+                    { "indication": "Viêm tai giữa do Phế cầu kháng Penicillin", "dose": "150 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "Theo dõi lâm sàng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "DI (Giảm liều + Giãn cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Nhẹ: Mỗi 8 giờ | Nặng: Mỗi 12 giờ" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "8 - 20 mg/kg/liều, dùng mỗi 12 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "8 - 20 mg/kg/liều, dùng mỗi 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng phản vệ với Penicillin.",
+        "sideEffects": "Tiêu chảy, phát ban da (rất hay gặp nếu bệnh nhi đang nhiễm virus như EBV).",
+        "targetLevel": "",
+        "administration": "Có thể uống trước hoặc sau ăn, thức ăn không ảnh hưởng đáng kể đến hấp thu.",
+        "monitoring": "Theo dõi tình trạng phân (tiêu chảy) và dấu hiệu dị ứng da."
+    },
+    {
+        "id": "azithromycin",
+        "activeIngredient": "Azithromycin",
+        "drugClass": "Kháng sinh - Nhóm Macrolide",
+        "brandNames": [
+            { "name": "Zithromax", "strength": "200mg/5ml", "form": "Bột pha hỗn dịch uống" },
+            { "name": "Zithromax", "strength": "500mg", "form": "Viên nén" }
+        ],
+        "mechanism": "Gắn vào tiểu đơn vị 50S của ribosome vi khuẩn, ngăn chặn tổng hợp protein.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Viêm tai giữa / Viêm phổi (Cách 1)", "dose": "Ngày 1: 10 mg/kg. Ngày 2-5: 5 mg/kg", "interval": "Mỗi 24 giờ", "maxDose": "500 mg/ngày (Tổng liều 1.5g)" },
+                    { "indication": "Viêm tai giữa (Cách 2)", "dose": "10 mg/kg/ngày", "interval": "Mỗi 24 giờ (Dùng 3 ngày)", "maxDose": "500 mg/ngày" },
+                    { "indication": "Viêm tai giữa (Cách 3)", "dose": "30 mg/kg", "interval": "Một liều duy nhất", "maxDose": "1.5 g/liều" },
+                    { "indication": "Viêm họng", "dose": "12 mg/kg/ngày", "interval": "Mỗi 24 giờ (Dùng 5 ngày)", "maxDose": "500 mg/ngày" }
+                ]
+            },
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nặng", "dose": "10 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "500 mg/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Không cần hiệu chỉnh liều khi eGFR > 10. Sử dụng cực kỳ cẩn thận nếu eGFR < 10 mL/min/1.73m²." },
+            "hepatic": { "isWarning": true, "instruction": "Thuốc thải trừ chủ yếu qua gan / mật. Chống chỉ định ở bệnh nhi có tiền sử vàng da hoặc suy gan nặng." }
+        },
+        "contraindications": "Tiền sử rối loạn nhịp tim (Kéo dài khoảng QT), suy gan nặng.",
+        "sideEffects": "Rối loạn tiêu hóa (đau bụng quặn), kéo dài khoảng QT trên điện tâm đồ.",
+        "targetLevel": "",
+        "administration": "Không uống cùng thuốc kháng acid chứa Nhôm/Magie. Truyền tĩnh mạch phải pha loãng và truyền tối thiểu trong 60 phút.",
+        "monitoring": "Theo dõi nhịp tim (ECG) nếu đang dùng chung với các thuốc kéo dài QT khác."
+    },
+    {
+        "id": "ceftriaxone",
+        "activeIngredient": "Ceftriaxone",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 3",
+        "brandNames": [
+            { "name": "Rocephin", "strength": "1g, 2g", "form": "Lọ bột pha tiêm/truyền tĩnh mạch" }
+        ],
+        "mechanism": "Ức chế tổng hợp thành tế bào vi khuẩn. Có thời gian bán thải rất dài so với các Cephalosporin khác.",
+        "routes": [
+            {
+                "routeType": "Tiêm bắp (TB) / Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Liều chuẩn", "dose": "50 - 75 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "2 g/ngày" },
+                    { "indication": "Viêm màng não mủ", "dose": "100 mg/kg/ngày", "interval": "Chia mỗi 12 - 24 giờ", "maxDose": "4 g/ngày" },
+                    { "indication": "Viêm tai giữa", "dose": "50 mg/kg/ngày", "interval": "Dùng 1 - 3 ngày", "maxDose": "1 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": false, "instruction": "KHÔNG CẦN CHỈNH LIỀU. Giữ nguyên 100% liều ở tất cả các mức eGFR (Do thải trừ kép qua gan và thận)." },
+            "hepatic": { "isWarning": true, "instruction": "Thuốc bài tiết nhiều qua mật, có thể kết tủa tạo sỏi giả (biliary pseudolithiasis) gây cơn đau quặn mật." }
+        },
+        "contraindications": "Trẻ sơ sinh < 28 ngày tuổi có tăng bilirubin máu. CẤM dùng chung với dịch truyền chứa Canxi (như Ringer Lactate) ở trẻ nhũ nhi.",
+        "sideEffects": "Sỏi bùn túi mật, tăng men gan, tiêu chảy.",
+        "targetLevel": "",
+        "administration": "Tuyệt đối không pha hoặc truyền cùng lúc (chung line) với dung dịch có chứa Calci.",
+        "monitoring": "Siêu âm bụng nếu bệnh nhi có cơn đau bụng cấp nghi ngờ sỏi mật do thuốc."
+    },
+    {
+        "id": "meropenem",
+        "activeIngredient": "Meropenem",
+        "drugClass": "Kháng sinh - Nhóm Carbapenem",
+        "brandNames": [
+            { "name": "Meronem", "strength": "500mg, 1g", "form": "Lọ bột pha tiêm tĩnh mạch" }
+        ],
+        "mechanism": "Kháng sinh phổ cực rộng. Ức chế tổng hợp thành tế bào, bền vững với hầu hết các enzyme Beta-lactamase và Cephalosporinase.",
+        "routes": [
+            {
+                "routeType": "Tiêm tĩnh mạch (TM) / Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nặng", "dose": "60 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "3 g/ngày" },
+                    { "indication": "Viêm màng não mủ", "dose": "120 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "6 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "DI (Giảm liều + Giãn cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 12 giờ" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "50% liều tiêu chuẩn, mỗi 12 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "50% liều tiêu chuẩn, mỗi 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn phản vệ với Carbapenem hoặc Penicillin.",
+        "sideEffects": "Viêm tĩnh mạch tại chỗ tiêm, tăng men gan. Ít gây co giật hơn Imipenem nhưng vẫn cần cẩn trọng ở trẻ có tiền sử động kinh.",
+        "targetLevel": "",
+        "administration": "Có thể truyền kéo dài (Extended infusion over 3 hours) để tối ưu hóa thời gian nồng độ thuốc vượt qua MIC (T>MIC).",
+        "monitoring": "Theo dõi chức năng thận và tri giác."
+    },
+    {
+        "id": "fluconazole",
+        "activeIngredient": "Fluconazole",
+        "drugClass": "Kháng nấm - Nhóm Triazole",
+        "brandNames": [
+            { "name": "Diflucan", "strength": "50mg, 150mg", "form": "Viên nang" },
+            { "name": "Diflucan", "strength": "2mg/ml", "form": "Chai dịch truyền" }
+        ],
+        "mechanism": "Ức chế enzyme 14-alpha demethylase, ngăn cản tổng hợp ergosterol làm suy yếu màng tế bào nấm.",
+        "routes": [
+            {
+                "routeType": "Đường Uống / Truyền tĩnh mạch",
+                "dosingList": [
+                    { "indication": "Nhiễm nấm Candida thông thường", "dose": "6 - 12 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "800 mg/ngày" },
+                    { "indication": "Nhiễm nấm Thần kinh trung ương", "dose": "Liều cao cá thể hóa", "interval": "Mỗi 24 giờ", "maxDose": "800 - 1000 mg/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Thuốc đào thải chủ yếu qua thận nguyên vẹn. Nếu eGFR < 50 mL/min, GIẢM 50% LIỀU DUY TRÌ (Liều tải đầu tiên giữ nguyên 100%)." },
+            "hepatic": { "isWarning": true, "instruction": "Gây tăng men gan, đôi khi hoại tử gan. Theo dõi sát chức năng gan." }
+        },
+        "contraindications": "Dùng chung với các thuốc kéo dài QT (như Erythromycin, Terfenadine).",
+        "sideEffects": "Rối loạn tiêu hóa, tăng men gan, hội chứng Stevens-Johnson (hiếm).",
+        "targetLevel": "",
+        "administration": "Dạng uống hấp thu rất tốt, sinh khả dụng tương đương đường tĩnh mạch.",
+        "monitoring": "Theo dõi men gan định kỳ."
+    },
+    {
+        "id": "amphotericin_b",
+        "activeIngredient": "Amphotericin B (Deoxycholate)",
+        "drugClass": "Kháng nấm - Nhóm Polyene",
+        "brandNames": [
+            { "name": "Fungizone", "strength": "50mg", "form": "Lọ bột pha truyền tĩnh mạch" }
+        ],
+        "mechanism": "Liên kết trực tiếp với ergosterol trên màng tế bào nấm, tạo ra các lỗ thủng làm rò rỉ ion nội bào gây chết tế bào.",
+        "routes": [
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm nấm hệ thống nặng", "dose": "1 - 1.5 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "150 mg/ngày" },
+                    { "indication": "Nấm Candida thực quản/bàng quang", "dose": "0.5 mg/kg", "interval": "Mỗi 24 giờ", "maxDose": "Theo dõi lâm sàng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "ĐỘC TÍNH THẬN RẤT CAO. Gây co thắt mạch máu thận, hoại tử ống thận và hạ Kali/Magie máu nghiêm trọng. Bắt buộc truyền dịch (Hydration) trước khi dùng thuốc." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với Amphotericin B.",
+        "sideEffects": "Sốt, rét run (ớn lạnh) dữ dội khi truyền, hạ huyết áp, suy thận cấp, hạ Kali máu.",
+        "targetLevel": "",
+        "administration": "CHỈ pha trong dung dịch Dextrose 5% (Cấm pha nước muối sinh lý). Phải test liều nhỏ (1mg) trước. Truyền chậm trong 2 - 4 giờ.",
+        "monitoring": "Đo Creatinin, Kali, Magie máu mỗi ngày. Theo dõi mạch/nhiệt độ sát sao trong lúc truyền."
+    },
+    {
+        "id": "acyclovir",
+        "activeIngredient": "Acyclovir",
+        "drugClass": "Kháng virus",
+        "brandNames": [
+            { "name": "Zovirax", "strength": "200mg, 400mg", "form": "Viên nén" },
+            { "name": "Zovirax", "strength": "250mg", "form": "Lọ bột pha truyền tĩnh mạch" }
+        ],
+        "mechanism": "Ức chế enzyme DNA polymerase của virus Herpes (HSV, VZV), ngăn chặn sự nhân lên của virus.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm HSV/VZV", "dose": "Lên tới 80 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "3.2 g/ngày" }
+                ]
+            },
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm trùng nặng / Viêm não", "dose": "15 - 45 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "Theo cân nặng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Gây kết tủa tinh thể trong ống thận (Crystal nephropathy). Bắt buộc phải bù đủ dịch cho bệnh nhi. Cần giãn khoảng cách liều (12h - 24h) tùy mức eGFR." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với Acyclovir hoặc Valacyclovir.",
+        "sideEffects": "Tổn thương thận cấp (đặc biệt khi truyền tĩnh mạch nhanh ở người mất nước), viêm tĩnh mạch.",
+        "targetLevel": "",
+        "administration": "Truyền tĩnh mạch chậm tối thiểu 1 giờ. KHÔNG tiêm tĩnh mạch nhanh (bolus).",
+        "monitoring": "Đảm bảo truyền đủ dịch và đo lượng nước tiểu. Kiểm tra Creatinin máu."
+    },
+    {
+        "id": "oseltamivir",
+        "activeIngredient": "Oseltamivir",
+        "drugClass": "Kháng virus (Ức chế Neuraminidase)",
+        "brandNames": [
+            { "name": "Tamiflu", "strength": "30mg, 45mg, 75mg", "form": "Viên nang" }
+        ],
+        "mechanism": "Ức chế enzyme Neuraminidase của virus cúm A và B, ngăn chặn sự giải phóng virus mới ra khỏi tế bào bị nhiễm.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Trẻ < 12 tháng (Điều trị 5 ngày)", "dose": "3 - 7 mg/kg/ngày (Chi tiết theo tháng tuổi)", "interval": "Chia 12 giờ", "maxDose": "Tùy tuổi" },
+                    { "indication": "Trẻ ≥ 12 tháng (≤ 15 kg)", "dose": "60 mg/ngày", "interval": "Chia 12 giờ", "maxDose": "60 mg/ngày" },
+                    { "indication": "Trẻ 15 - 23 kg", "dose": "90 mg/ngày", "interval": "Chia 12 giờ", "maxDose": "90 mg/ngày" },
+                    { "indication": "Trẻ 23 - 40 kg", "dose": "120 mg/ngày", "interval": "Chia 12 giờ", "maxDose": "120 mg/ngày" },
+                    { "indication": "Trẻ > 40 kg", "dose": "150 mg/ngày", "interval": "Chia 12 giờ", "maxDose": "150 mg/ngày" },
+                    { "indication": "Dự phòng cúm", "dose": "Bằng 1/2 tổng liều điều trị", "interval": "Uống 1 lần/ngày", "maxDose": "Theo cân nặng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Giảm liều (giảm một nửa) nếu eGFR < 30 mL/min/1.73m²." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với Oseltamivir.",
+        "sideEffects": "Buồn nôn, nôn mửa (rất phổ biến). Đôi khi ghi nhận ảo giác hoặc rối loạn hành vi ở trẻ em.",
+        "targetLevel": "",
+        "administration": "Thuốc đạt hiệu quả cao nhất nếu uống trong vòng 48 giờ đầu sau khi khởi phát triệu chứng.",
+        "monitoring": "Theo dõi các dấu hiệu thần kinh/tâm thần bất thường ở trẻ."
+    },
+    {
+        "id": "isoniazid",
+        "activeIngredient": "Isoniazid (INH)",
+        "drugClass": "Thuốc Kháng Lao",
+        "brandNames": [
+            { "name": "Rimifon", "strength": "50mg, 150mg", "form": "Viên nén" }
+        ],
+        "mechanism": "Ức chế tổng hợp acid mycolic, thành phần thiết yếu của thành tế bào vi khuẩn Mycobacteria.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Điều trị hàng ngày", "dose": "10 - 15 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "300 mg/ngày" },
+                    { "indication": "Phác đồ mỗi tuần 2 lần", "dose": "20 - 30 mg/kg/ngày", "interval": "Mỗi 24 giờ (vào ngày uống)", "maxDose": "900 mg/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Giảm liều nếu bệnh nhi có suy thận nặng (eGFR < 10 mL/min) HOẶC khi có kèm theo bệnh lý gan." },
+            "hepatic": { "isWarning": true, "instruction": "CẢNH BÁO ĐEN: Gây viêm gan hoại tử tế bào nặng, có thể gây tử vong. Nguy cơ tăng lên khi dùng chung Rifampin." }
+        },
+        "contraindications": "Bệnh gan cấp tính, tiền sử tổn thương gan do Isoniazid.",
+        "sideEffects": "Viêm gan do thuốc, viêm dây thần kinh ngoại biên (do thiếu hụt Vitamin B6).",
+        "targetLevel": "",
+        "administration": "Nên bổ sung kèm Vitamin B6 (Pyridoxine) để dự phòng viêm đa dây thần kinh.",
+        "monitoring": "Đo men gan (AST, ALT) định kỳ. Ngừng thuốc ngay nếu men gan tăng > 5 lần hoặc > 3 lần kèm triệu chứng vàng da."
+    },
+    {
+        "id": "rifampin",
+        "activeIngredient": "Rifampin (Rifampicin)",
+        "drugClass": "Thuốc Kháng Lao / Kháng sinh",
+        "brandNames": [
+            { "name": "Rifampicin", "strength": "150mg, 300mg", "form": "Viên nang" }
+        ],
+        "mechanism": "Ức chế enzyme RNA polymerase phụ thuộc DNA của vi khuẩn, ngăn cản quá trình phiên mã RNA.",
+        "routes": [
+            {
+                "routeType": "Đường Uống / Truyền tĩnh mạch",
+                "dosingList": [
+                    { "indication": "Điều trị Lao (Hàng ngày / Tuần 2 lần)", "dose": "10 - 20 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "600 mg/ngày" },
+                    { "indication": "Dự phòng Não mô cầu", "dose": "20 mg/kg/ngày", "interval": "Chia mỗi 12 giờ (Dùng trong 2 ngày)", "maxDose": "1.2 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Theo phương pháp D: Giảm 50% liều nếu eGFR 10-29. Nếu eGFR < 10, cân nhắc 50-100% liều tùy lâm sàng." },
+            "hepatic": { "isWarning": true, "instruction": "Gây viêm gan (đặc biệt khi kết hợp INH) và vàng da ứ mật." }
+        },
+        "contraindications": "Vàng da, sử dụng đồng thời với thuốc ức chế protease.",
+        "sideEffects": "Làm nước tiểu, mồ hôi, nước mắt đổi thành MÀU ĐỎ CAM (cần giải thích trước cho phụ huynh). Rối loạn tiêu hóa.",
+        "targetLevel": "",
+        "administration": "Uống lúc đói (1h trước hoặc 2h sau ăn). Là chất cảm ứng enzyme gan CYP450 RẤT MẠNH, làm giảm tác dụng của rất nhiều thuốc dùng kèm.",
+        "monitoring": "Theo dõi men gan, Bilirubin máu. Kiểm tra tương tác thuốc nghiêm ngặt trước khi kê đơn."
+    },
+    {
+        "id": "ethambutol",
+        "activeIngredient": "Ethambutol",
+        "drugClass": "Thuốc Kháng Lao",
+        "brandNames": [
+            { "name": "Dexambutol", "strength": "400mg", "form": "Viên nén" }
+        ],
+        "mechanism": "Ức chế enzyme arabinosyl transferase, cản trở sự hình thành thành tế bào của vi khuẩn Lao.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Điều trị hàng ngày", "dose": "15 - 25 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "2.5 g/ngày" },
+                    { "indication": "Phác đồ mỗi tuần 2 lần", "dose": "40 mg/kg/ngày", "interval": "Mỗi 24 giờ (vào ngày uống)", "maxDose": "Theo lâm sàng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Thuốc đào thải qua thận. Nếu eGFR < 30 mL/min, kéo dài khoảng cách liều ra mỗi 48 giờ hoặc giảm liều lượng." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Viêm dây thần kinh thị giác. Trẻ nhỏ không thể hợp tác để đo thị lực (chống chỉ định tương đối).",
+        "sideEffects": "Viêm dây thần kinh thị giác (giảm thị lực, mù màu xanh-đỏ). Tăng acid uric máu.",
+        "targetLevel": "",
+        "administration": "Nên uống 1 lần duy nhất trong ngày để đạt nồng độ đỉnh tốt nhất.",
+        "monitoring": "Khám mắt (thị lực, sắc giác) trước khi điều trị và hàng tháng. Dừng thuốc ngay lập tức nếu có dấu hiệu mờ mắt."
     }
 ];
