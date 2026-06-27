@@ -2742,5 +2742,146 @@ const drugDatabase = [
         "targetLevel": "",
         "administration": "Trẻ phải được hướng dẫn kỹ cách hít bột qua miệng. Luôn để sẵn thuốc giãn phế quản (Salbutamol) khi dùng.",
         "monitoring": "Theo dõi sát nhịp thở và nghe phổi. Dừng ngay lập tức nếu có khò khè."
+    },
+    {
+        "id": "amoxicillin_clavulanic",
+        "activeIngredient": "Amoxicillin / Acid clavulanic",
+        "drugClass": "Kháng sinh - Nhóm Penicillin & Ức chế Beta-lactamase",
+        "brandNames": [
+            { "name": "Augmentin", "strength": "250mg/31.25mg, 500mg/62.5mg", "form": "Gói bột, Viên nén" },
+            { "name": "Klamoks", "strength": "228.5mg/5ml, 457mg/5ml", "form": "Hỗn dịch uống" }
+        ],
+        "mechanism": "Amoxicillin diệt khuẩn bằng cách ức chế tổng hợp thành tế bào vi khuẩn. Acid clavulanic ức chế enzyme beta-lactamase, giúp bảo vệ vòng beta-lactam khỏi sự phân hủy của vi khuẩn kháng thuốc.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Dạng 4:1 (Ví dụ 250/62.5)", "dose": "20 - 40 mg amoxicillin/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "1.5 g amoxicillin/ngày" },
+                    { "indication": "Dạng 7:1 (Ví dụ 400/57)", "dose": "25 - 45 mg amoxicillin/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "1.75 g amoxicillin/ngày" },
+                    { "indication": "Dạng 14:1 (Ví dụ 600/42.9)", "dose": "90 mg amoxicillin/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "4 g amoxicillin/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "DI (Giảm liều + Giãn cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Mỗi 8 giờ (Liều không đổi)" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "Giảm 50% liều tiêu chuẩn, mỗi 12 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "Giảm 50% liều tiêu chuẩn, mỗi 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": true, "instruction": "Thuốc có thể gây viêm gan ứ mật (đặc biệt dùng kéo dài). Thận trọng khi dùng cho bệnh nhi có rối loạn chức năng gan nền." }
+        },
+        "contraindications": "Tiền sử dị ứng nặng với Penicillin. Tiền sử vàng da/suy gan liên quan đến Amoxicillin/Clavulanate.",
+        "sideEffects": "Tiêu chảy (rất phổ biến, đặc biệt với chế phẩm có tỷ lệ Clavulanate cao), buồn nôn, phát ban da, nấm mạc (Candida).",
+        "targetLevel": "",
+        "administration": "Bắt buộc uống ngay trước bữa ăn (hoặc lúc bắt đầu ăn) để giảm thiểu bất dung nạp dạ dày-ruột.",
+        "monitoring": "Lâm sàng: Tình trạng phân (tiêu chảy). Cận lâm sàng: Công thức máu, men gan nếu sử dụng phác đồ kéo dài."
+    },
+    {
+        "id": "vancomycin",
+        "activeIngredient": "Vancomycin",
+        "drugClass": "Kháng sinh - Nhóm Glycopeptide",
+        "brandNames": [
+            { "name": "Vancocin", "strength": "500mg, 1g", "form": "Lọ bột pha tiêm truyền" }
+        ],
+        "mechanism": "Ức chế giai đoạn hai của quá trình tổng hợp peptidoglycan thành tế bào vi khuẩn. Đặc trị các vi khuẩn Gram dương đa kháng (như MRSA).",
+        "routes": [
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "40 mg/kg/ngày", "interval": "Chia mỗi 6 giờ", "maxDose": "2 g/ngày" },
+                    { "indication": "Nhiễm khuẩn trung bình - nặng", "dose": "45 - 60 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "2 g/ngày" },
+                    { "indication": "Nhiễm khuẩn MRSA nặng", "dose": "60 - 80 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "3 - 3.6 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "I (Tăng khoảng cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Mỗi 12 giờ" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "Mỗi 18 - 24 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "10 mg/kg mỗi 24 giờ. Liều tiếp theo ĐƯỢC QUYẾT ĐỊNH DỰA VÀO TDM." }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn (phản vệ) đã biết với Vancomycin.",
+        "sideEffects": "Hội chứng người đỏ (Red Man Syndrome: ban đỏ mặt/cổ do giải phóng histamin). Độc tính trên tai. Độc tính trên thận (Nephrotoxicity) đặc biệt khi dùng chung Aminoglycoside.",
+        "targetLevel": "Nhiễm trùng MRSA nặng: Dựa vào TDM để đạt AUC > 400 mg/L*giờ. Thường nhắm tới nồng độ đáy (Trough) 15-20 mcg/mL đối với nhiễm trùng sâu.",
+        "administration": "TUYỆT ĐỐI KHÔNG TIÊM TĨNH MẠCH NHANH. Truyền tĩnh mạch chậm tối thiểu trong 60 phút để tránh Hội chứng người đỏ.",
+        "monitoring": "Lâm sàng: Sinh hiệu lúc truyền, thể tích nước tiểu, thính lực. Cận lâm sàng: Creatinine máu 2-3 ngày/lần. Đo nồng độ đáy trước liều thứ 4."
+    },
+    {
+        "id": "ciprofloxacin",
+        "activeIngredient": "Ciprofloxacin",
+        "drugClass": "Kháng sinh - Nhóm Fluoroquinolone",
+        "brandNames": [
+            { "name": "Cipro", "strength": "250mg, 500mg", "form": "Viên nén" },
+            { "name": "Ciprofloxacin", "strength": "200mg/100ml", "form": "Chai dịch truyền IV" }
+        ],
+        "mechanism": "Ức chế enzyme DNA gyrase và topoisomerase IV, ngăn cản sự sao chép, phiên mã và sửa chữa DNA của vi khuẩn.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "20 - 40 mg/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "1.5 g/ngày" }
+                ]
+            },
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nặng", "dose": "20 - 30 mg/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "1.2 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "I (Tăng khoảng cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn, giữ nguyên khoảng cách" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "10 - 15 mg/kg/liều, giãn cách mỗi 18 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "10 mg/kg/liều, giãn cách mỗi 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": true, "instruction": "Có nguy cơ hoại tử gan cấp tính hoặc suy gan đe dọa tính mạng. Thận trọng tối đa ở trẻ có bệnh lý gan nền." }
+        },
+        "contraindications": "Tiền sử viêm gân/đứt gân liên quan đến Fluoroquinolone.",
+        "sideEffects": "Tổn thương sụn khớp (cần cân nhắc lợi ích/nguy cơ rất kỹ ở trẻ em). Kéo dài khoảng QT. Đứt gân gót Achilles.",
+        "targetLevel": "",
+        "administration": "PO: Tránh uống cùng lúc với các chế phẩm chứa Canxi, Sắt, Kẽm, hoặc thuốc dạ dày (phải uống cách nhau ít nhất 2 giờ do tạo phức chelate làm mất tác dụng thuốc).",
+        "monitoring": "Lâm sàng: Đau khớp, sưng gân gót. ECG: Khoảng QT."
+    },
+    {
+        "id": "amphotericin_b_lipid",
+        "activeIngredient": "Amphotericin B (Phức hợp Lipid / Liposome)",
+        "drugClass": "Kháng nấm - Nhóm Polyene (Dạng công nghệ cao)",
+        "brandNames": [
+            { "name": "AmBisome", "strength": "50mg", "form": "Lọ bột pha truyền tĩnh mạch" },
+            { "name": "Abelcet", "strength": "50mg", "form": "Lọ bột pha truyền tĩnh mạch" }
+        ],
+        "mechanism": "Được bọc trong các vi hạt lipid/liposome, giúp thuốc tập trung tại các mô bị nhiễm nấm và giảm đáng kể sự gắn kết vào cholesterol màng tế bào thận ở người, qua đó giảm độc tính.",
+        "routes": [
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm nấm hệ thống xâm lấn", "dose": "5 mg/kg/ngày", "interval": "Mỗi 24 giờ", "maxDose": "500 mg/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Mặc dù độc tính thận giảm rõ rệt so với dạng Deoxycholate, nhưng vẫn có khả năng gây suy thận và rối loạn điện giải. Vẫn cần duy trì truyền dịch đủ." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với Amphotericin B.",
+        "sideEffects": "Rét run, sốt khi truyền (ít hơn dạng Deoxycholate). Hạ Kali và Magie máu.",
+        "targetLevel": "",
+        "administration": "Chỉ pha bằng dung dịch Dextrose 5% (Tuyệt đối không pha dung dịch muối). Luôn phải sử dụng bộ lọc (filter) chuẩn khi truyền.",
+        "monitoring": "Kiểm tra Creatinin máu, Kali, Magie hàng ngày. Theo dõi nhiệt độ khi truyền."
     }
 ];
