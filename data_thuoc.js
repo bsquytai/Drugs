@@ -1556,7 +1556,7 @@ const drugDatabase = [
             {
                 "routeType": "Khí dung",
                 "dosingList": [
-                    { "indication": "Nhiễm trùng hô hấp", "dose": "75 mg dạng cơ bản (Khoảng 2.25 triệu đơn vị)/liều", "interval": "Mỗi 8 - 12 giờ", "maxDose": "Cá thể hóa" }
+                    { "indication": "Nhiễm trùng hô hấp", "dose": "75 mg dạng cơ bản (Khoảng 2.250.000 đơn vị)/liều", "interval": "Mỗi 8 - 12 giờ", "maxDose": "Cá thể hóa" }
                 ]
             }
         ],
@@ -1575,7 +1575,7 @@ const drugDatabase = [
         "contraindications": "Quá mẫn với Colistin. Hạn chế dùng chung với thuốc phong bế thần kinh cơ.",
         "sideEffects": "RẤT ĐỘC CHO THẬN (Nephrotoxicity) gây suy thận cấp. Độc thần kinh (Neurotoxicity) gây dị cảm, yếu cơ, ngưng thở.",
         "targetLevel": "Mục tiêu tĩnh nồng độ (Css) khoảng 2 mg/L đối với trực khuẩn Gram âm đa kháng.",
-        "administration": "Luôn tính liều cẩn thận, tránh nhầm lẫn giữa đơn vị quốc tế (UI), miligam Colistimethate (CMS) và miligam Colistin dạng cơ bản (CBA).",
+        "administration": "1mg colistimethate = 12.500 đơn vị ; 1mg colistin dạng cơ bản = 30.000 đơn vị. Luôn tính liều cẩn thận, tránh nhầm lẫn giữa đơn vị quốc tế (UI), miligam Colistimethate (CMS) và miligam Colistin dạng cơ bản (CBA).",
         "monitoring": "Bắt buộc theo dõi chức năng thận (Creatinin, BUN) hàng ngày. Theo dõi các dấu hiệu yếu cơ."
     },
     {
