@@ -550,7 +550,7 @@ const drugDatabase = [
     },
     {
         "id": "cyclosporin_a",
-        "activeIngredient": "Cyclosporin A",
+        "activeIngredient": "Cyclosporin A (CsA)",
         "drugClass": "Nhóm ức chế Calcineurin - CNI",
         "brandNames": [
             { "name": "Neoral", "strength": "25mg/100mg", "form": "Viên nang mềm" },
@@ -578,7 +578,7 @@ const drugDatabase = [
     },
     {
         "id": "tacrolimus",
-        "activeIngredient": "Tacrolimus",
+        "activeIngredient": "Tacrolimus (Tac)",
         "drugClass": "Nhóm ức chế Calcineurin - CNI",
         "brandNames": [
             { "name": "Prograf", "strength": "0.5mg/1mg", "form": "Viên nang cứng" },
