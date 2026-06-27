@@ -1728,5 +1728,394 @@ const drugDatabase = [
         "targetLevel": "",
         "administration": "Thường uống cùng với các thuốc lao khác vào 1 thời điểm trong ngày để đạt nồng độ đỉnh cao nhất.",
         "monitoring": "Đo men gan (AST, ALT), Bilirubin và Acid uric máu định kỳ."
+    },
+    {
+        "id": "ampicillin",
+        "activeIngredient": "Ampicillin",
+        "drugClass": "Kháng sinh - Nhóm Penicillin phổ rộng",
+        "brandNames": [
+            { "name": "Ampicillin", "strength": "500mg, 1g", "form": "Lọ bột pha tiêm" }
+        ],
+        "mechanism": "Ức chế tổng hợp thành tế bào vi khuẩn (gắn vào PBP). Bị phá hủy bởi men beta-lactamase.",
+        "routes": [
+            {
+                "routeType": "Tiêm tĩnh mạch / Tiêm bắp (IV/IM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "50 - 200 mg/kg/ngày", "interval": "Chia mỗi 6 giờ", "maxDose": "8 g/ngày" },
+                    { "indication": "Viêm màng não mủ / Viêm nội tâm mạc", "dose": "300 - 400 mg/kg/ngày", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "12 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "I (Tăng khoảng cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 6 giờ" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 8 - 12 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 12 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng Penicillin. Nhiễm virus Epstein-Barr (gây phát ban đỏ toàn thân).",
+        "sideEffects": "Phát ban da (rất phổ biến), tiêu chảy, viêm tĩnh mạch huyết khối.",
+        "targetLevel": "",
+        "administration": "Phải test lẩy da trước khi tiêm. Tiêm tĩnh mạch chậm từ 3 - 5 phút.",
+        "monitoring": "Theo dõi dấu hiệu dị ứng, phản vệ trong 30 phút đầu sau tiêm."
+    },
+    {
+        "id": "cloxacillin",
+        "activeIngredient": "Cloxacillin",
+        "drugClass": "Kháng sinh - Penicillin kháng Penicillinase",
+        "brandNames": [
+            { "name": "Cloxacillin", "strength": "500mg", "form": "Viên nang, Lọ tiêm" }
+        ],
+        "mechanism": "Ức chế tổng hợp thành tế bào. Kháng lại enzyme penicillinase của tụ cầu (Staphylococcus).",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Trẻ ≤ 20 kg", "dose": "25 - 50 mg/kg/ngày", "interval": "Chia mỗi 6 giờ", "maxDose": "Theo dõi lâm sàng" },
+                    { "indication": "Trẻ > 20 kg", "dose": "1 - 2 g/ngày (có thể tăng liều)", "interval": "Chia mỗi 6 giờ", "maxDose": "6 g/ngày" }
+                ]
+            },
+            {
+                "routeType": "Tiêm/Truyền tĩnh mạch (IV)",
+                "dosingList": [
+                    { "indication": "Trẻ ≤ 20 kg", "dose": "25 - 50 mg/kg/ngày (có thể tăng tới 200-300 mg/kg/ngày)", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "Theo dõi lâm sàng" },
+                    { "indication": "Trẻ > 20 kg", "dose": "4 - 12 g/ngày", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "12 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": false, "instruction": "Đào thải nhiều qua gan và mật. Không cần hiệu chỉnh liều khi suy thận." },
+            "hepatic": { "isWarning": true, "instruction": "Thận trọng ở trẻ có tiền sử rối loạn chức năng gan, có nguy cơ gây viêm gan ứ mật." }
+        },
+        "contraindications": "Dị ứng Penicillin.",
+        "sideEffects": "Rối loạn tiêu hóa, viêm gan ứ mật, phát ban.",
+        "targetLevel": "",
+        "administration": "Đường uống: Bắt buộc uống lúc bụng đói (1h trước hoặc 2h sau ăn) để hấp thu tốt nhất.",
+        "monitoring": "Theo dõi men gan nếu dùng liều cao kéo dài."
+    },
+    {
+        "id": "oxacillin",
+        "activeIngredient": "Oxacillin",
+        "drugClass": "Kháng sinh - Penicillin kháng Penicillinase",
+        "brandNames": [
+            { "name": "Oxacillin", "strength": "500mg, 1g", "form": "Lọ bột pha tiêm" }
+        ],
+        "mechanism": "Diệt khuẩn bằng cách ức chế tổng hợp thành tế bào. Kháng lại enzyme beta-lactamase của vi khuẩn tụ cầu vàng (MSSA).",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nhẹ - trung bình", "dose": "50 - 100 mg/kg/ngày", "interval": "Chia mỗi 6 giờ", "maxDose": "Theo dõi lâm sàng" }
+                ]
+            },
+            {
+                "routeType": "Tiêm/Truyền tĩnh mạch (IV)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "100 mg/kg/ngày", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "12 g/ngày" },
+                    { "indication": "Viêm màng não mủ", "dose": "150 - 200 mg/kg/ngày", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "12 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "D (Giảm liều)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "Sử dụng liều thấp hơn so với liều thông thường" }
+                ]
+            },
+            "hepatic": { "isWarning": true, "instruction": "Có khả năng gây viêm gan, ứ mật. Cần theo dõi men gan thường xuyên." }
+        },
+        "contraindications": "Dị ứng với các thuốc nhóm Penicillin.",
+        "sideEffects": "Viêm tĩnh mạch tại chỗ tiêm, tăng men gan, ức chế tủy xương (giảm bạch cầu) khi dùng kéo dài.",
+        "targetLevel": "",
+        "administration": "Thuốc uống nên dùng lúc đói. Thuốc tiêm có thể gây đau, có thể pha loãng truyền tĩnh mạch chậm.",
+        "monitoring": "Kiểm tra men gan và công thức máu nếu điều trị > 2 tuần."
+    },
+    {
+        "id": "penicillin_g",
+        "activeIngredient": "Penicillin G (Potassium/Sodium)",
+        "drugClass": "Kháng sinh - Penicillin phổ hẹp",
+        "brandNames": [
+            { "name": "Penicillin G", "strength": "1 triệu UI, 5 triệu UI", "form": "Lọ bột pha tiêm" }
+        ],
+        "mechanism": "Kháng sinh diệt khuẩn, ức chế tổng hợp thành tế bào. Hiệu quả cao với liên cầu (Streptococcus), phế cầu nhạy cảm, và vi khuẩn giang mai.",
+        "routes": [
+            {
+                "routeType": "Tiêm bắp / Truyền tĩnh mạch (IV/IM)",
+                "dosingList": [
+                    { "indication": "Liều thông thường", "dose": "100.000 - 300.000 đơn vị/kg/ngày (Tối đa lên tới 400.000 đv/kg)", "interval": "Chia mỗi 4 - 6 giờ", "maxDose": "24 triệu đơn vị/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "D (Giảm liều)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "75% liều tiêu chuẩn" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "75% liều tiêu chuẩn" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "20 - 50% liều tiêu chuẩn" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với Penicillin.",
+        "sideEffects": "Co giật (đặc biệt khi dùng liều rất cao ở bệnh nhân suy thận), phản vệ, viêm tĩnh mạch.",
+        "targetLevel": "",
+        "administration": "Muối Kali có thể gây tăng Kali máu nguy hiểm nếu truyền nhanh; Muối Natri có thể gây quá tải Natri.",
+        "monitoring": "Điện giải đồ (Na, K) nếu dùng liều cao. Theo dõi tri giác (để phòng co giật do thuốc)."
+    },
+    {
+        "id": "penicillin_v",
+        "activeIngredient": "Penicillin V (Phenoxymethylpenicillin)",
+        "drugClass": "Kháng sinh - Penicillin đường uống",
+        "brandNames": [
+            { "name": "Ospen", "strength": "400.000 UI, 1.000.000 UI", "form": "Viên nén, Siro" }
+        ],
+        "mechanism": "Tương tự Penicillin G nhưng bền với môi trường acid dạ dày nên dùng được đường uống. Đặc trị viêm họng do liên cầu tan huyết nhóm A.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn đường hô hấp trên", "dose": "25 - 50 mg/kg/ngày", "interval": "Chia mỗi 6 giờ", "maxDose": "2 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Bệnh nhi suy thận nặng (eGFR < 10) nên kéo dài khoảng cách liều ra mỗi 8 giờ." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng Penicillin.",
+        "sideEffects": "Rối loạn tiêu hóa, buồn nôn, tiêu chảy, mề đay.",
+        "targetLevel": "",
+        "administration": "Nên uống 30 phút trước bữa ăn hoặc 2 giờ sau ăn để đạt nồng độ tối đa.",
+        "monitoring": "Theo dõi cải thiện lâm sàng (hết sốt, giảm viêm họng)."
+    },
+    {
+        "id": "piperacillin_tazobactam",
+        "activeIngredient": "Piperacillin / Tazobactam",
+        "drugClass": "Kháng sinh - Penicillin phổ cực rộng & Ức chế Beta-lactamase",
+        "brandNames": [
+            { "name": "Tazocin", "strength": "4.5g (4g Pip / 0.5g Tazo)", "form": "Lọ bột pha truyền tĩnh mạch" }
+        ],
+        "mechanism": "Diệt khuẩn mạnh. Phổ tác dụng bao trùm cả trực khuẩn mủ xanh (P. aeruginosa) và vi khuẩn kỵ khí. Tazobactam bảo vệ vòng beta-lactam khỏi bị phá hủy.",
+        "routes": [
+            {
+                "routeType": "Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nặng / Bệnh viện", "dose": "Tính theo Piperacillin: 240 - 300 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "16 g piperacillin/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Cần hiệu chỉnh giảm liều và tăng khoảng cách khi eGFR < 40 mL/min/1.73m² để tránh tích lũy và độc tính thần kinh." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng với Penicillin, Cephalosporin hoặc các chất ức chế beta-lactamase.",
+        "sideEffects": "Tiêu chảy, tăng men gan, độc tính thận tăng lên đáng kể nếu truyền chung với Vancomycin.",
+        "targetLevel": "",
+        "administration": "Thường truyền tĩnh mạch chậm kéo dài (Extended infusion qua 3-4 giờ) để tối ưu hóa hiệu quả diệt khuẩn (T>MIC).",
+        "monitoring": "Theo dõi sát chức năng thận (Creatinin) đặc biệt khi phối hợp thuốc khác. Theo dõi điện giải (thuốc chứa nhiều Natri)."
+    },
+    {
+        "id": "cefaclor",
+        "activeIngredient": "Cefaclor",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 2",
+        "brandNames": [
+            { "name": "Ceclor", "strength": "125mg, 250mg", "form": "Gói bột, Viên nang" }
+        ],
+        "mechanism": "Ức chế tổng hợp thành tế bào vi khuẩn. Phổ tác dụng tốt trên vi khuẩn Gram dương và một số vi khuẩn Gram âm hô hấp.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn hô hấp / tiết niệu nhẹ", "dose": "20 - 40 mg/kg/ngày", "interval": "Chia mỗi 8 - 12 giờ", "maxDose": "1 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "D (Giảm liều)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "50% liều tiêu chuẩn" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng với Cephalosporin.",
+        "sideEffects": "Bệnh lý huyết thanh (Serum sickness-like illness) ở trẻ em (phát ban, đau khớp, sốt) thường xuất hiện sau đợt điều trị thứ 2.",
+        "targetLevel": "",
+        "administration": "Có thể uống cùng thức ăn để giảm rối loạn tiêu hóa.",
+        "monitoring": "Theo dõi các dấu hiệu phát ban, sưng khớp."
+    },
+    {
+        "id": "cefazolin",
+        "activeIngredient": "Cefazolin",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 1",
+        "brandNames": [
+            { "name": "Cefazolin", "strength": "1g", "form": "Lọ bột pha tiêm" }
+        ],
+        "mechanism": "Tác dụng rất mạnh trên cầu khuẩn Gram dương (đặc biệt Tụ cầu vàng MSSA). Thường dùng dự phòng phẫu thuật và nhiễm trùng da/mô mềm.",
+        "routes": [
+            {
+                "routeType": "Tiêm bắp (TB) / Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn nhẹ - trung bình", "dose": "25 - 50 mg/kg/ngày", "interval": "Chia mỗi 8 giờ", "maxDose": "12 g/ngày" },
+                    { "indication": "Nhiễm khuẩn nặng", "dose": "100 - 150 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "12 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "DI (Giảm liều + Giãn cách)",
+                "eGFRTable": [
+                    { "moc": "40 - 70 mL/min/1.73m²", "lieu": "60% liều tiêu chuẩn, mỗi 12 giờ" },
+                    { "moc": "20 - 40 mL/min/1.73m²", "lieu": "25% liều tiêu chuẩn, mỗi 12 giờ" },
+                    { "moc": "5 - 20 mL/min/1.73m²", "lieu": "10% liều tiêu chuẩn, mỗi 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng với Cephalosporin.",
+        "sideEffects": "Phản ứng tại chỗ tiêm, phát ban, tăng men gan.",
+        "targetLevel": "",
+        "administration": "Khi dự phòng phẫu thuật, truyền tĩnh mạch hoàn thành trong vòng 60 phút trước khi rạch da.",
+        "monitoring": "Theo dõi chức năng thận nếu dùng liều cao kéo dài."
+    },
+    {
+        "id": "cephalexin",
+        "activeIngredient": "Cephalexin",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 1",
+        "brandNames": [
+            { "name": "Keflex", "strength": "250mg, 500mg", "form": "Viên nang, Gói bột" }
+        ],
+        "mechanism": "Diệt khuẩn tương tự Cefazolin nhưng dùng đường uống. Hiệu quả tuyệt vời cho nhiễm trùng da mô mềm (nhọt, chốc lở).",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "25 - 50 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "2 g/ngày" },
+                    { "indication": "Nhiễm khuẩn nặng / Xương khớp", "dose": "75 - 100 mg/kg/ngày", "interval": "Chia mỗi 6 - 8 giờ", "maxDose": "4 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "I (Tăng khoảng cách)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 8 - 12 giờ" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 8 - 12 giờ" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "Giữ nguyên liều, mỗi 12 - 24 giờ" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng Cephalosporin.",
+        "sideEffects": "Rối loạn tiêu hóa (đau bụng, tiêu chảy), phát ban, ngứa.",
+        "targetLevel": "",
+        "administration": "Thuốc hấp thu nhanh qua đường tiêu hóa, không bị ảnh hưởng bởi thức ăn.",
+        "monitoring": "Lâm sàng vết thương/viêm nhiễm da."
+    },
+    {
+        "id": "cefixime",
+        "activeIngredient": "Cefixime",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 3",
+        "brandNames": [
+            { "name": "Suprax", "strength": "100mg, 200mg", "form": "Viên nén, Hỗn dịch uống" },
+            { "name": "Meiact", "strength": "100mg", "form": "Gói bột" }
+        ],
+        "mechanism": "Phổ Gram âm cực mạnh (E. coli, Klebsiella), thường dùng điều trị nhiễm khuẩn đường tiết niệu ở trẻ em hoặc chuyển đổi từ đường tiêm sang uống (Step-down therapy).",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn thông thường", "dose": "8 mg/kg/ngày", "interval": "Uống 1 lần/ngày", "maxDose": "400 mg/ngày" },
+                    { "indication": "Tiếp nối đường uống (Nhiễm trùng nặng)", "dose": "Lên tới 20 mg/kg/ngày", "interval": "Chia mỗi 12 giờ", "maxDose": "Theo dõi lâm sàng" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Cần giảm liều (Khoảng 75% liều chuẩn) nếu eGFR từ 21 - 60, và giảm 50% liều chuẩn nếu eGFR < 20 mL/min." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng với kháng sinh nhóm Cephalosporin.",
+        "sideEffects": "Tiêu chảy (khá phổ biến, đặc biệt phân lỏng sệt ở trẻ nhỏ), đau bụng.",
+        "targetLevel": "",
+        "administration": "Hỗn dịch sau khi pha cần bảo quản lạnh và lắc kỹ trước khi dùng. Uống cùng hoặc không cùng thức ăn đều được.",
+        "monitoring": "Kiểm tra tình trạng tiêu hóa, theo dõi đáp ứng điều trị nhiễm trùng tiểu."
+    },
+    {
+        "id": "cefdinir",
+        "activeIngredient": "Cefdinir",
+        "drugClass": "Kháng sinh - Cephalosporin thế hệ 3",
+        "brandNames": [
+            { "name": "Omnicef", "strength": "300mg", "form": "Viên nang" },
+            { "name": "Cefdinir", "strength": "125mg/5ml", "form": "Hỗn dịch uống" }
+        ],
+        "mechanism": "Giống các Cephalosporin thế hệ 3 khác nhưng có hoạt tính Gram dương (như Tụ cầu và Liên cầu) nhỉnh hơn một chút so với Cefixime.",
+        "routes": [
+            {
+                "routeType": "Đường Uống (PO)",
+                "dosingList": [
+                    { "indication": "Viêm tai giữa, Viêm họng, Viêm phổi", "dose": "14 mg/kg/ngày", "interval": "Uống 1 lần hoặc chia 12 giờ", "maxDose": "600 mg/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": { "isWarning": true, "instruction": "Nếu eGFR < 30 mL/min, giảm liều xuống còn 7 mg/kg/ngày (uống 1 lần duy nhất trong ngày)." },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Dị ứng với kháng sinh nhóm Cephalosporin.",
+        "sideEffects": "Phân đổi màu đỏ/nhạt màu (do tạo phức hợp với sắt trong thức ăn - cần giải thích cho phụ huynh khỏi hoang mang). Tiêu chảy.",
+        "targetLevel": "",
+        "administration": "Không uống cùng lúc với các thuốc kháng acid chứa Nhôm/Magie hoặc viên bổ sung Sắt (cách nhau ít nhất 2 giờ).",
+        "monitoring": "Theo dõi lâm sàng hô hấp."
+    },
+    {
+        "id": "ertapenem",
+        "activeIngredient": "Ertapenem",
+        "drugClass": "Kháng sinh - Carbapenem",
+        "brandNames": [
+            { "name": "Invanz", "strength": "1g", "form": "Lọ bột pha tiêm" }
+        ],
+        "mechanism": "Kháng sinh phổ siêu rộng. Khác với Meropenem/Imipenem, Ertapenem KHÔNG có tác dụng với trực khuẩn mủ xanh (Pseudomonas) và Acinetobacter.",
+        "routes": [
+            {
+                "routeType": "Tiêm bắp (TB) / Truyền tĩnh mạch (TTM)",
+                "dosingList": [
+                    { "indication": "Nhiễm khuẩn ổ bụng / tiết niệu nặng", "dose": "30 mg/kg/ngày (Trẻ ≥ 13 tuổi: 1g/ngày)", "interval": "Trẻ nhỏ chia mỗi 12 giờ. Trẻ ≥ 13T: 24 giờ", "maxDose": "1 g/ngày" }
+                ]
+            }
+        ],
+        "organWarnings": {
+            "renal": {
+                "isWarning": true,
+                "method": "D (Giảm liều)",
+                "eGFRTable": [
+                    { "moc": "30 - 50 mL/min/1.73m²", "lieu": "100% liều tiêu chuẩn" },
+                    { "moc": "10 - 29 mL/min/1.73m²", "lieu": "50% liều tiêu chuẩn" },
+                    { "moc": "< 10 mL/min/1.73m²", "lieu": "50% liều tiêu chuẩn" }
+                ]
+            },
+            "hepatic": { "isWarning": false, "instruction": "" }
+        },
+        "contraindications": "Quá mẫn với các thuốc nhóm Carbapenem.",
+        "sideEffects": "Tiêu chảy, viêm tĩnh mạch, nhức đầu. Ít gây co giật hơn Imipenem.",
+        "targetLevel": "",
+        "administration": "Có thể tiêm bắp (pha với Lidocain để giảm đau) hoặc truyền tĩnh mạch (truyền trong 30 phút).",
+        "monitoring": "Chức năng thận, đáp ứng nhiễm khuẩn (đặc biệt vi khuẩn sinh ESBL)."
     }
 ];
