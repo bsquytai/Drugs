@@ -65,12 +65,17 @@
     }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Custom Accordion Cảnh báo Thận */
+    /* Custom Accordion Cảnh báo Tạng (Thay đổi padding để chứa text) */
     .accordion-btn.btn-renal { background: #fef2f2; border-color: #fca5a5; }
     .accordion-btn.btn-renal:hover { background: #fee2e2; }
     .accordion-btn.btn-renal .accord-title { color: #b91c1c; }
     .accordion-btn.btn-renal.active { border-bottom-color: transparent; }
-    .accordion-content.content-renal { border-color: #fca5a5; padding: 0; overflow: hidden; background: #ffffff; }
+    .accordion-content.content-renal { border-color: #fca5a5; padding: 16px; background: #ffffff; }
+
+    /* Text Cảnh báo Định tính (MỚI) */
+    .organ-text-warning { padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+    .warning-renal { background-color: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+    .warning-hepatic { background-color: #fff7ed; border-left: 4px solid #ea580c; color: #9a3412; }
 
     /* Bảng eGFR Ma trận */
     .egfr-table-wrapper { width: 100%; overflow-x: auto; }
@@ -163,23 +168,16 @@
         </button>
         <div class="accordion-content" id="drMechanism">--</div>
 
-        <div id="renalAccordionContainer" style="display: none;">
-            <button class="accordion-btn btn-renal" onclick="toggleAccordion(this)" id="btnRenalAccord">
-                <span class="accord-title">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.813 10.252A5.5 5.5 0 0 1 12 5.5v-1a4 4 0 0 0-7.618-1.745c-.886 1.83-1.026 4.316.035 6.404C5.55 11.4 7.6 13 10 13c.277 0 .55-.022.813-.064Z"/><path d="M13.187 13.748A5.5 5.5 0 0 1 12 18.5v1a4 4 0 0 0 7.618 1.745c.886-1.83 1.026-4.316-.035-6.404C18.45 12.6 16.4 11 14 11c-.277 0-.55.022-.813.064Z"/></svg>
-                    <span id="renalAccordTitle">[THẬN] Hiệu chỉnh liều</span>
-                </span>
+        <div id="organAccordionContainer" style="display: none;">
+            <button class="accordion-btn btn-renal" onclick="toggleAccordion(this)" id="btnOrganAccord">
+                <span class="accord-title" id="organAccordTitle">
+                    </span>
                 <span class="accord-chevron">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </span>
             </button>
-            <div class="accordion-content content-renal">
-                <div class="loading-dose-warning">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    NGUYÊN TẮC: KHÔNG hiệu chỉnh Liều tải (Loading Dose) đầu tiên.
+            <div class="accordion-content content-renal" id="drOrganContent">
                 </div>
-                <div class="egfr-table-wrapper" id="drRenalTable"></div>
-            </div>
         </div>
     </div>
 
@@ -237,7 +235,6 @@
         const sugBox = document.getElementById('drugSuggestions');
         sugBox.innerHTML = '';
         
-        // Logic mới: Khi người dùng xóa hết chữ trong ô tìm kiếm, tự động reset giao diện về ban đầu
         if (query.length === 0) {
             sugBox.style.display = 'none';
             document.getElementById('drugResultCard').style.display = 'none';
@@ -278,11 +275,8 @@
     function displayDrugProfile(drug) {
         document.getElementById('drugSearch').value = drug.activeIngredient;
         document.getElementById('drugSuggestions').style.display = 'none';
-        
-        // ẨN KHỐI THAM CHIẾU Y KHOA KHI CÓ KẾT QUẢ
         document.getElementById('referenceCard').style.display = 'none';
 
-        // Đóng Accordion
         document.querySelectorAll('.accordion-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
 
@@ -309,23 +303,64 @@
             iconsBox.innerHTML += `<div class="organ-icon liver" title="Lưu ý/Độc tính trên Gan">${svgLiver}</div>`;
         }
 
-        // Accordion Học thuật & Thận
+        // Accordion Cơ chế
         document.getElementById('drMechanism').innerText = drug.mechanism || "Chưa có dữ liệu cơ chế.";
         
-        const renalAccordContainer = document.getElementById('renalAccordionContainer');
-        if (drug.organWarnings?.renal?.isWarning && drug.organWarnings.renal.eGFRTable) {
-            document.getElementById('renalAccordTitle').innerText = `[THẬN] Hiệu chỉnh eGFR - PP: ${drug.organWarnings.renal.method}`;
-            
-            let tableHTML = `<table class="egfr-table">
+        // ACCORDION SUY TẠNG THÔNG MINH (LOGIC MỚI)
+        const organAccordContainer = document.getElementById('organAccordionContainer');
+        const hasRenal = drug.organWarnings?.renal?.isWarning;
+        const hasHepatic = drug.organWarnings?.hepatic?.isWarning;
+
+        if (hasRenal || hasHepatic) {
+            // 1. Tạo Tiêu đề động
+            let titleHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> `;
+            if (hasRenal && hasHepatic) {
+                titleHTML += `[THẬN & GAN] Cảnh báo Tổn thương Cơ quan`;
+            } else if (hasRenal) {
+                titleHTML += `[THẬN] Cảnh báo & Hiệu chỉnh eGFR`;
+            } else {
+                titleHTML += `[GAN] Cảnh báo Suy chức năng Gan`;
+            }
+            document.getElementById('organAccordTitle').innerHTML = titleHTML;
+
+            // 2. Render Nội dung (Text Thận -> Bảng Thận -> Text Gan)
+            let contentHTML = '';
+
+            if (hasRenal) {
+                if (drug.organWarnings.renal.instruction) {
+                    contentHTML += `<div class="organ-text-warning warning-renal">
+                                        <b>🩸 Lưu ý về Thận:</b> ${drug.organWarnings.renal.instruction}
+                                    </div>`;
+                }
+                if (drug.organWarnings.renal.eGFRTable && drug.organWarnings.renal.eGFRTable.length > 0) {
+                    contentHTML += `
+                    <div style="border: 1px solid #fca5a5; border-radius: 8px; overflow: hidden; margin-bottom: 12px;">
+                        <div class="loading-dose-warning">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            NGUYÊN TẮC: KHÔNG hiệu chỉnh Liều tải đầu tiên.
+                        </div>
+                        <div class="egfr-table-wrapper">
+                            <table class="egfr-table">
                                 <tr><th>Độ thanh thải (eGFR)</th><th>Hướng dẫn Liều duy trì</th></tr>`;
-            drug.organWarnings.renal.eGFRTable.forEach(row => {
-                tableHTML += `<tr><td><b>${row.moc}</b></td><td>${row.lieu}</td></tr>`;
-            });
-            tableHTML += `</table>`;
-            document.getElementById('drRenalTable').innerHTML = tableHTML;
-            renalAccordContainer.style.display = 'block';
+                    drug.organWarnings.renal.eGFRTable.forEach(row => {
+                        contentHTML += `<tr><td><b>${row.moc}</b></td><td>${row.lieu}</td></tr>`;
+                    });
+                    contentHTML += `</table></div></div>`;
+                }
+            }
+
+            if (hasHepatic) {
+                if (drug.organWarnings.hepatic.instruction) {
+                    contentHTML += `<div class="organ-text-warning warning-hepatic">
+                                        <b>🔸 Lưu ý về Gan:</b> ${drug.organWarnings.hepatic.instruction}
+                                    </div>`;
+                }
+            }
+
+            document.getElementById('drOrganContent').innerHTML = contentHTML;
+            organAccordContainer.style.display = 'block';
         } else {
-            renalAccordContainer.style.display = 'none';
+            organAccordContainer.style.display = 'none';
         }
 
         // Tabs Đường dùng
@@ -401,7 +436,6 @@
         setTimeout(() => card.style.animation = 'fadeIn 0.3s ease', 10);
     }
 
-    // Đóng dropdown khi click ra ngoài
     document.addEventListener('click', function(e) {
         const searchInput = document.getElementById('drugSearch');
         const sugBox = document.getElementById('drugSuggestions');
