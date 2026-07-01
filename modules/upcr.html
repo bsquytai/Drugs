@@ -1,0 +1,294 @@
+<div class="header">
+    <h1>Chỉ số UPCR</h1>
+    <p>Tỷ số Protein/Creatinine niệu</p>
+</div>
+
+<div class="card">
+    <div class="card-title">1. Thông tin bệnh nhân (Tùy chọn)</div>
+    <div class="form-row">
+        <div class="form-col">
+            <label>Tuổi</label>
+            <input type="number" id="upcrAgeVal" inputmode="decimal" placeholder="Không nhập = Trẻ &ge; 2 tuổi">
+        </div>
+        <div class="form-col">
+            <label>Đơn vị tuổi</label>
+            <select id="upcrAgeUnit">
+                <option value="years">Năm</option>
+                <option value="months">Tháng</option>
+            </select>
+        </div>
+    </div>
+    <p class="note">* Trẻ nhũ nhi (&lt; 2 tuổi) có ngưỡng UPCR sinh lý cao hơn do ống thận chưa hoàn thiện.</p>
+</div>
+
+<div class="card">
+    <div class="card-title">2. Thông số nước tiểu (Bắt buộc)</div>
+    <div class="form-row">
+        <div class="form-col">
+            <label>Protein niệu</label>
+            <input type="number" id="upcrProt" inputmode="decimal" placeholder="VD: 0.5">
+        </div>
+        <div class="form-col">
+            <label>Đơn vị</label>
+            <select id="upcrProtUnit">
+                <option value="gl">g/L</option>
+                <option value="mgdl">mg/dL</option>
+                <option value="mgl">mg/L</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col">
+            <label>Creatinine niệu</label>
+            <input type="number" id="upcrCrea" inputmode="decimal" placeholder="VD: 4500">
+        </div>
+        <div class="form-col">
+            <label>Đơn vị</label>
+            <select id="upcrCreaUnit">
+                <option value="umol">µmol/L</option>
+                <option value="mmol">mmol/L</option>
+                <option value="mgdl">mg/dL</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<button class="btn" onclick="calculateUPCR()">TÍNH UPCR</button>
+
+<div id="upcrResultSection" class="result-section" style="display: none; margin-top: 24px;">
+    <div class="result-box" style="padding: 20px; text-align: center; background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 16px;">
+        <div style="font-weight: 600; color: var(--text-light); text-transform: uppercase; font-size: 14px;">Tỷ số UPCR</div>
+        <div class="result-value" id="upcrResultMgMmol" style="font-size: 32px; font-weight: bold; margin-top: 8px; color: var(--text);">--</div>
+        <div class="result-unit" style="color: var(--text-light); font-size: 14px;">mg/mmol</div>
+        <div style="margin-top: 12px; font-size: 18px; font-weight: 600; color: var(--primary);">~ <span id="upcrResultMgMg">--</span> mg/mg (hoặc g/g)</div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+        <div class="card-title" style="margin-bottom: 12px;">Phân ngưỡng lâm sàng</div>
+        <div id="upcrInterpretation" style="font-size: 16px; font-weight: 600; text-align: center; padding: 12px; border-radius: 8px;">--</div>
+        <div id="upcrAgeNotice" class="note" style="text-align: center; margin-top: 8px; font-weight: 500; color: var(--primary);"></div>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; text-align: center;">
+            <thead>
+                <tr style="background-color: #f1f5f9;">
+                    <th width="35%" style="padding: 10px; border: 1px solid var(--border);">Lâm sàng</th>
+                    <th style="padding: 10px; border: 1px solid var(--border);">mg/mmol</th>
+                    <th style="padding: 10px; border: 1px solid var(--border);">mg/mg (g/g)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left;"><strong>Bình thường</strong></td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">&lt; 22.6 (Trẻ &ge; 2t)<br>&lt; 56.6 (Trẻ &lt; 2t)</td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">&lt; 0.2 (Trẻ &ge; 2t)<br>&lt; 0.5 (Trẻ &lt; 2t)</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left; color: var(--alert-orange, #f97316);"><strong>Trung bình</strong></td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">22.6 - 226</td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">0.2 - 2.0</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left; color: var(--alert-red, #dc2626);"><strong>Ngưỡng thận hư</strong></td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">&ge; 226</td>
+                    <td style="padding: 10px; border: 1px solid var(--border);">&ge; 2.0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top: 24px;">
+    <button class="accordion-btn" onclick="toggleTheory(this)">
+        <span style="display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Cơ sở Lý thuyết & Hệ số Quy đổi (Ôn tập)
+        </span>
+        <span class="toggle-icon" style="font-size: 20px; font-weight: normal; transition: transform 0.3s;">+</span>
+    </button>
+    <div class="accordion-content" id="theoryContent">
+        
+        <div class="info-box" style="border-left-color: var(--primary);">
+            <div class="info-box-title" style="color: var(--primary-dark);">1. Hệ số Quy đổi Đơn vị đo lường</div>
+            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13px; color: var(--text); line-height: 1.8;">
+                <li><strong>Protein niệu:</strong> g/L &times; 100 = mg/dL</li>
+                <li><strong>Creatinine niệu:</strong> &micro;mol/L / 88.4 = mg/dL</li>
+                <li><strong>Tỷ số UPCR:</strong> mg/mg (hoặc g/g) &times; 113.12 = mg/mmol</li>
+                <li style="color: var(--text-light); list-style: none; margin-top: 4px;"><em>* Tỷ số mg/mg và g/g có giá trị toán học tương đương nhau và được sử dụng thay thế cho nhau trong thực hành lâm sàng.</em></li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="border-left-color: #16a34a; margin-bottom: 0;">
+            <div class="info-box-title" style="color: #16a34a;">2. Đặc điểm Sinh lý Trẻ nhũ nhi (&lt; 2 tuổi)</div>
+            <p style="font-size: 13px; color: var(--text); margin-top: 4px; margin-bottom: 8px;">
+                Ở trẻ dưới 2 tuổi, đặc biệt là trẻ nhũ nhi, có hiện tượng <strong>Protein niệu sinh lý</strong> cao hơn trẻ lớn và người lớn do hai nguyên nhân chính:
+            </p>
+            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13px; color: var(--text); line-height: 1.6;">
+                <li style="margin-bottom: 6px;">Cơ chế tái hấp thu protein của tế bào biểu mô ống lượn gần (Proximal tubule) chưa phát triển hoàn thiện.</li>
+                <li>Khối lượng cơ bắp của trẻ còn rất thấp, dẫn đến lượng bài tiết Creatinine qua nước tiểu rất ít. Khi Creatinine (Mẫu số) thấp, tỷ số UPCR sẽ tăng cao giả tạo.</li>
+            </ul>
+            <p style="font-size: 13px; color: var(--text-light); font-style: italic; margin-top: 8px; margin-bottom: 0;">
+                => Do đó, ngưỡng bình thường được đẩy lên mức &lt; 0.5 mg/mg để tránh chẩn đoán dương tính giả.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<div class="ref-card">
+    <div class="ref-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Tham chiếu Lâm sàng
+    </div>
+    <ul class="ref-list">
+        <li><strong>KDIGO 2012:</strong> Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (CKD).</li>
+        <li><strong>Pediatric Nephrology (Avner et al.):</strong> Tiêu chuẩn đánh giá mức độ Protein niệu theo lứa tuổi. Ngưỡng chẩn đoán hội chứng thận hư cố định &ge; 2.0 mg/mg độc lập với lứa tuổi.</li>
+    </ul>
+    <div class="ref-source">Cập nhật lần cuối: Tháng 7/2026 | Chuyên trách Thận học & Lọc máu Nhi khoa</div>
+</div>
+
+<style>
+    /* Bố cục Form */
+    .form-row { display: flex; gap: 16px; width: 100%; margin-bottom: 12px; }
+    .form-col { flex: 1; display: flex; flex-direction: column; }
+    .form-col label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .note { font-size: 13px; color: var(--text-light); margin-top: 8px; font-style: italic; }
+    
+    input[type="number"], select { 
+        width: 100%; padding: 12px; border: 1px solid var(--border); 
+        border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff; outline: none;
+    }
+    input[type="number"]:focus, select:focus { border-color: var(--primary); }
+
+    /* Các class màu sắc hiển thị Badge động của JS */
+    .bg-red { background-color: #dc2626 !important; }
+    .bg-orange { background-color: #f97316 !important; }
+    .bg-green { background-color: #16a34a !important; }
+
+    /* Accordion - Tuân thủ tuyệt đối cấu trúc khuôn mẫu III.1 */
+    .accordion-btn { 
+        width: 100%; text-align: left; background: #ffffff; padding: 16px 20px; 
+        border: 1px solid var(--border); border-radius: 8px; font-weight: bold; 
+        margin-bottom: 12px; display: flex; justify-content: space-between; 
+        align-items: center; color: var(--text); cursor: pointer; transition: all 0.2s;
+    }
+    .accordion-btn.active { 
+        background: var(--primary); color: white; border-bottom-left-radius: 0; 
+        border-bottom-right-radius: 0; margin-bottom: 0; border-color: var(--primary);
+    }
+    .accordion-content { 
+        display: none; padding: 20px; border: 1px solid var(--primary); 
+        border-top: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; 
+        background: #f9fafb; animation: fadeIn 0.3s ease;
+    }
+
+    /* Hộp thông tin phân màu - Khuôn mẫu III.2 */
+    .info-box { 
+        padding: 16px; border-radius: 10px; margin-bottom: 16px; 
+        border-left: 4px solid var(--border); background: #f9fafb; line-height: 1.6; 
+    }
+    .info-box-title { 
+        font-size: 12px; text-transform: uppercase; font-weight: bold; 
+        letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; 
+    }
+
+    /* Quy chuẩn tham chiếu y khoa - Khuôn mẫu III.3 */
+    .ref-card { 
+        margin-top: 24px; background-color: #f8fafc; border: 1px solid #cbd5e1; 
+        padding: 16px; border-radius: 8px; 
+    }
+    .ref-title { 
+        font-size: 15px; font-weight: bold; color: #334155; border-bottom: 1px solid #cbd5e1; 
+        padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; 
+    }
+    .ref-list { padding-left: 20px; font-size: 13px; color: #475569; line-height: 1.6; margin: 0; }
+    .ref-list li { margin-bottom: 8px; }
+    .ref-source { font-size: 11px; color: #94a3b8; margin-top: 16px; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+
+<script>
+    function calculateUPCR() {
+        const ageVal = parseFloat(document.getElementById('upcrAgeVal').value);
+        const ageUnit = document.getElementById('upcrAgeUnit').value;
+        const protVal = parseFloat(document.getElementById('upcrProt').value);
+        const protUnit = document.getElementById('upcrProtUnit').value;
+        const creaVal = parseFloat(document.getElementById('upcrCrea').value);
+        const creaUnit = document.getElementById('upcrCreaUnit').value;
+
+        if (isNaN(protVal) || isNaN(creaVal)) {
+            alert("Đại Hiệp vui lòng nhập đầy đủ Protein và Creatinine niệu!");
+            return;
+        }
+
+        let isInfant = false; 
+        let ageMessage = "(Mặc định đối chiếu theo chuẩn trẻ lớn ≥ 2 tuổi)";
+        if (!isNaN(ageVal)) {
+            let ageInYears = ageUnit === 'months' ? ageVal / 12 : ageVal;
+            isInfant = ageInYears < 2;
+            ageMessage = isInfant ? "(Đang đối chiếu theo chuẩn trẻ nhỏ < 2 tuổi)" : "(Đang đối chiếu theo chuẩn trẻ lớn ≥ 2 tuổi)";
+        }
+
+        let protMgDl = protVal;
+        if (protUnit === 'gl') protMgDl = protVal * 100;
+        else if (protUnit === 'mgl') protMgDl = protVal / 10;
+
+        let creaMgDl = creaVal;
+        if (creaUnit === 'mmol') creaMgDl = creaVal * 11.312;
+        else if (creaUnit === 'umol') creaMgDl = creaVal / 88.4;
+
+        if (creaMgDl === 0) {
+            alert("Creatinine niệu không thể bằng 0!");
+            return;
+        }
+
+        const upcrMgMg = protMgDl / creaMgDl;
+        const upcrMgMmol = upcrMgMg * 113.12;
+
+        document.getElementById('upcrResultSection').style.display = 'block';
+        document.getElementById('upcrResultMgMmol').innerText = upcrMgMmol.toFixed(1);
+        document.getElementById('upcrResultMgMg').innerText = upcrMgMg.toFixed(2);
+        document.getElementById('upcrAgeNotice').innerText = ageMessage;
+
+        let interpText = ""; let interpClass = "";
+        const thresholdNormal = isInfant ? 0.5 : 0.2;
+
+        if (upcrMgMg < thresholdNormal) { 
+            interpText = "Bình thường (Ngưỡng sinh lý)"; 
+            interpClass = "bg-green"; 
+        } 
+        else if (upcrMgMg >= thresholdNormal && upcrMgMg < 2.0) { 
+            interpText = "Bất thường (Ngưỡng trung bình / Ống thận)"; 
+            interpClass = "bg-orange"; 
+        } 
+        else { 
+            interpText = "Ngưỡng Hội chứng thận hư (Nephrotic range)"; 
+            interpClass = "bg-red"; 
+        }
+
+        const interpEl = document.getElementById('upcrInterpretation');
+        interpEl.innerText = interpText;
+        interpEl.className = ""; 
+        interpEl.classList.add(interpClass);
+        interpEl.style.color = "#fff";
+
+        setTimeout(() => { document.getElementById('upcrResultSection').scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+
+    // Logic điều khiển Accordion độc lập
+    function toggleTheory(element) {
+        element.classList.toggle("active");
+        const content = element.nextElementSibling;
+        const icon = element.querySelector('.toggle-icon');
+        
+        if (content.style.display === "block") {
+            content.style.display = "none";
+            icon.innerText = "+";
+            icon.style.transform = "rotate(0deg)";
+        } else {
+            content.style.display = "block";
+            icon.innerText = "−"; 
+            icon.style.transform = "rotate(180deg)";
+        }
+    }
+</script>
