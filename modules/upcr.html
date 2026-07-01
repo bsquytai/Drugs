@@ -63,37 +63,10 @@
         <div style="margin-top: 12px; font-size: 18px; font-weight: 600; color: var(--primary);">~ <span id="upcrResultMgMg">--</span> mg/mg (hoặc g/g)</div>
     </div>
 
-    <div class="card" style="margin-top: 16px;">
-        <div class="card-title" style="margin-bottom: 12px;">Phân ngưỡng lâm sàng</div>
+    <div class="card" style="margin-top: 16px; margin-bottom: 0;">
+        <div class="card-title" style="margin-bottom: 12px; border-bottom: none; padding-bottom: 0;">Phân ngưỡng lâm sàng</div>
         <div id="upcrInterpretation" style="font-size: 16px; font-weight: 600; text-align: center; padding: 12px; border-radius: 8px;">--</div>
-        <div id="upcrAgeNotice" class="note" style="text-align: center; margin-top: 8px; font-weight: 500; color: var(--primary);"></div>
-        
-        <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; text-align: center;">
-            <thead>
-                <tr style="background-color: #f1f5f9;">
-                    <th width="35%" style="padding: 10px; border: 1px solid var(--border);">Lâm sàng</th>
-                    <th style="padding: 10px; border: 1px solid var(--border);">mg/mmol</th>
-                    <th style="padding: 10px; border: 1px solid var(--border);">mg/mg (g/g)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left;"><strong>Bình thường</strong></td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">&lt; 22.6 (Trẻ &ge; 2t)<br>&lt; 56.6 (Trẻ &lt; 2t)</td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">&lt; 0.2 (Trẻ &ge; 2t)<br>&lt; 0.5 (Trẻ &lt; 2t)</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left; color: var(--alert-orange, #f97316);"><strong>Trung bình</strong></td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">22.6 - 226</td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">0.2 - 2.0</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid var(--border); text-align: left; color: var(--alert-red, #dc2626);"><strong>Ngưỡng thận hư</strong></td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">&ge; 226</td>
-                    <td style="padding: 10px; border: 1px solid var(--border);">&ge; 2.0</td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="upcrAgeNotice" class="note" style="text-align: center; margin-top: 12px; font-weight: 500; color: var(--primary);"></div>
     </div>
 </div>
 
@@ -132,16 +105,44 @@
         </div>
 
         <div class="info-box" style="border-left-color: #f97316; margin-bottom: 0;">
-            <div class="info-box-title" style="color: #f97316;">3. Ý nghĩa Phân ngưỡng Lâm sàng (Đơn vị: mg/mg)</div>
+            <div class="info-box-title" style="color: #f97316;">3. Bảng Phân ngưỡng Lâm sàng & Ý nghĩa</div>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 12px; font-size: 13px; text-align: center; background: #fff;">
+                <thead>
+                    <tr style="background-color: #f1f5f9;">
+                        <th width="32%" style="padding: 8px; border: 1px solid var(--border); color: var(--text);">Lâm sàng</th>
+                        <th style="padding: 8px; border: 1px solid var(--border); color: var(--text);">mg/mmol</th>
+                        <th style="padding: 8px; border: 1px solid var(--border); color: var(--text);">mg/mg (g/g)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left;"><strong style="color: #16a34a;">Bình thường</strong></td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&lt; 22.6 (Trẻ &ge; 2t)<br>&lt; 56.6 (Trẻ &lt; 2t)</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&lt; 0.2 (Trẻ &ge; 2t)<br>&lt; 0.5 (Trẻ &lt; 2t)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left;"><strong style="color: #ea580c;">Trung bình</strong></td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">22.6 - 226</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">0.2 - 2.0</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left;"><strong style="color: #dc2626;">Ngưỡng thận hư</strong></td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&ge; 226</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&ge; 2.0</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13px; color: var(--text); line-height: 1.6;">
-                <li style="margin-bottom: 8px;">
-                    <strong style="color: #16a34a;">Ngưỡng Bình thường (&lt; 0.2 hoặc &lt; 0.5 tùy tuổi):</strong> Thể hiện lượng protein nhỏ lọt qua màng lọc hoặc protein do ống thận tiết ra (Tamm-Horsfall). Hoàn toàn sinh lý.
+                <li style="margin-bottom: 6px;">
+                    <strong style="color: #16a34a;">Ngưỡng Bình thường:</strong> Thể hiện lượng protein nhỏ lọt qua màng lọc hoặc protein do ống thận tiết ra (Tamm-Horsfall). Hoàn toàn sinh lý.
                 </li>
-                <li style="margin-bottom: 8px;">
-                    <strong style="color: #ea580c;">Ngưỡng Trung bình (0.2 - 2.0):</strong> Thường liên quan đến tổn thương ống thận - mô kẽ, viêm cầu thận mức độ nhẹ đến vừa, hoặc do các nguyên nhân chức năng (protein niệu tư thế đứng, sốt, vận động mạnh).
+                <li style="margin-bottom: 6px;">
+                    <strong style="color: #ea580c;">Ngưỡng Trung bình:</strong> Thường liên quan đến tổn thương ống thận - mô kẽ, viêm cầu thận mức độ nhẹ đến vừa, hoặc do các nguyên nhân chức năng (protein niệu tư thế đứng, sốt, vận động mạnh).
                 </li>
                 <li>
-                    <strong style="color: #dc2626;">Ngưỡng Hội chứng thận hư (&ge; 2.0):</strong> (Nephrotic range) Thể hiện sự phá hủy/rối loạn nghiêm trọng của màng lọc cầu thận (đặc biệt là túc bào - podocytes). Cần can thiệp điều trị đặc hiệu (Corticosteroids, ức chế miễn dịch). <em>*Lưu ý: Mức &ge; 2.0 này cố định cho mọi lứa tuổi.</em>
+                    <strong style="color: #dc2626;">Ngưỡng Hội chứng thận hư:</strong> (Nephrotic range) Thể hiện sự phá hủy/rối loạn nghiêm trọng của màng lọc cầu thận (đặc biệt là túc bào - podocytes). Cần can thiệp điều trị đặc hiệu. <em>*Lưu ý: Mức &ge; 2.0 này cố định cho mọi lứa tuổi.</em>
                 </li>
             </ul>
         </div>
