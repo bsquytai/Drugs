@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Nhi Khoa - Cẩm Nang Lâm Sàng</title>
-    <!-- ================= 1. BỘ QUY CHUẨN GIAO DIỆN HỆ THỐNG (CSS) ================= -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Nhi Khoa - Cẩm Nang Lâm Sàng</title>
+<!-- ================= 1. BỘ QUY CHUẨN GIAO DIỆN HỆ THỐNG (CSS) ================= -->
 <style>
     :root {
         /* Bảng màu cốt lõi */
@@ -139,12 +136,20 @@
         background: #f9fafb; animation: fadeIn 0.3s ease; margin-bottom: 12px; 
     }
 
-    /* ====== UI ĐẶC BIỆT: HỘP THÔNG TIN (Thuốc/Kết quả) ====== */
+    /* ====== UI ĐẶC BIỆT: HỘP THÔNG TIN (Kết quả HTML Tĩnh) ====== */
     .info-box { 
+        padding: 16px; border-radius: 10px; margin-bottom: 16px; 
+        border-left: 4px solid var(--border); background: #f9fafb; 
+        line-height: 1.6; font-size: 14px; 
+    }
+    
+    /* ====== UI ĐẶC BIỆT: HỘP THÔNG TIN ĐỘNG (Dữ liệu Text thuần từ DB) ====== */
+    .info-box-dynamic { 
         padding: 16px; border-radius: 10px; margin-bottom: 16px; 
         border-left: 4px solid var(--border); background: #f9fafb; 
         white-space: pre-line; line-height: 1.6; font-size: 14px; 
     }
+    
     .info-box-title { 
         font-size: 12px; text-transform: uppercase; font-weight: bold; 
         letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; 
@@ -337,5 +342,3 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 </script>
-</body>
-</html>
