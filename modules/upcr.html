@@ -42,7 +42,7 @@
             </select>
         </div>
     </div>
-    <div class="form-row">
+    <div class="form-row" style="margin-bottom: 0;">
         <div class="form-col">
             <label for="upcr-crea">Creatinine niệu</label>
             <input type="number" id="upcr-crea" inputmode="decimal" placeholder="Ví dụ: 4500" min="0" step="0.1">
@@ -56,7 +56,12 @@
             </select>
         </div>
     </div>
-    <button class="btn" onclick="ModuleUPCR.calculate()">TÍNH TỶ SỐ UPCR</button>
+    
+    <!-- Cụm nút thao tác -->
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button class="btn" onclick="ModuleUPCR.calculate()" style="flex: 1; margin-top: 0;">TÍNH TỶ SỐ UPCR</button>
+        <button class="btn" onclick="ModuleUPCR.resetForm()" style="flex: 0 0 70px; margin-top: 0; background-color: var(--bg); color: var(--text-light); border: 1px solid var(--border); box-shadow: none;" title="Xóa dữ liệu">XÓA</button>
+    </div>
 </div>
 
 <!-- KHỐI KẾT QUẢ ĐỘNG (Render từ JS) -->
@@ -76,11 +81,11 @@
         <!-- Hộp màu thông tin 1 -->
         <div class="info-box" style="border-left-color: var(--primary);">
             <div class="info-box-title" style="color: var(--primary-dark);">1. Hệ số Quy đổi Đơn vị đo lường</div>
-            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.8;">
-                <li><strong>Protein niệu:</strong> g/L &times; 100 = mg/dL</li>
-                <li><strong>Creatinine niệu:</strong> &micro;mol/L / 88.4 = mg/dL</li>
-                <li><strong>Tỷ số UPCR:</strong> mg/mg (hoặc g/g) &times; 113.12 = mg/mmol</li>
-                <li style="color: var(--text-light); list-style: none; margin-top: 4px; font-style: italic;">
+            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.45;">
+                <li style="margin-bottom: 4px;"><strong>Protein niệu:</strong> g/L &times; 100 = mg/dL</li>
+                <li style="margin-bottom: 4px;"><strong>Creatinine niệu:</strong> &micro;mol/L / 88.4 = mg/dL</li>
+                <li style="margin-bottom: 4px;"><strong>Tỷ số UPCR:</strong> mg/mg (hoặc g/g) &times; 113.12 = mg/mmol</li>
+                <li style="color: var(--text-light); list-style: none; margin-top: 6px; font-style: italic;">
                     * Tỷ số mg/mg và g/g có giá trị toán học tương đương nhau và được sử dụng thay thế cho nhau trong thực hành.
                 </li>
             </ul>
@@ -89,14 +94,14 @@
         <!-- Hộp màu thông tin 2 -->
         <div class="info-box" style="border-left-color: var(--alert-normal);">
             <div class="info-box-title" style="color: var(--alert-normal);">2. Đặc điểm Sinh lý Trẻ nhũ nhi (&lt; 2 tuổi)</div>
-            <p style="font-size: 13.5px; color: var(--text); margin-top: 4px; margin-bottom: 8px; line-height: 1.6;">
+            <p style="font-size: 13.5px; color: var(--text); margin-top: 4px; margin-bottom: 6px; line-height: 1.45;">
                 Ở trẻ dưới 2 tuổi, có hiện tượng <strong>Protein niệu sinh lý</strong> cao hơn trẻ lớn do:
             </p>
-            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.6;">
-                <li style="margin-bottom: 6px;">Cơ chế tái hấp thu protein của tế bào biểu mô ống lượn gần chưa hoàn thiện.</li>
-                <li>Khối lượng cơ bắp của trẻ thấp &rarr; lượng bài tiết Creatinine niệu ít. Khi Creatinine (Mẫu số) thấp, tỷ số UPCR sẽ tăng cao giả tạo.</li>
+            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.45;">
+                <li style="margin-bottom: 4px;">Cơ chế tái hấp thu protein của tế bào biểu mô ống lượn gần chưa hoàn thiện.</li>
+                <li style="margin-bottom: 4px;">Khối lượng cơ bắp của trẻ thấp &rarr; lượng bài tiết Creatinine niệu ít. Khi Creatinine (Mẫu số) thấp, tỷ số UPCR sẽ tăng cao giả tạo.</li>
             </ul>
-            <p style="font-size: 13px; color: var(--text-light); font-style: italic; margin-top: 8px; margin-bottom: 0;">
+            <p style="font-size: 13px; color: var(--text-light); font-style: italic; margin-top: 6px; margin-bottom: 0; line-height: 1.45;">
                 => Do đó, ngưỡng bình thường được đẩy lên mức &lt; 0.5 mg/mg để tránh chẩn đoán dương tính giả.
             </p>
         </div>
@@ -104,35 +109,35 @@
         <!-- Hộp màu thông tin 3 -->
         <div class="info-box" style="border-left-color: var(--alert-medium); margin-bottom: 0;">
             <div class="info-box-title" style="color: var(--alert-medium);">3. Bảng Phân ngưỡng Lâm sàng</div>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 12px; font-size: 13.5px; text-align: center; background: #fff;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; font-size: 13.5px; text-align: center; background: #fff;">
                 <thead>
                     <tr style="background-color: var(--bg);">
-                        <th width="32%" style="padding: 10px; border: 1px solid var(--border); color: var(--text);">Lâm sàng</th>
-                        <th style="padding: 10px; border: 1px solid var(--border); color: var(--text);">mg/mmol</th>
-                        <th style="padding: 10px; border: 1px solid var(--border); color: var(--text);">mg/mg (g/g)</th>
+                        <th width="32%" style="padding: 8px; border: 1px solid var(--border); color: var(--text);">Lâm sàng</th>
+                        <th style="padding: 8px; border: 1px solid var(--border); color: var(--text);">mg/mmol</th>
+                        <th style="padding: 8px; border: 1px solid var(--border); color: var(--text);">mg/mg (g/g)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-normal);">Bình thường</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">&lt; 22.6 (Trẻ &ge; 2t)<br>&lt; 56.6 (Trẻ &lt; 2t)</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">&lt; 0.2 (Trẻ &ge; 2t)<br>&lt; 0.5 (Trẻ &lt; 2t)</td>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-normal);">Bình thường</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&lt; 22.6 (Trẻ &ge; 2t)<br>&lt; 56.6 (Trẻ &lt; 2t)</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&lt; 0.2 (Trẻ &ge; 2t)<br>&lt; 0.5 (Trẻ &lt; 2t)</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-medium);">Trung bình</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">22.6 - 226</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">0.2 - 2.0</td>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-medium);">Trung bình</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">22.6 - 226</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">0.2 - 2.0</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-high);">Ngưỡng thận hư</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">&ge; 226</td>
-                        <td style="padding: 10px; border: 1px solid var(--border);">&ge; 2.0</td>
+                        <td style="padding: 8px; border: 1px solid var(--border); text-align: left; font-weight: 600; color: var(--alert-high);">Ngưỡng thận hư</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&ge; 226</td>
+                        <td style="padding: 8px; border: 1px solid var(--border);">&ge; 2.0</td>
                     </tr>
                 </tbody>
             </table>
-            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.6;">
-                <li style="margin-bottom: 6px;"><strong style="color: var(--alert-normal);">Bình thường:</strong> Hoàn toàn sinh lý (protein tiết từ ống thận Tamm-Horsfall).</li>
-                <li style="margin-bottom: 6px;"><strong style="color: var(--alert-medium);">Trung bình:</strong> Thường do tổn thương ống thận - mô kẽ, viêm cầu thận nhẹ/vừa, hoặc do nguyên nhân chức năng (sốt, vận động).</li>
+            <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13.5px; color: var(--text); line-height: 1.45;">
+                <li style="margin-bottom: 4px;"><strong style="color: var(--alert-normal);">Bình thường:</strong> Hoàn toàn sinh lý (protein tiết từ ống thận Tamm-Horsfall).</li>
+                <li style="margin-bottom: 4px;"><strong style="color: var(--alert-medium);">Trung bình:</strong> Thường do tổn thương ống thận - mô kẽ, viêm cầu thận nhẹ/vừa, hoặc do nguyên nhân chức năng (sốt, vận động).</li>
                 <li><strong style="color: var(--alert-high);">Hội chứng thận hư:</strong> Rối loạn nghiêm trọng màng lọc cầu thận (đặc biệt là túc bào). Mức &ge; 2.0 cố định cho mọi lứa tuổi.</li>
             </ul>
         </div>
@@ -263,6 +268,20 @@
             setTimeout(() => { 
                 resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
             }, 100);
+        },
+
+        // Hàm Reset dữ liệu (Làm mới)
+        resetForm: function() {
+            document.getElementById('upcr-age').value = '';
+            document.getElementById('upcr-prot').value = '';
+            document.getElementById('upcr-crea').value = '';
+            
+            const resultContainer = document.getElementById('upcr-result-container');
+            resultContainer.style.display = 'none';
+            resultContainer.innerHTML = '';
+            
+            // Cuộn mượt mà lên đầu trang
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         toggleTheory: function(element) {
