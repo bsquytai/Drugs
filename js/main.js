@@ -3,6 +3,25 @@
    HỆ THỐNG LÕI CỦA LÂM SÀNG PRO
    ========================================= */
 
+// 0. Tự động chèn Meta Tags cho chế độ Web App Standalone (ẩn thanh URL Safari iOS)
+(function initPWAHead() {
+  const metaTags = [
+    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+    { name: 'apple-mobile-web-app-title', content: 'Lâm Sàng Pro' },
+    { name: 'mobile-web-app-capable', content: 'yes' }
+  ];
+
+  metaTags.forEach(tagData => {
+    if (!document.querySelector(`meta[name="${tagData.name}"]`)) {
+      const meta = document.createElement('meta');
+      meta.name = tagData.name;
+      meta.content = tagData.content;
+      document.head.appendChild(meta);
+    }
+  });
+})();
+
 // 1. HÀM LỘT BỎ DẤU TIẾNG VIỆT (Dùng cho tìm kiếm)
 function removeVietnameseTones(str) {
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
