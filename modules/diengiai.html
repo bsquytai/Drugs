@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rối loạn Điện giải - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Tùy chỉnh cho Nút Điều hướng dạng Pill trong Hub */
+        .pill-nav-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-radius: 50rem; /* Bo tròn chuẩn dáng Pill */
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .pill-hypo { background-color: #e7f1ff; color: #0c5460; border: 1px solid #0d6efd; }
+        .pill-hypo:hover { background-color: #0d6efd; color: #fff; }
+        
+        .pill-hyper { background-color: #f8d7da; color: #842029; border: 1px solid #dc3545; }
+        .pill-hyper:hover { background-color: #dc3545; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2) -->
+    <div id="common-ui"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="m-0 text-primary fw-bold">Điện giải đồ</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- MẶC DÙ ĐÂY LÀ TRANG MENU, VẪN BỌC FORM ĐỂ GIỮ CHUẨN BOILERPLATE -->
+        <form id="calcForm">
+            
+            <div class="alert alert-light border shadow-sm small text-muted mb-4">
+                <i class="bi bi-info-circle-fill text-primary"></i> Chọn một bệnh lý điện giải bên dưới để mở công cụ tính toán và phác đồ tương ứng.
+            </div>
+
+            <!-- NHÓM 1: KALI (Potassium) -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body pt-3">
+                    <h6 class="section-title"><i class="bi bi-activity text-danger"></i> Kali (K+)</h6>
+                    <a href="ha-kali.html" class="pill-nav-btn pill-hypo">
+                        <span><i class="bi bi-arrow-down-circle-fill me-2"></i> Hạ Kali máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                    <a href="tang-kali.html" class="pill-nav-btn pill-hyper">
+                        <span><i class="bi bi-arrow-up-circle-fill me-2"></i> Tăng Kali máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NHÓM 2: NATRI (Sodium) -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body pt-3">
+                    <h6 class="section-title"><i class="bi bi-droplet-fill text-primary"></i> Natri (Na+)</h6>
+                    <a href="ha-na.html" class="pill-nav-btn pill-hypo">
+                        <span><i class="bi bi-arrow-down-circle-fill me-2"></i> Hạ Natri máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                    <a href="tang-na.html" class="pill-nav-btn pill-hyper">
+                        <span><i class="bi bi-arrow-up-circle-fill me-2"></i> Tăng Natri máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NHÓM 3: CANXI (Calcium) -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body pt-3">
+                    <h6 class="section-title"><i class="bi bi-lightning-fill text-warning"></i> Canxi (Ca2+)</h6>
+                    <a href="ha-ca.html" class="pill-nav-btn pill-hypo">
+                        <span><i class="bi bi-arrow-down-circle-fill me-2"></i> Hạ Canxi máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                    <a href="tang-ca.html" class="pill-nav-btn pill-hyper">
+                        <span><i class="bi bi-arrow-up-circle-fill me-2"></i> Tăng Canxi máu</span>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NÚT ẨN FORM BẮT BUỘC THEO BOILERPLATE -->
+            <div id="resultSection" style="display: none;"></div>
+        </form>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    
+                    <h6 class="text-primary fw-bold">1. Nguyên tắc tiếp cận Rối loạn điện giải</h6>
+                    <ul>
+                        <li>Luôn đối chiếu kết quả xét nghiệm với bệnh cảnh lâm sàng. Nồng độ ion trong máu không phải lúc nào cũng phản ánh đúng tổng lượng ion trong cơ thể.</li>
+                        <li><strong>Kali:</strong> Ảnh hưởng nghiêm trọng đến điện thế màng tế bào cơ tim. Bất thường Kali là cấp cứu y khoa vì nguy cơ rối loạn nhịp chết người.</li>
+                        <li><strong>Natri:</strong> Phản ánh tình trạng thẩm thấu của dịch ngoại bào. Điều chỉnh Natri quá nhanh có nguy cơ gây hủy myelin trung tâm cầu não.</li>
+                        <li><strong>Canxi:</strong> Chỉ số Canxi ion hóa (Ca2+) có giá trị thực tế cao hơn Canxi toàn phần. Luôn phải hiệu chỉnh Canxi theo Albumin máu.</li>
+                    </ul>
+
+                    <h6 class="text-primary fw-bold mt-3">2. Mức độ tham chiếu sinh lý (Nhi khoa)</h6>
+                    <div class="table-responsive">
+                        <!-- Quy tắc 4: Tô màu bảng -->
+                        <table class="table table-bordered theory-table">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Điện giải</th>
+                                    <th>Ngưỡng Bình thường</th>
+                                    <th>Cảnh báo Đỏ (Nguy kịch)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold bg-light">Kali (K+)</td>
+                                    <td class="td-level-1">3.5 - 5.0 mmol/L</td>
+                                    <td class="td-level-4">< 2.5 hoặc > 6.5</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">Natri (Na+)</td>
+                                    <td class="td-level-1">135 - 145 mmol/L</td>
+                                    <td class="td-level-4">< 120 hoặc > 160</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">Canxi toàn phần</td>
+                                    <td class="td-level-1">2.1 - 2.6 mmol/L</td>
+                                    <td class="td-level-4">< 1.5 hoặc > 3.2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Quy tắc 2: Kẻ ngang và Tài liệu tham khảo -->
+                    <hr class="mt-4 mb-2">
+                    <div class="small text-muted">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. Phác đồ Điều trị Nhi khoa - Bệnh viện Nhi Đồng 1 (2020), Chương Rối loạn Nước & Điện giải.<br>
+                        2. Kliegman RM, et al. Nelson Textbook of Pediatrics 21st Edition. Chapter 66: Fluid and Electrolyte.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS (Quy tắc 2) -->
+    <script>
+        // Vì đây là trang Hub điều hướng, không cần logic tính toán.
+        // Tuy nhiên, hàm resetResult() BẮT BUỘC PHẢI CÓ theo Quy tắc 2 của Master Prompt.
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấp cứu DKA Nhi khoa - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Tùy chỉnh Nút Switch 1 chạm (Quy tắc 3) */
+        .btn-toggle-switch {
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        
+        /* Tùy chỉnh Accordion (Quy tắc 5) */
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0c5460;
+            font-weight: 700;
+        }
+        .accordion-button {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        /* Nút tương tác Kali */
+        .btn-kali-select {
+            border-radius: 50rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2) -->
+    <div id="common-ui" data-back-url="../index.html"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn (Quy tắc 2) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="m-0 text-primary fw-bold">Cấp cứu DKA Nhi khoa</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- FORM NHẬP LIỆU BẮT BUỘC (Quy tắc 2) -->
+        <form id="calcForm">
+            
+            <!-- KHỐI 1: THÔNG SỐ CƠ THỂ & LÂM SÀNG -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body pt-2">
+                    <h6 class="section-title mt-0"><i class="bi bi-person-bounding-box text-primary"></i> 1. Cơ thể & Lâm sàng</h6>
+                    
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Cân nặng</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="weight" placeholder="Tối đa 75kg" required>
+                                <span class="input-group-text fw-semibold">kg</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Tuổi</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="age" placeholder="Nhập" required>
+                                <span class="input-group-text fw-semibold">năm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Huyết động (Switch 1 chạm) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tình trạng huyết động</label>
+                        <button type="button" id="shockBtn" class="btn btn-outline-primary btn-toggle-switch w-100 py-2" onclick="toggleShock()">
+                            Huyết động ổn định
+                        </button>
+                        <input type="hidden" id="shockVal" value="no">
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold">Dịch chống sốc đã truyền (nếu có)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="bolusVol" value="0" placeholder="0">
+                            <span class="input-group-text fw-semibold">mL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KHỐI 2: CẬN LÂM SÀNG -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body pt-2 bg-light rounded">
+                    <h6 class="section-title mt-0"><i class="bi bi-activity text-danger"></i> 2. Cận lâm sàng</h6>
+                    
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">pH máu</label>
+                            <input type="number" step="0.01" class="form-control" id="phVal" placeholder="VD: 7.15">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">HCO3-</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="hco3Val" placeholder="VD: 12">
+                                <span class="input-group-text fw-semibold" style="font-size: 0.8rem;">mmol/L</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Glucose</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="gluVal" placeholder="Nhập" required>
+                                <span class="input-group-text fw-semibold" style="font-size: 0.8rem;">mmol/L</span>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Natri đo</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="naVal" placeholder="Nhập" required>
+                                <span class="input-group-text fw-semibold" style="font-size: 0.8rem;">mmol/L</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Override Mất nước -->
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold small text-muted">Đánh giá % Mất nước</label>
+                        <select id="dehydrateOverride" class="form-select fw-semibold">
+                            <option value="0" selected>Tự động (Dựa theo Phân độ Khí máu)</option>
+                            <option value="3">3%</option>
+                            <option value="5">5% (DKA Nhẹ)</option>
+                            <option value="7">7% (DKA Vừa)</option>
+                            <option value="10">10% (DKA Nặng)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NÚT HÀNH ĐỘNG TỔNG (Quy tắc 2: Tỷ lệ 70-30) -->
+            <div class="d-flex gap-2 mb-2">
+                <button type="button" onclick="calculateAll()" class="btn btn-primary fw-bold" style="flex: 7;">
+                    <i class="bi bi-calculator"></i> Tính Phác Đồ
+                </button>
+                <button type="reset" class="btn btn-outline-secondary fw-semibold" style="flex: 3;" onclick="resetResult()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                </button>
+            </div>
+        </form>
+
+        <!-- KHU VỰC KẾT QUẢ (Quy tắc 3: Ẩn mặc định) -->
+        <div id="resultSection" style="display: none; padding-top: 10px;">
+            
+            <!-- DASHBOARD CHẨN ĐOÁN -->
+            <div id="resRiskBox" class="result-box mb-4">
+                <p class="mb-1 fw-semibold text-uppercase">Phân độ DKA & Độ mất nước</p>
+                <h2 id="resDkaLevel" class="result-value-main" style="font-size: 1.5rem;">--</h2>
+                <div class="badge bg-white text-dark border p-2 mt-2 w-100 shadow-sm text-start">
+                    <span class="fw-bold text-secondary">Natri hiệu chỉnh:</span> 
+                    <span id="resNaHc" class="fw-bold text-primary fs-5">--</span> mmol/L
+                    <div class="small text-muted mt-1 text-wrap lh-sm">* Chú ý: Na hiệu chỉnh phải TĂNG TƯƠNG ỨNG khi Glucose giảm. Nếu Na hc giảm, cảnh báo nguy cơ phù não!</div>
+                </div>
+            </div>
+
+            <!-- ACCORDION PHÁC ĐỒ 4 BƯỚC -->
+            <h6 class="fw-bold text-primary mb-3 text-uppercase" style="font-size: 0.95rem;">Phác đồ xử trí cấp cứu</h6>
+            
+            <div class="accordion mb-4 shadow-sm" id="protocolAccordion">
+                
+                <!-- BƯỚC 1: HỒI SỨC GIỜ 1 -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                            <i class="bi bi-1-circle-fill text-danger me-2"></i> Giờ thứ 1: Hồi sức
+                        </button>
+                    </h2>
+                    <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-white text-start">
+                            
+                            <div id="shockResultBox" class="p-3 border rounded mb-3">
+                                <h6 class="fw-bold text-uppercase mb-2"><i class="bi bi-droplet-fill"></i> Dịch truyền bolus</h6>
+                                <div id="shockActionText" class="result-desc">--</div>
+                            </div>
+                            
+                            <!-- Cảnh báo Đỏ luôn hiện -->
+                            <div class="alert alert-danger border-danger fw-bold text-center m-0 p-2">
+                                <i class="bi bi-exclamation-triangle-fill"></i> TUYỆT ĐỐI KHÔNG TRUYỀN INSULIN TRONG GIỜ ĐẦU TIÊN (Tránh phù não).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 2: BÙ DỊCH 48 GIỜ -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                            <i class="bi bi-2-circle-fill text-primary me-2"></i> Dịch duy trì & Bù mất nước 48H
+                        </button>
+                    </h2>
+                    <div id="step2" class="accordion-collapse collapse" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-light text-start">
+                            
+                            <h6 class="fw-bold text-dark mb-3">Bảng công thức tính dịch:</h6>
+                            <ul class="list-group list-group-flush mb-3 border rounded">
+                                <li class="list-group-item d-flex justify-content-between align-items-start bg-transparent">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold text-dark">[A] Dịch duy trì 48h</div>
+                                        <span class="small text-muted">Công thức Holliday-Segar x 2</span>
+                                    </div>
+                                    <span class="fw-bold text-primary"><span id="valA">--</span> mL</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start bg-transparent">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold text-dark">[B] Bù mất nước</div>
+                                        <span class="small text-muted"><span id="dehPercent">--</span>% x Cân nặng x 10</span>
+                                    </div>
+                                    <span class="fw-bold text-primary"><span id="valB">--</span> mL</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start bg-transparent">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold text-danger">[C] Trừ dịch Bolus</div>
+                                        <span class="small text-muted">Trừ dịch đã chống sốc</span>
+                                    </div>
+                                    <span class="fw-bold text-danger">- <span id="valC">--</span> mL</span>
+                                </li>
+                            </ul>
+
+                            <div class="result-box level-3 m-0 mb-3 text-center">
+                                <p class="mb-1 fw-bold">TỔNG DỊCH TRUYỀN [A + B - C]</p>
+                                <div class="result-value-main"><span id="valTotal">--</span></div>
+                                <div class="result-unit-main">mL</div>
+                            </div>
+
+                            <div class="alert alert-info border-info text-center m-0 fw-bold">
+                                Tốc độ máy chạy 2 túi (V): <span id="valRate" class="fs-4 text-primary">--</span> mL/giờ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 3: HỆ THỐNG 2 TÚI (PHA DỊCH & CHỈNH TỐC ĐỘ) -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                            <i class="bi bi-3-circle-fill text-warning me-2"></i> Hệ thống 2 Túi (2-Bag System)
+                        </button>
+                    </h2>
+                    <div id="step3" class="accordion-collapse collapse" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-white text-start">
+                            
+                            <!-- PHẦN A: NGUYÊN LIỆU KHOA PHÒNG -->
+                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-box-seam"></i> A. Thuật toán pha Túi 2 (500mL)</h6>
+                            <div class="p-2 border rounded bg-light mb-3">
+                                <div class="small text-muted mb-2">Tick chọn các nguyên liệu khoa ĐANG CÓ sẵn:</div>
+                                <div class="row g-2 small">
+                                    <!-- Đã bỏ check mặc định theo yêu cầu -->
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkNaCl09"><label class="form-check-label fw-semibold">NaCl 0.9%</label></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkD10"><label class="form-check-label fw-semibold">Dextrose 10%</label></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkNaCl3"><label class="form-check-label fw-semibold">NaCl 3%</label></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkD20"><label class="form-check-label fw-semibold">Dextrose 20%</label></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkD5_045"><label class="form-check-label fw-semibold">D5W - 0.45%</label></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check"><input class="form-check-input chk-ing" type="checkbox" id="chkD30"><label class="form-check-label fw-semibold">Dextrose 30%</label></div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-primary mt-3 w-100 fw-bold" onclick="generateMixRecipe()">Tạo Y Lệnh Pha Chế</button>
+                                
+                                <div id="mixRecipeOutput" class="mt-2 p-2 rounded fw-bold text-start" style="display:none; border: 1px dashed #0d6efd;">--</div>
+                            </div>
+
+                            <!-- PHẦN B: BẢNG TỐC ĐỘ -->
+                            <h6 class="fw-bold text-dark mb-2 mt-4"><i class="bi bi-table"></i> B. Bảng chỉnh tốc độ máy (Theo ĐH)</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center align-middle mb-0" style="font-size: 0.9rem;">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Đường huyết mao mạch</th>
+                                            <th class="text-primary">Túi 1<br><span class="small fw-normal text-muted">NaCl 0.9%</span></th>
+                                            <th class="text-danger">Túi 2<br><span class="small fw-normal text-muted">Dịch pha Dextrose</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold">> 17 mmol/L</td>
+                                            <td class="fw-bold"><span id="r1_t1">--</span></td>
+                                            <td class="fw-bold"><span id="r1_t2">--</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">14 - 17 mmol/L</td>
+                                            <td class="fw-bold"><span id="r2_t1">--</span></td>
+                                            <td class="fw-bold"><span id="r2_t2">--</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">8 - 14 mmol/L</td>
+                                            <td class="fw-bold"><span id="r3_t1">--</span></td>
+                                            <td class="fw-bold"><span id="r3_t2">--</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-danger">< 8 mmol/L</td>
+                                            <td class="fw-bold"><span id="r4_t1">--</span></td>
+                                            <td class="fw-bold text-danger"><span id="r4_t2">--</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="small text-muted mt-1">* Lưu ý: Đảm bảo TỔNG TỐC ĐỘ 2 máy luôn bằng <strong><span id="vRef">--</span> mL/giờ</strong>.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 4: INSULIN & KALI -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4">
+                            <i class="bi bi-4-circle-fill text-success me-2"></i> Pha Insulin & Bù Kali
+                        </button>
+                    </h2>
+                    <div id="step4" class="accordion-collapse collapse" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-light text-start">
+                            
+                            <!-- Insulin Box -->
+                            <div class="result-box level-1 m-0 p-3 text-start mb-4">
+                                <h6 class="fw-bold text-success mb-2"><i class="bi bi-hypnotize"></i> Y lệnh Insulin tĩnh mạch</h6>
+                                <p class="mb-1 fw-bold">Cách pha:</p>
+                                <p class="small mb-2">Lấy 50 UI Insulin Regular pha vào đủ 50 mL NaCl 0.9% (Nồng độ 1 UI/mL).</p>
+                                <p class="mb-1 fw-bold">Tốc độ Bơm tiêm điện (0.1 UI/kg/h):</p>
+                                <div class="fs-4 text-center fw-bold text-dark"><span id="insRate">--</span> <span class="fs-6">mL/giờ</span></div>
+                            </div>
+
+                            <!-- Kali Interactive Tool -->
+                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-lightning-fill text-warning"></i> Bù Kali vào 2 túi (Theo ISPAD)</h6>
+                            <div class="small text-muted mb-2">Chọn kết quả Kali máu hiện tại để ra y lệnh:</div>
+                            
+                            <div class="d-flex gap-2 mb-3">
+                                <button type="button" class="btn btn-outline-danger btn-kali-select flex-fill p-1" onclick="selectKali('low')">K < 3.5</button>
+                                <button type="button" class="btn btn-outline-success btn-kali-select flex-fill p-1" onclick="selectKali('mid')">3.5 - 5.5</button>
+                                <button type="button" class="btn btn-outline-danger btn-kali-select flex-fill p-1" onclick="selectKali('high')">K > 5.5</button>
+                            </div>
+
+                            <div id="kaliResultBox" class="result-box mt-0 p-3" style="display:none;">
+                                <div id="kaliActionText" class="result-desc text-start fw-bold">--</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    
+                    <h6 class="text-primary fw-bold">1. Công thức Toán học & Chuyển đổi</h6>
+                    <ul class="mb-3">
+                        <li><strong>Đổi đơn vị Glucose:</strong> Glucose (mg/dL) = Glucose (mmol/L) × 18</li>
+                        <li><strong>Công thức Natri hiệu chỉnh (Na hc):</strong><br>
+                            Na hc = Na đo + 2.0 × [ (Glucose mg/dL - 100) / 100 ]
+                        </li>
+                        <li><strong>Nhu cầu dịch duy trì (Holliday-Segar):</strong><br>
+                            - 10 kg đầu: 100 mL/kg/ngày.<br>
+                            - 10 kg tiếp: 50 mL/kg/ngày.<br>
+                            - Các kg tiếp theo: 20 mL/kg/ngày.
+                        </li>
+                        <li><strong>Tính Dịch bù thâm hụt:</strong><br>
+                            Bù (mL) = % Mất nước × Cân nặng (kg) × 10.<br>
+                            (Ví dụ: 5% × 20kg × 10 = 1000 mL).
+                        </li>
+                    </ul>
+
+                    <h6 class="text-primary fw-bold mt-3">2. Phân độ DKA (Theo Khí máu)</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Mức độ</th>
+                                    <th>pH máu TM</th>
+                                    <th>HCO3- (mmol/L)</th>
+                                    <th>% Mất nước (Ước tính)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td-level-2">Nhẹ</td>
+                                    <td class="td-level-2">< 7.3</td>
+                                    <td class="td-level-2">< 15</td>
+                                    <td class="td-level-2">5%</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-3">Vừa</td>
+                                    <td class="td-level-3">< 7.2</td>
+                                    <td class="td-level-3">< 10</td>
+                                    <td class="td-level-3">7%</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-4">Nặng</td>
+                                    <td class="td-level-4">< 7.1</td>
+                                    <td class="td-level-4">< 5</td>
+                                    <td class="td-level-4">10%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-3">3. Hệ thống 2 túi (2-Bag System)</h6>
+                    <p>Giải pháp tối ưu giúp tránh lãng phí dịch và tiết kiệm thời gian điều dưỡng. 2 túi (Túi 1: Không chứa đường, Túi 2: Chứa nồng độ đường 10%) được nối chung 1 chạc ba truyền cho bệnh nhân. Khi đường huyết dao động, chỉ cần vặn thay đổi tốc độ 2 máy truyền, với điều kiện <strong>Tổng tốc độ 2 máy = Tốc độ dịch 48 giờ.</strong></p>
+
+                    <h6 class="text-danger fw-bold mt-3">4. Nguy cơ Phù não</h6>
+                    <p>Cảnh giác cao độ nếu Natri hiệu chỉnh không tăng hoặc giảm đi khi Glucose máu giảm dần. Nếu bệnh nhân có dấu hiệu thần kinh (Đau đầu, nôn, nhịp chậm, đồng tử giãn), cấp cứu chống phù não ngay bằng Mannitol 20% (0.5-1 g/kg) hoặc NaCl 3% (2.5-5 ml/kg) trong 15-30 phút.</p>
+
+                    <!-- Quy tắc 2: Kẻ ngang và Tài liệu tham khảo -->
+                    <hr class="mt-4 mb-2">
+                    <div class="small text-muted">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. ISPAD Clinical Practice Consensus Guidelines 2022: Diabetic ketoacidosis and hyperglycemic hyperosmolar state.<br>
+                        2. Phác đồ Điều trị Bệnh viện Nhi Đồng 1 - Khoa Hồi sức tích cực.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS -->
+    <script>
+        // Global variables for mixing output
+        let calculatedV = 0;
+
+        // Xử lý nút Switch Huyết động (Quy tắc 3)
+        function toggleShock() {
+            const btn = document.getElementById('shockBtn');
+            const val = document.getElementById('shockVal');
+            
+            if (val.value === 'no') {
+                val.value = 'yes';
+                btn.innerText = 'CÓ SỐC (Nguy kịch)';
+                btn.className = 'btn btn-danger btn-toggle-switch w-100 py-2 shadow';
+            } else {
+                val.value = 'no';
+                btn.innerText = 'Huyết động ổn định';
+                btn.className = 'btn btn-outline-primary btn-toggle-switch w-100 py-2';
+            }
+        }
+
+        // HÀM TÍNH TOÁN TỔNG
+        function calculateAll() {
+            // Lấy Input
+            const weightRaw = parseFloat(document.getElementById('weight').value);
+            const shockVal = document.getElementById('shockVal').value;
+            const bolusVol = parseFloat(document.getElementById('bolusVol').value) || 0;
+            
+            const phVal = parseFloat(document.getElementById('phVal').value);
+            const hco3Val = parseFloat(document.getElementById('hco3Val').value);
+            const gluVal = parseFloat(document.getElementById('gluVal').value);
+            const naVal = parseFloat(document.getElementById('naVal').value);
+            const dehydrateOverride = document.getElementById('dehydrateOverride').value;
+
+            // Kiểm tra đầu vào bắt buộc
+            if (isNaN(weightRaw) || weightRaw <= 0 || isNaN(gluVal) || isNaN(naVal)) {
+                alert("Vui lòng nhập đầy đủ Cân nặng, Glucose và Natri!");
+                return;
+            }
+
+            // Khóa logic Max 75kg
+            let weight = Math.min(weightRaw, 75);
+            if (weightRaw > 75) {
+                alert("Lưu ý: Bệnh nhân > 75kg. Thuật toán dịch tự động giới hạn cân nặng ở mức 75kg theo chuẩn ISPAD.");
+            }
+
+            /* =========================================================
+               1. DASHBOARD & PHÂN ĐỘ
+               ========================================================= */
+            // Glu mmol/L -> mg/dL = Glu * 18
+            const gluMg = gluVal * 18;
+            const naHc = naVal + 2.0 * ((gluMg - 100) / 100);
+            document.getElementById('resNaHc').innerText = naHc.toFixed(1);
+
+            // Xác định Phân độ & Mất nước
+            let dkaLevel = 0; // 2: Nhẹ, 3: Vừa, 4: Nặng
+            let dkaStr = "Không rõ DKA";
+            let calcDehydrate = 5; // Mặc định 5%
+
+            if (!isNaN(phVal) && !isNaN(hco3Val)) {
+                if (phVal < 7.1 || hco3Val < 5) {
+                    dkaLevel = 4; dkaStr = "DKA NẶNG"; calcDehydrate = 10;
+                } else if (phVal < 7.2 || hco3Val < 10) {
+                    dkaLevel = 3; dkaStr = "DKA VỪA"; calcDehydrate = 7;
+                } else if (phVal < 7.3 || hco3Val < 15) {
+                    dkaLevel = 2; dkaStr = "DKA NHẸ"; calcDehydrate = 5;
+                }
+            }
+
+            // Xử lý Override Mất nước và ÉP XUỐNG DÒNG TRÊN MOBILE
+            // Dùng class "d-block d-md-inline" của Bootstrap: Trên điện thoại (nhỏ) nó sẽ rớt xuống dòng (block), trên iPad/PC (md trở lên) nó sẽ nằm ngang (inline).
+            let finalDehydrate = calcDehydrate;
+            if (dehydrateOverride !== "0") {
+                finalDehydrate = parseFloat(dehydrateOverride);
+                dkaStr += `<span class="d-block d-md-inline fs-5 mt-1 mt-md-0 fw-normal"> (Tùy chỉnh: ${finalDehydrate}%)</span>`;
+            } else {
+                dkaStr += `<span class="d-block d-md-inline fs-5 mt-1 mt-md-0 fw-normal"> (Mất nước ${finalDehydrate}%)</span>`;
+            }
+
+            const riskBox = document.getElementById('resRiskBox');
+            riskBox.className = (dkaLevel > 0) ? `result-box mb-4 level-${dkaLevel}` : `result-box mb-4 level-1`;
+            
+            // QUAN TRỌNG: Sửa .innerText thành .innerHTML để trình duyệt đọc được thẻ <span> và ngắt dòng
+            document.getElementById('resDkaLevel').innerHTML = dkaStr;
+            document.getElementById('dehPercent').innerText = finalDehydrate;
+
+            /* =========================================================
+               2. ACCORDION 1: HỒI SỨC GIỜ 1
+               ========================================================= */
+            const shockResultBox = document.getElementById('shockResultBox');
+            const shockActionText = document.getElementById('shockActionText');
+            
+            if (shockVal === 'yes') {
+                shockResultBox.className = "p-3 border rounded mb-3 bg-danger text-white";
+                shockActionText.innerHTML = `<strong>Tình trạng SỐC:</strong> Bolus TM <strong>${Math.round(weight * 10)} - ${Math.round(weight * 20)} mL</strong> NaCl 0.9% hoặc Ringer chảy nhanh (30 - 60 phút).`;
+            } else {
+                shockResultBox.className = "p-3 border rounded mb-3 bg-success text-white";
+                shockActionText.innerHTML = `<strong>Huyết động ổn định:</strong> KHÔNG bolus dịch. Bắt đầu ngay phác đồ dịch 48 giờ.`;
+            }
+
+            /* =========================================================
+               3. ACCORDION 2: BÙ DỊCH 48 GIỜ
+               ========================================================= */
+            // [A] Dịch duy trì 48h
+            let dailyMaint = 0;
+            if (weight <= 10) {
+                dailyMaint = 100 * weight;
+            } else if (weight <= 20) {
+                dailyMaint = 1000 + 50 * (weight - 10);
+            } else {
+                dailyMaint = 1500 + 20 * (weight - 20);
+            }
+            const valA = dailyMaint * 2;
+            
+            // [B] Dịch bù mất nước: % * Cân nặng * 10 
+            // (Note: % * 10 * kg = ml. Example 5% * 10kg * 10 = 500ml)
+            const valB = finalDehydrate * 10 * weight; 
+            
+            // [C] Trừ dịch Bolus
+            const valC = bolusVol;
+
+            // [Tổng]
+            let valTotal = valA + valB - valC;
+            if (valTotal < 0) valTotal = 0;
+            
+            const rateV = valTotal / 48;
+            calculatedV = rateV; 
+
+            document.getElementById('valA').innerText = Math.round(valA);
+            document.getElementById('valB').innerText = Math.round(valB);
+            document.getElementById('valC').innerText = Math.round(valC);
+            document.getElementById('valTotal').innerText = Math.round(valTotal);
+            document.getElementById('valRate').innerText = rateV.toFixed(1);
+            document.getElementById('vRef').innerText = rateV.toFixed(1);
+
+            /* =========================================================
+               4. ACCORDION 3B: BẢNG TỐC ĐỘ 2 TÚI
+               ========================================================= */
+            document.getElementById('r1_t1').innerText = rateV.toFixed(1);
+            document.getElementById('r1_t2').innerText = "0";
+            
+            document.getElementById('r2_t1').innerText = (rateV / 2).toFixed(1);
+            document.getElementById('r2_t2').innerText = (rateV / 2).toFixed(1);
+            
+            document.getElementById('r3_t1').innerText = (rateV * 0.25).toFixed(1);
+            document.getElementById('r3_t2').innerText = (rateV * 0.75).toFixed(1);
+            
+            document.getElementById('r4_t1').innerText = "0";
+            document.getElementById('r4_t2').innerText = rateV.toFixed(1);
+
+            /* =========================================================
+               5. ACCORDION 4: INSULIN
+               ========================================================= */
+            document.getElementById('insRate').innerText = (weight * 0.1).toFixed(1);
+
+            // Reset box Kali
+            document.getElementById('kaliResultBox').style.display = 'none';
+            document.querySelectorAll('.btn-kali-select').forEach(btn => btn.classList.remove('active', 'text-white'));
+
+            // Hiển thị và cuộn (Sử dụng scroll-margin-top đã setup trong css gốc)
+            document.getElementById('resultSection').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // HÀM TẠO Y LỆNH PHA TÚI 2 THÔNG MINH
+        function generateMixRecipe() {
+            const out = document.getElementById('mixRecipeOutput');
+            const hasNaCl09 = document.getElementById('chkNaCl09').checked;
+            const hasNaCl3 = document.getElementById('chkNaCl3').checked;
+            const hasD10 = document.getElementById('chkD10').checked;
+            const hasD20 = document.getElementById('chkD20').checked;
+            const hasD30 = document.getElementById('chkD30').checked;
+            const hasD5_045 = document.getElementById('chkD5_045').checked;
+
+            let recipe = "";
+            let colorClass = "bg-white text-success border-success";
+
+            // THUẬT TOÁN MA TRẬN PHA DỊCH (Cho 500mL Túi 2)
+            if (hasD20 && hasNaCl3 && hasNaCl09) {
+                // Ưu tiên cao nhất: D10W - NaCl 0.9% chuẩn xác tuyệt đối
+                recipe = "<strong>Mục tiêu: D10W - NaCl 0.9% (Chuẩn xác):</strong><br>Pha: <strong>250 mL</strong> Dextrose 20% + <strong>107 mL</strong> NaCl 3% + <strong>143 mL</strong> NaCl 0.9%.";
+            } else if (hasD30 && hasNaCl3 && hasNaCl09) {
+                // Ưu tiên 2: D10W - NaCl 0.9% từ D30W
+                recipe = "<strong>Mục tiêu: D10W - NaCl 0.9% (Chuẩn xác):</strong><br>Pha: <strong>167 mL</strong> Dextrose 30% + <strong>71 mL</strong> NaCl 3% + <strong>262 mL</strong> NaCl 0.9%.";
+            } else if (hasD20 && hasNaCl09) {
+                // Rất phổ biến: D10W - NaCl 0.45%
+                recipe = "<strong>Mục tiêu: D10W - NaCl 0.45% (Phổ biến):</strong><br>Lấy <strong>250 mL</strong> Dextrose 20% trộn với <strong>250 mL</strong> NaCl 0.9%.";
+            } else if (hasD30 && hasNaCl09) {
+                // Pha D10W - NaCl 0.6%
+                recipe = "<strong>Mục tiêu: D10W - NaCl 0.6%:</strong><br>Rút bỏ 167 mL từ chai NaCl 0.9% (500ml), sau đó bơm <strong>167 mL</strong> Dextrose 30% vào chai đó.";
+            } else if (hasD10 && hasNaCl3) {
+                // Pha D10W - NaCl 0.45% từ D10
+                recipe = "<strong>Mục tiêu: D8.5W - NaCl 0.45%:</strong><br>Rút bớt 75ml từ chai D10W (500ml), bơm <strong>75 mL</strong> NaCl 3% vào.";
+            } else if (hasD10 && hasNaCl09) {
+                // Fallback 1: D5W - NaCl 0.45%
+                recipe = "<strong>Mục tiêu (Fallback 1): D5W - NaCl 0.45%:</strong><br>Lấy <strong>250 mL</strong> Dextrose 10% trộn với <strong>250 mL</strong> NaCl 0.9%.<br><span class='small text-muted'>*Lưu ý: Nồng độ đường chỉ đạt 5%. Cẩn trọng hạ đường huyết.</span>";
+                colorClass = "bg-white text-warning border-warning";
+            } else if (hasD5_045) {
+                // Fallback 2: Hết đường ưu trương
+                recipe = "<strong>Mục tiêu (Fallback 2): D5W - 0.45%:</strong><br>Dùng trực tiếp chai D5W-0.45% có sẵn.<br><span class='small text-danger fw-bold'>Cảnh báo: Hết đường ưu trương. Dextrose 5% có thể không đủ giữ đường huyết khi truyền Insulin liên tục.</span>";
+                colorClass = "bg-white text-warning border-warning";
+            } else {
+                // Không thể pha
+                recipe = "<span class='text-danger fw-bold'><i class='bi bi-x-circle-fill'></i> Không đủ nguyên liệu để pha túi 2 chứa Dextrose. Hãy check thêm vào ô ở trên!</span>";
+                colorClass = "bg-white text-danger border-danger";
+            }
+
+            out.innerHTML = recipe;
+            out.className = `mt-3 p-3 rounded text-start border shadow-sm ${colorClass}`;
+            out.style.display = "block";
+        }
+
+        // HÀM TƯƠNG TÁC KALI (Accordion 4)
+        function selectKali(type) {
+            document.querySelectorAll('.btn-kali-select').forEach(btn => {
+                btn.classList.remove('active', 'text-white', 'bg-danger', 'bg-success');
+                if(btn.innerText.includes('5.5') && !btn.innerText.includes('>')) {
+                    btn.classList.add('btn-outline-success');
+                } else {
+                    btn.classList.add('btn-outline-danger');
+                }
+            });
+
+            const clickedBtn = event.target;
+            clickedBtn.classList.add('active', 'text-white');
+            if (type === 'mid') {
+                clickedBtn.classList.remove('btn-outline-success');
+                clickedBtn.classList.add('bg-success');
+            } else {
+                clickedBtn.classList.remove('btn-outline-danger');
+                clickedBtn.classList.add('bg-danger');
+            }
+
+            const box = document.getElementById('kaliResultBox');
+            const text = document.getElementById('kaliActionText');
+            box.style.display = 'block';
+
+            if (type === 'low') {
+                box.className = 'result-box mt-3 p-3 level-4 border-danger shadow-sm';
+                text.innerHTML = `<strong>K < 3.5 mmol/L (Pha 40 mEq/L):</strong><br>Rút <strong>15 mL</strong> ống KCl 10% bơm thẳng vào <strong>MỖI túi</strong> dịch (Túi 1 và Túi 2).<br><span class='small text-muted'>* Lưu ý không trừ đi thể tích dịch để đơn giản hóa.</span>`;
+            } else if (type === 'mid') {
+                box.className = 'result-box mt-3 p-3 level-1 border-success shadow-sm';
+                text.innerHTML = `<strong>K từ 3.5 - 5.5 mmol/L (Pha 30 mEq/L):</strong><br>Rút <strong>11 mL</strong> ống KCl 10% bơm thẳng vào <strong>MỖI túi</strong> dịch (Túi 1 và Túi 2).`;
+            } else if (type === 'high') {
+                box.className = 'result-box mt-3 p-3 level-3 border-warning shadow-sm';
+                text.innerHTML = `<span class='text-danger'><i class='bi bi-ban'></i> <strong>K > 5.5 mmol/L:</strong> KHÔNG PHA KALI.</span><br><span class='small text-muted'>Theo dõi lại K+ sau mỗi 2h và chỉ bù khi bệnh nhân có nước tiểu và K+ < 5.5.</span>`;
+            }
+        }
+
+        // HÀM RESET
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('mixRecipeOutput').style.display = 'none';
+            document.getElementById('kaliResultBox').style.display = 'none';
+            
+            // Reset Switch Huyết động
+            const shockBtn = document.getElementById('shockBtn');
+            const shockVal = document.getElementById('shockVal');
+            shockVal.value = 'no';
+            shockBtn.innerText = 'Huyết động ổn định';
+            shockBtn.className = 'btn btn-outline-primary btn-toggle-switch w-100 py-2';
+        }
+    </script>
+</body>
+</html>

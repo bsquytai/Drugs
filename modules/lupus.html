@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thang điểm cSLE - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Tùy chỉnh Nút Switch 1 chạm cho ANA (Quy tắc 3) */
+        .btn-toggle-switch {
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-toggle-ana-on {
+            color: #fff;
+            background-color: #dc3545; /* Đỏ nguy hiểm vì ANA+ là cửa ải */
+            border-color: #dc3545;
+        }
+        
+        /* Căn chỉnh khoảng cách Accordion */
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0c5460;
+            font-weight: 700;
+        }
+        .accordion-button {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        /* Cải thiện hitbox checkbox trên mobile */
+        .form-check-label {
+            cursor: pointer;
+            width: 100%;
+            padding: 4px 0;
+            font-size: 14.5px;
+        }
+        
+        /* Box hiển thị cơ quan SLEDAI */
+        .organ-block {
+            border-left: 4px solid #6c757d;
+            padding-left: 12px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2) -->
+    <div id="common-ui"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="m-0 text-primary fw-bold">Đánh giá cSLE</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- FORM NHẬP LIỆU BẮT BUỘC (Quy tắc 2) -->
+        <form id="calcForm">
+            
+            <!-- HỆ THỐNG ACCORDION (Quy tắc 5) -->
+            <div class="accordion mb-4 shadow-sm" id="csleAccordion">
+                
+                <!-- ACCORDION 1: SLICC 2012 -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlicc">
+                            1. SLICC 2012 (Phân loại)
+                            <span id="badgeSlicc" class="badge ms-auto me-2 d-none"></span>
+                        </button>
+                    </h2>
+                    <div id="collapseSlicc" class="accordion-collapse collapse" data-bs-parent="#csleAccordion">
+                        <div class="accordion-body bg-light">
+                            <h6 class="section-title mt-0 text-danger"><i class="bi bi-exclamation-triangle"></i> Tiêu chuẩn vàng (Trực tiếp)</h6>
+                            <div class="form-check mb-3 bg-white p-2 rounded border">
+                                <input class="form-check-input ms-1" type="checkbox" id="sliccBiopsy">
+                                <label class="form-check-label fw-bold text-danger ms-2" for="sliccBiopsy">
+                                    Sinh thiết thận KÈM ANA/Anti-dsDNA (+)
+                                </label>
+                            </div>
+
+                            <h6 class="section-title mt-3 text-primary"><i class="bi bi-person-bounding-box"></i> Lâm sàng (Cần ≥ 1)</h6>
+                            <div class="bg-white p-3 rounded border mb-3">
+                                <div class="row">
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc1"><label class="form-check-label ms-2" for="sc1">Lupus da cấp tính</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc2"><label class="form-check-label ms-2" for="sc2">Lupus da mạn tính</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc3"><label class="form-check-label ms-2" for="sc3">Loét miệng/mũi</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc4"><label class="form-check-label ms-2" for="sc4">Rụng tóc không sẹo</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc5"><label class="form-check-label ms-2" for="sc5">Viêm khớp (≥ 2 khớp)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc6"><label class="form-check-label ms-2" for="sc6">Viêm thanh mạc</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc7"><label class="form-check-label ms-2" for="sc7">Thận (>0.5g/24h hoặc Trụ)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc8"><label class="form-check-label ms-2" for="sc8">Thần kinh (Co giật...)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc9"><label class="form-check-label ms-2" for="sc9">Thiếu máu tán huyết</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc10"><label class="form-check-label ms-2" for="sc10">Giảm Bạch cầu/Lympho</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-clin" type="checkbox" id="sc11"><label class="form-check-label ms-2" for="sc11">Giảm Tiểu cầu (<100K)</label></div></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-title mt-3 text-success"><i class="bi bi-shield-plus"></i> Miễn dịch (Cần ≥ 1)</h6>
+                            <div class="bg-white p-3 rounded border">
+                                <div class="row">
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si1"><label class="form-check-label ms-2" for="si1">ANA (+)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si2"><label class="form-check-label ms-2" for="si2">Anti-dsDNA (+)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si3"><label class="form-check-label ms-2" for="si3">Anti-Sm (+)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si4"><label class="form-check-label ms-2" for="si4">Kháng thể aPL (+)</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si5"><label class="form-check-label ms-2" for="si5">Giảm Bổ thể</label></div></div>
+                                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input slicc-imm" type="checkbox" id="si6"><label class="form-check-label ms-2" for="si6">Coombs trực tiếp (+)</label></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCORDION 2: EULAR/ACR 2019 -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEular">
+                            2. EULAR/ACR 2019 (Phân loại)
+                            <span id="badgeEular" class="badge ms-auto me-2 d-none"></span>
+                        </button>
+                    </h2>
+                    <div id="collapseEular" class="accordion-collapse collapse" data-bs-parent="#csleAccordion">
+                        <div class="accordion-body bg-light">
+                            <!-- Nút Switch 1 chạm ANA (Quy tắc 3) -->
+                            <h6 class="section-title mt-0"><i class="bi bi-door-open-fill"></i> Tiêu chuẩn cửa ải (Entry)</h6>
+                            <button type="button" id="anaBtn" class="btn btn-outline-secondary btn-toggle-switch w-100 py-2 mb-3" onclick="toggleANA()">
+                                <i class="bi bi-x-circle"></i> KHÔNG có ANA ≥ 1:80
+                            </button>
+                            <input type="hidden" id="anaVal" value="no">
+
+                            <!-- Form bên dưới sẽ mờ đi nếu ANA = no -->
+                            <div id="eularFormWrapper" style="opacity: 0.4; pointer-events: none; transition: 0.3s;">
+                                <div class="alert alert-warning py-2 small mb-3">Hệ thống tự động chọn điểm cao nhất trong mỗi nhóm cơ quan (Domain).</div>
+                                
+                                <h6 class="section-title text-primary"><i class="bi bi-person-check"></i> Các Domain Lâm sàng</h6>
+                                <div class="bg-white p-3 rounded border mb-3">
+                                    <strong>Toàn thân:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-con" type="checkbox" id="ec1" value="2"><label class="form-check-label ms-2" for="ec1">Sốt > 38°C (2đ)</label></div>
+                                    <hr class="my-2">
+                                    <strong>Huyết học:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-hem" type="checkbox" id="ec2" value="3"><label class="form-check-label ms-2" for="ec2">Giảm bạch cầu (3đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-hem" type="checkbox" id="ec3" value="4"><label class="form-check-label ms-2" for="ec3">Giảm tiểu cầu (4đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-hem" type="checkbox" id="ec4" value="4"><label class="form-check-label ms-2" for="ec4">Thiếu máu tán huyết (4đ)</label></div>
+                                    <hr class="my-2">
+                                    <strong>Thần kinh:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-neu" type="checkbox" id="ec5" value="2"><label class="form-check-label ms-2" for="ec5">Sảng (2đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-neu" type="checkbox" id="ec6" value="3"><label class="form-check-label ms-2" for="ec6">Rối loạn tâm thần (3đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-neu" type="checkbox" id="ec7" value="5"><label class="form-check-label ms-2" for="ec7">Co giật (5đ)</label></div>
+                                    <hr class="my-2">
+                                    <strong>Da niêm:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-muc" type="checkbox" id="ec8" value="2"><label class="form-check-label ms-2" for="ec8">Rụng tóc không sẹo (2đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-muc" type="checkbox" id="ec9" value="2"><label class="form-check-label ms-2" for="ec9">Loét miệng (2đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-muc" type="checkbox" id="ec10" value="4"><label class="form-check-label ms-2" for="ec10">Lupus da mạn (4đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-muc" type="checkbox" id="ec11" value="6"><label class="form-check-label ms-2" for="ec11">Lupus da cấp (6đ)</label></div>
+                                    <hr class="my-2">
+                                    <strong>Thanh mạc & Khớp:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-ser" type="checkbox" id="ec12" value="5"><label class="form-check-label ms-2" for="ec12">Tràn dịch màng phổi/tim (5đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-ser" type="checkbox" id="ec13" value="6"><label class="form-check-label ms-2" for="ec13">Viêm màng ngoài tim (6đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-msk" type="checkbox" id="ec14" value="6"><label class="form-check-label ms-2" for="ec14">Tổn thương khớp (6đ)</label></div>
+                                    <hr class="my-2">
+                                    <strong>Thận:</strong>
+                                    <div class="form-check"><input class="form-check-input eu-c-ren" type="checkbox" id="ec15" value="4"><label class="form-check-label ms-2" for="ec15">Protein niệu >0.5g/24h (4đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-ren" type="checkbox" id="ec16" value="8"><label class="form-check-label ms-2" for="ec16">Viêm thận Lupus Class II/V (8đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-c-ren" type="checkbox" id="ec17" value="10"><label class="form-check-label ms-2" for="ec17">Viêm thận Class III/IV (10đ)</label></div>
+                                </div>
+
+                                <h6 class="section-title text-success"><i class="bi bi-shield-plus"></i> Các Domain Miễn dịch</h6>
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="form-check"><input class="form-check-input eu-i-apl" type="checkbox" id="ei1" value="2"><label class="form-check-label ms-2" for="ei1">Kháng thể aPL (+) (2đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-i-com" type="checkbox" id="ei2" value="3"><label class="form-check-label ms-2" for="ei2">Giảm C3 HOẶC C4 (3đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-i-com" type="checkbox" id="ei3" value="4"><label class="form-check-label ms-2" for="ei3">Giảm C3 VÀ C4 (4đ)</label></div>
+                                    <div class="form-check"><input class="form-check-input eu-i-sle" type="checkbox" id="ei4" value="6"><label class="form-check-label ms-2" for="ei4">Anti-dsDNA / Anti-Sm (+) (6đ)</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCORDION 3: SLEDAI-2K -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSledai">
+                            3. SLEDAI-2K (Hoạt động bệnh)
+                            <span id="badgeSledai" class="badge ms-auto me-2 d-none"></span>
+                        </button>
+                    </h2>
+                    <div id="collapseSledai" class="accordion-collapse collapse" data-bs-parent="#csleAccordion">
+                        <div class="accordion-body bg-light">
+                            <h6 class="section-title mt-0 text-danger">Mức độ 8 Điểm (Rất nặng)</h6>
+                            <div class="bg-white p-3 rounded border mb-3">
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl1" data-org="cns" data-name="Co giật" value="8"><label class="form-check-label ms-2" for="sl1">Co giật</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl2" data-org="cns" data-name="Rối loạn tâm thần" value="8"><label class="form-check-label ms-2" for="sl2">Rối loạn tâm thần</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl3" data-org="cns" data-name="Hội chứng Não thực thể" value="8"><label class="form-check-label ms-2" for="sl3">Hội chứng Não thực thể</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl4" data-org="cns" data-name="Rối loạn thị giác" value="8"><label class="form-check-label ms-2" for="sl4">Rối loạn thị giác</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl5" data-org="cns" data-name="Rối loạn TK sọ" value="8"><label class="form-check-label ms-2" for="sl5">Rối loạn thần kinh sọ</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl6" data-org="cns" data-name="Đau đầu Lupus" value="8"><label class="form-check-label ms-2" for="sl6">Đau đầu Lupus</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl7" data-org="cns" data-name="Tai biến MMN" value="8"><label class="form-check-label ms-2" for="sl7">Tai biến mạch máu não</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl8" data-org="vasc" data-name="Viêm mạch máu" value="8"><label class="form-check-label ms-2" for="sl8">Viêm mạch máu</label></div>
+                            </div>
+
+                            <h6 class="section-title text-warning text-dark">Mức độ 4 Điểm (Nặng)</h6>
+                            <div class="bg-white p-3 rounded border mb-3">
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl9" data-org="msk" data-name="Viêm khớp" value="4"><label class="form-check-label ms-2" for="sl9">Viêm khớp</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl10" data-org="msk" data-name="Viêm cơ" value="4"><label class="form-check-label ms-2" for="sl10">Viêm cơ</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl11" data-org="ren" data-name="Trụ niệu" value="4"><label class="form-check-label ms-2" for="sl11">Trụ niệu (Hạt/Hồng cầu)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl12" data-org="ren" data-name="Tiểu máu" value="4"><label class="form-check-label ms-2" for="sl12">Tiểu máu (>5 HC)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl13" data-org="ren" data-name="Protein niệu" value="4"><label class="form-check-label ms-2" for="sl13">Protein niệu (>0.5g/24h)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl14" data-org="ren" data-name="Tiểu mủ" value="4"><label class="form-check-label ms-2" for="sl14">Tiểu mủ (>5 BC)</label></div>
+                            </div>
+
+                            <h6 class="section-title text-primary">Mức độ 2 Điểm (Trung bình)</h6>
+                            <div class="bg-white p-3 rounded border mb-3">
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl15" data-org="skin" data-name="Ban da mới" value="2"><label class="form-check-label ms-2" for="sl15">Ban da mới</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl16" data-org="skin" data-name="Rụng tóc" value="2"><label class="form-check-label ms-2" for="sl16">Rụng tóc</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl17" data-org="skin" data-name="Loét niêm mạc" value="2"><label class="form-check-label ms-2" for="sl17">Loét niêm mạc</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl18" data-org="ser" data-name="Viêm màng phổi" value="2"><label class="form-check-label ms-2" for="sl18">Viêm màng phổi</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl19" data-org="ser" data-name="Viêm ngoài tim" value="2"><label class="form-check-label ms-2" for="sl19">Viêm ngoài tim</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl20" data-org="imm" data-name="Giảm bổ thể" value="2"><label class="form-check-label ms-2" for="sl20">Giảm bổ thể (C3/C4)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl21" data-org="imm" data-name="Tăng anti-dsDNA" value="2"><label class="form-check-label ms-2" for="sl21">Tăng gắn kết anti-dsDNA</label></div>
+                            </div>
+
+                            <h6 class="section-title text-success">Mức độ 1 Điểm (Nhẹ)</h6>
+                            <div class="bg-white p-3 rounded border">
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl22" data-org="con" data-name="Sốt" value="1"><label class="form-check-label ms-2" for="sl22">Sốt (>38°C)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl23" data-org="hem" data-name="Giảm tiểu cầu" value="1"><label class="form-check-label ms-2" for="sl23">Giảm tiểu cầu (<100K)</label></div>
+                                <div class="form-check"><input class="form-check-input sledai-item" type="checkbox" id="sl24" data-org="hem" data-name="Giảm bạch cầu" value="1"><label class="form-check-label ms-2" for="sl24">Giảm bạch cầu (<3K)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- NÚT HÀNH ĐỘNG (Quy tắc 2: Tỷ lệ 70-30 trên cùng 1 hàng) -->
+            <div class="d-flex gap-2 mb-2">
+                <button type="button" onclick="calculateAll()" class="btn btn-primary fw-bold" style="flex: 7;">
+                    <i class="bi bi-calculator"></i> Tính toán
+                </button>
+                <button type="reset" class="btn btn-outline-secondary fw-semibold" style="flex: 3;" onclick="resetResult()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                </button>
+            </div>
+        </form>
+
+        <!-- KHU VỰC KẾT QUẢ (Quy tắc 3: Ẩn mặc định ban đầu) -->
+        <div id="resultSection" style="display: none; padding-top: 10px;">
+            
+            <!-- Hộp kết quả tổng hợp: Áp dụng class màu sắc theo SLEDAI-2K -->
+            <div id="resultBox" class="result-box mb-3">
+                <div class="row text-start mb-3 border-bottom pb-2" style="font-size: 14.5px;">
+                    <div class="col-6 border-end">
+                        <strong class="text-secondary">SLICC 2012:</strong><br>
+                        <span id="resSliccTxt" class="fw-bold">--</span>
+                    </div>
+                    <div class="col-6">
+                        <strong class="text-secondary">EULAR 2019:</strong><br>
+                        <span id="resEularTxt" class="fw-bold">--</span>
+                    </div>
+                </div>
+
+                <p class="mb-1 fw-semibold text-uppercase">Hoạt động bệnh (SLEDAI-2K)</p>
+                <h1 id="sledaiVal" class="result-value-main mb-0">--</h1>
+                <p class="result-unit-main mb-2">Điểm</p>
+                
+                <h6 id="sledaiRisk" class="fw-bold mb-1 mt-3 text-uppercase">--</h6>
+                
+                <!-- Khu vực render Động Bức tranh lâm sàng -->
+                <div id="organSummary" class="result-desc mt-3 bg-white p-3 rounded text-start shadow-sm" style="display:none;">
+                    <strong class="d-block mb-2 text-primary border-bottom pb-1">ĐỊNH HƯỚNG TỔN THƯƠNG ĐÍCH</strong>
+                    <div id="organList"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    
+                    <h6 class="text-primary fw-bold">1. Lựa chọn tiêu chuẩn chẩn đoán</h6>
+                    <ul>
+                        <li><strong>SLICC 2012:</strong> Độ nhạy rất cao (~98%), hạn chế bỏ sót ca bệnh ở trẻ em. Yêu cầu Sinh thiết thận KÈM ANA/Anti-dsDNA (+) <strong>HOẶC</strong> ≥ 4 tiêu chuẩn (≥ 1 Lâm sàng + ≥ 1 Miễn dịch).</li>
+                        <li><strong>EULAR/ACR 2019:</strong> Độ đặc hiệu cao (~96%), giảm dương tính giả. Bắt buộc có "Cửa ải" ANA ≥ 1:80. Điểm ≥ 10 và có ít nhất 1 biểu hiện lâm sàng thì chẩn đoán xác định.</li>
+                    </ul>
+
+                    <h6 class="text-primary fw-bold mt-3">2. Theo dõi bằng SLEDAI-2K</h6>
+                    <p class="text-justify mb-2">Chỉ định đánh giá mỗi lần tái khám (1-3 tháng) để nắm bắt triệu chứng xuất hiện trong 30 ngày qua.</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered theory-table">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>SLEDAI-2K</th>
+                                    <th>Mức độ</th>
+                                    <th>Mục tiêu & Xử trí</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td-level-1">0 Điểm</td>
+                                    <td class="td-level-1">Lui bệnh</td>
+                                    <td class="text-start">Đích điều trị tối ưu. Duy trì liều thấp nhất có thể.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-2">1 - 5 Điểm</td>
+                                    <td class="td-level-2">Hoạt động Nhẹ (LLDAS)</td>
+                                    <td class="text-start">Chấp nhận được nếu không có biểu hiện ở cơ quan đe dọa tính mạng.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-3">6 - 10 Điểm</td>
+                                    <td class="td-level-3">Trung bình</td>
+                                    <td class="text-start">Gợi ý bùng phát (Flare) vừa. Xét tăng liều Corticosteroid.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-4">> 10 Điểm</td>
+                                    <td class="td-level-4">Nặng / Rất nặng</td>
+                                    <td class="text-start">Bùng phát nặng. Cần can thiệp ức chế miễn dịch mạnh (Pulse therapy).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr class="mt-4 mb-2">
+                    <div class="small text-muted">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. Aringer M, et al. 2019 EULAR/ACR Classification Criteria for SLE. Arthritis Rheumatol. 2019.<br>
+                        2. Sag E, et al. Performance of the new EULAR/ACR and SLICC classification criteria for SLE in children. Arthritis Res Ther. 2021.<br>
+                        3. Brunner HI, et al. Validation of the Pediatric SLE Disease Activity Index. Arthritis Care Res. 2020.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS -->
+    <script>
+        // Xử lý nút Switch 1 chạm ANA (Quy tắc 3)
+        function toggleANA() {
+            const btn = document.getElementById('anaBtn');
+            const val = document.getElementById('anaVal');
+            const wrapper = document.getElementById('eularFormWrapper');
+            
+            if (val.value === 'no') {
+                val.value = 'yes';
+                btn.innerHTML = '<i class="bi bi-check-circle"></i> CÓ chỉ số ANA ≥ 1:80';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-toggle-ana-on');
+                wrapper.style.opacity = '1';
+                wrapper.style.pointerEvents = 'auto';
+            } else {
+                val.value = 'no';
+                btn.innerHTML = '<i class="bi bi-x-circle"></i> KHÔNG có ANA ≥ 1:80';
+                btn.classList.remove('btn-toggle-ana-on');
+                btn.classList.add('btn-outline-secondary');
+                wrapper.style.opacity = '0.4';
+                wrapper.style.pointerEvents = 'none';
+                
+                // Uncheck toàn bộ checkbox trong EULAR form
+                document.querySelectorAll('#collapseEular input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        // Từ điển ánh xạ cơ quan SLEDAI để xuất phân tích
+        const organDict = {
+            cns: { name: "Thần kinh Trung ương", color: "#dc3545", note: "Đe dọa tính mạng. Cân nhắc Pulse therapy/Ức chế miễn dịch mạnh." },
+            vasc: { name: "Mạch máu", color: "#dc3545", note: "Nguy cơ hoại tử/thiếu máu cục bộ tạng." },
+            ren: { name: "Thận", color: "#fd7e14", note: "Tổn thương cơ quan đích. Theo dõi UPCR, eGFR, cân nhắc Sinh thiết thận." },
+            msk: { name: "Cơ - Xương - Khớp", color: "#ffc107", note: "Viêm hoạt động. Đánh giá vận động." },
+            skin: { name: "Da Niêm", color: "#6c757d", note: "Khuyến cáo chống nắng tuyệt đối." },
+            ser: { name: "Thanh mạc", color: "#6c757d", note: "Loại trừ tràn dịch màng tim chèn ép cấp." },
+            imm: { name: "Miễn dịch", color: "#6c757d", note: "Biến động mức độ tế bào B." },
+            con: { name: "Toàn thân", color: "#6c757d", note: "Loại trừ nhiễm trùng trước khi tăng ức chế miễn dịch." },
+            hem: { name: "Huyết học", color: "#6c757d", note: "Theo dõi nguy cơ xuất huyết/Nhiễm trùng cơ hội." }
+        };
+
+        // HÀM TÍNH TOÁN TỔNG HỢP (Chạy khi bấm nút Tính Toán)
+        function calculateAll() {
+            /* =========================================================
+               1. TÍNH SLICC 2012
+               ========================================================= */
+            const sliccBiopsy = document.getElementById('sliccBiopsy').checked;
+            const sliccClin = document.querySelectorAll('.slicc-clin:checked').length;
+            const sliccImm = document.querySelectorAll('.slicc-imm:checked').length;
+            
+            let sliccMet = false;
+            let sliccText = "Chưa đủ TC";
+            let sliccClass = "bg-secondary"; // Huy hiệu trên Accordion
+            let sliccResTxt = "Chưa đủ tiêu chuẩn"; // Hiển thị khung kết quả
+            let sliccResColor = "text-secondary";
+
+            if (sliccBiopsy) {
+                sliccMet = true;
+                sliccText = "Xác định (Sinh thiết)";
+                sliccResTxt = "CHẨN ĐOÁN XÁC ĐỊNH (Sinh thiết +)";
+            } else if ((sliccClin + sliccImm) >= 4 && sliccClin >= 1 && sliccImm >= 1) {
+                sliccMet = true;
+                sliccText = "Xác định (≥ 4 TC)";
+                sliccResTxt = `CHẨN ĐOÁN XÁC ĐỊNH (${sliccClin} LS, ${sliccImm} MD)`;
+            }
+
+            if (sliccMet) {
+                sliccClass = "bg-danger";
+                sliccResColor = "text-danger";
+            }
+            
+            // Cập nhật Badge Ghim Tiêu đề Accordion (Quy tắc 5)
+            const badgeSlicc = document.getElementById('badgeSlicc');
+            badgeSlicc.innerText = sliccText;
+            badgeSlicc.className = `badge ms-auto me-2 ${sliccClass}`;
+            
+            // Cập nhật khung Result Box
+            document.getElementById('resSliccTxt').innerHTML = `<span class="${sliccResColor}">${sliccResTxt}</span>`;
+
+            /* =========================================================
+               2. TÍNH EULAR/ACR 2019
+               ========================================================= */
+            const hasAna = document.getElementById('anaVal').value === 'yes';
+            let eularScore = 0;
+            let eularHasClin = false;
+            
+            if (hasAna) {
+                const euDomains = ['eu-c-con', 'eu-c-hem', 'eu-c-neu', 'eu-c-muc', 'eu-c-ser', 'eu-c-msk', 'eu-c-ren', 'eu-i-apl', 'eu-i-com', 'eu-i-sle'];
+                euDomains.forEach(domain => {
+                    const cbs = document.querySelectorAll(`.${domain}:checked`);
+                    if (cbs.length > 0) {
+                        let maxVal = 0;
+                        cbs.forEach(cb => { if(parseInt(cb.value) > maxVal) maxVal = parseInt(cb.value); });
+                        eularScore += maxVal;
+                        if (domain.startsWith('eu-c-')) eularHasClin = true;
+                    }
+                });
+            }
+
+            let eularMet = false;
+            let eularClass = "bg-secondary";
+            let eularResTxt = "Chưa đủ tiêu chuẩn";
+            let eularResColor = "text-secondary";
+
+            if (hasAna && eularScore >= 10 && eularHasClin) {
+                eularMet = true;
+                eularClass = "bg-danger";
+                eularResColor = "text-danger";
+                eularResTxt = `CHẨN ĐOÁN XÁC ĐỊNH (${eularScore}đ)`;
+            } else if (hasAna) {
+                eularResTxt = `Chưa đủ tiêu chuẩn (${eularScore}đ)`;
+            }
+
+            // Cập nhật Badge Accordion
+            const badgeEular = document.getElementById('badgeEular');
+            badgeEular.innerText = hasAna ? `${eularScore}đ` : "ANA (-)";
+            badgeEular.className = `badge ms-auto me-2 ${eularClass}`;
+            
+            // Cập nhật khung Result Box
+            document.getElementById('resEularTxt').innerHTML = `<span class="${eularResColor}">${eularResTxt}</span>`;
+
+            /* =========================================================
+               3. TÍNH SLEDAI-2K & PHÂN TÍCH CƠ QUAN
+               ========================================================= */
+            let sledaiScore = 0;
+            let organSummary = {};
+
+            document.querySelectorAll('.sledai-item:checked').forEach(cb => {
+                let val = parseInt(cb.value);
+                let org = cb.getAttribute('data-org');
+                let name = cb.getAttribute('data-name');
+                
+                sledaiScore += val;
+                
+                if (!organSummary[org]) organSummary[org] = [];
+                organSummary[org].push(name);
+            });
+
+            // Phân mức Cảnh báo màu sắc Lâm Sàng Pro (Quy tắc 4)
+            let level = 1;
+            let riskStr = "";
+            let sledaiClass = "bg-secondary";
+
+            if (sledaiScore === 0) {
+                level = 1; riskStr = "LUI BỆNH / KHÔNG HOẠT ĐỘNG"; sledaiClass = "bg-success";
+            } else if (sledaiScore <= 5) {
+                level = 2; riskStr = "HOẠT ĐỘNG BỆNH NHẸ"; sledaiClass = "bg-warning text-dark";
+            } else if (sledaiScore <= 10) {
+                level = 3; riskStr = "HOẠT ĐỘNG TRUNG BÌNH"; sledaiClass = "bg-warning text-dark"; // Hoặc màu cam tuỳ biến
+            } else {
+                level = 4; riskStr = "HOẠT ĐỘNG BỆNH NẶNG (FLARE)"; sledaiClass = "bg-danger";
+            }
+
+            // Cập nhật Badge Accordion
+            const badgeSledai = document.getElementById('badgeSledai');
+            badgeSledai.innerText = `${sledaiScore}đ`;
+            badgeSledai.className = `badge ms-auto me-2 ${sledaiClass}`;
+
+            // Cập nhật Result Box UI
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('sledaiVal').innerText = sledaiScore;
+            document.getElementById('sledaiRisk').innerText = riskStr;
+            
+            const resultBox = document.getElementById('resultBox');
+            resultBox.className = 'result-box mb-3';
+            resultBox.classList.add(`level-${level}`);
+
+            // Render Định hướng Tổn thương
+            const organContainer = document.getElementById('organSummary');
+            const organList = document.getElementById('organList');
+            organList.innerHTML = "";
+            
+            if (sledaiScore > 0) {
+                organContainer.style.display = 'block';
+                // Lọc hiển thị theo thứ tự ưu tiên độ nặng
+                const priority = ['cns', 'vasc', 'ren', 'msk', 'skin', 'ser', 'imm', 'con', 'hem'];
+                priority.forEach(key => {
+                    if (organSummary[key]) {
+                        let div = document.createElement('div');
+                        div.className = "organ-block";
+                        div.style.borderColor = organDict[key].color;
+                        div.innerHTML = `
+                            <strong>${organDict[key].name}:</strong> <span class="text-dark">${organSummary[key].join(', ')}</span><br>
+                            <span style="font-size: 13px; color: #495057;"><i>${organDict[key].note}</i></span>
+                        `;
+                        organList.appendChild(div);
+                    }
+                });
+            } else {
+                organContainer.style.display = 'none';
+            }
+
+            // Cuộn mượt mà
+            setTimeout(() => {
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            
+            // Xóa class d-none để hiện badge trên Accordion
+            badgeSlicc.classList.remove('d-none');
+            badgeEular.classList.remove('d-none');
+            badgeSledai.classList.remove('d-none');
+        }
+
+        // HÀM RESET (Quy tắc 2)
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('organSummary').style.display = 'none';
+            
+            // Tắt ghim điểm trên Accordion
+            const badges = [document.getElementById('badgeSlicc'), document.getElementById('badgeEular'), document.getElementById('badgeSledai')];
+            badges.forEach(b => b.classList.add('d-none'));
+
+            // Reset Switch ANA
+            const anaBtn = document.getElementById('anaBtn');
+            const anaVal = document.getElementById('anaVal');
+            const wrapper = document.getElementById('eularFormWrapper');
+            anaVal.value = 'no';
+            anaBtn.innerHTML = '<i class="bi bi-x-circle"></i> KHÔNG có ANA ≥ 1:80';
+            anaBtn.className = 'btn btn-outline-secondary btn-toggle-switch w-100 py-2 mb-3';
+            wrapper.style.opacity = '0.4';
+            wrapper.style.pointerEvents = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eGFR & CKD Nhi khoa - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* ----------------------------------------------------
+           CSS ĐẶC THÙ CỦA MODULE 
+           (Màu sắc khung kết quả level-0 đến level-4 đã nằm trong style.css)
+        ----------------------------------------------------- */
+        
+        /* Nút Switch 1 chạm (Quy tắc 3) */
+        .btn-toggle-switch {
+            min-width: 90px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-toggle-female {
+            color: #d81b60;
+            border-color: #d81b60;
+            background-color: #fff;
+        }
+        .btn-toggle-female:hover, .btn-toggle-female:focus {
+            background-color: #fce4ec;
+            color: #d81b60;
+        }
+        
+        /* Bảng Lý thuyết */
+        .theory-table th, .theory-table td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13.5px;
+        }
+        
+        /* Tô màu nền trọn ô cho Ma trận KDIGO (Quy tắc 4) */
+        .td-level-1 { background-color: #d1e7dd !important; color: #0f5132 !important; font-weight: 600; }
+        .td-level-2 { background-color: #fff3cd !important; color: #856404 !important; font-weight: 600; }
+        .td-level-3 { background-color: #ffdfad !important; color: #bd5200 !important; font-weight: 600; }
+        .td-level-4 { background-color: #f8d7da !important; color: #842029 !important; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2) -->
+    <div id="common-ui"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="m-0 text-primary fw-bold">Tính eGFR (Schwartz)</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- FORM NHẬP LIỆU BẮT BUỘC (Quy tắc 2) -->
+        <form id="calcForm">
+            
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-secondary mb-3"><i class="bi bi-person-fill"></i> 1. Thông tin bệnh nhân</h6>
+                    
+                    <!-- Tuổi: Input number + Dropdown (>= 3 tùy chọn) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tuổi</label>
+                        <div class="input-group">
+                            <input type="number" step="0.1" class="form-control" id="ageValue" placeholder="Nhập tuổi" required>
+                            <select id="ageUnit" class="form-select bg-light text-center fw-semibold" style="max-width: 100px;">
+                                <option value="years" selected>Năm</option>
+                                <option value="months">Tháng</option>
+                                <option value="weeks">Tuần</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Giới tính: Nút Switch 1 chạm (2 tùy chọn) -->
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Giới tính</label>
+                            <div>
+                                <button type="button" id="genderBtn" class="btn btn-outline-primary w-100 btn-toggle-switch" onclick="toggleGender()">
+                                    <i class="bi bi-gender-male"></i> Nam
+                                </button>
+                                <input type="hidden" id="genderVal" value="male">
+                            </div>
+                        </div>
+
+                        <!-- Chiều cao -->
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Chiều cao</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="height" placeholder="VD: 110" required>
+                                <span class="input-group-text fw-semibold">cm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-secondary mb-3"><i class="bi bi-droplet-fill text-danger"></i> 2. Cận lâm sàng</h6>
+                    
+                    <!-- Creatinine máu: Input + Nút Switch 1 chạm (2 tùy chọn) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Creatinine máu (Bắt buộc)</label>
+                        <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" id="serumCrea" placeholder="Nhập nồng độ" required>
+                            <button type="button" id="creaUnitBtn" class="btn btn-outline-primary btn-toggle-switch" onclick="toggleCreaUnit()">µmol/L</button>
+                            <input type="hidden" id="creaUnitVal" value="umol">
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25">
+
+                    <!-- Cystatin C (Tùy chọn) -->
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="hasCystatin" onchange="toggleCys()">
+                        <label class="form-check-label fw-semibold text-primary" for="hasCystatin">Có dữ liệu Cystatin C (Tùy chọn)</label>
+                    </div>
+                    <div id="cysBlock" class="mb-3" style="display: none;">
+                        <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" id="cysValue" placeholder="Nhập Cystatin C">
+                            <span class="input-group-text fw-semibold bg-light">mg/L</span>
+                        </div>
+                    </div>
+
+                    <!-- Nước tiểu (Tùy chọn) -->
+                    <div class="form-check form-switch mb-2 mt-3">
+                        <input class="form-check-input" type="checkbox" id="hasUrine" onchange="toggleUrine()">
+                        <label class="form-check-label fw-semibold text-primary" for="hasUrine">Thông số Nước tiểu (Tính ACR)</label>
+                    </div>
+                    
+                    <div id="urineBlock" style="display: none;">
+                        <!-- Albumin niệu: Dropdown (3 tùy chọn) -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-1">Albumin niệu</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" id="urineAlb" placeholder="Nhập Albumin">
+                                <select id="albUnit" class="form-select bg-light text-center fw-semibold" style="max-width: 100px;">
+                                    <option value="gl">g/L</option>
+                                    <option value="mgl" selected>mg/L</option>
+                                    <option value="mgdl">mg/dL</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Creatinine niệu: Dropdown (3 tùy chọn) -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-1">Creatinine niệu</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" id="urineCrea" placeholder="Nhập Creatinine niệu">
+                                <select id="urineCreaUnit" class="form-select bg-light text-center fw-semibold" style="max-width: 100px;">
+                                    <option value="umol">µmol/L</option>
+                                    <option value="mmol" selected>mmol/L</option>
+                                    <option value="mgdl">mg/dL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- NÚT HÀNH ĐỘNG (Quy tắc 2: Tỷ lệ 70-30 trên cùng 1 hàng) -->
+            <div class="d-flex gap-2 mb-2">
+                <button type="button" onclick="calculate()" class="btn btn-primary fw-bold" style="flex: 7;">
+                    <i class="bi bi-calculator"></i> Tính toán
+                </button>
+                <button type="reset" class="btn btn-outline-secondary fw-semibold" style="flex: 3;" onclick="resetResult()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                </button>
+            </div>
+        </form>
+
+        <!-- KHU VỰC KẾT QUẢ (Quy tắc 3: Ẩn mặc định ban đầu) -->
+        <div id="resultSection" style="display: none; padding-top: 10px;">
+            
+            <!-- Cảnh báo Trẻ nhũ nhi -->
+            <div id="infantWarning" class="alert alert-info border-info mb-3" style="display: none;">
+                <strong><i class="bi bi-info-circle-fill"></i> Lưu ý:</strong> Trẻ dưới 2 tuổi chức năng thận chưa hoàn thiện. eGFR mang tính chất tham chiếu sinh lý, không áp dụng phân độ CKD tiêu chuẩn.
+            </div>
+
+            <!-- Kết quả Chính (Schwartz) -->
+            <div id="resultBox" class="result-box mb-3">
+                <p class="mb-1 fw-semibold text-uppercase" style="font-size: 13px;">eGFR (Schwartz Gốc)</p>
+                <h1 id="egfrVal" class="fw-bold mb-0" style="font-size: 2.8rem;">--</h1>
+                <p class="mb-2 fw-medium" style="font-size: 14px;">mL/min/1.73m²</p>
+                <div class="badge bg-light text-dark border mb-2">Hệ số K = <span id="kFactor">--</span></div>
+                
+                <hr class="my-2 opacity-25">
+                
+                <!-- Phân độ KDIGO (Chỉ hiện khi >= 2 tuổi) -->
+                <div id="kdigoSection">
+                    <h6 id="riskText" class="fw-bold mb-1 mt-2 text-uppercase">--</h6>
+                    <div class="small fw-semibold">
+                        <span id="gStageText">G: --</span> | <span id="aStageText">A: --</span>
+                    </div>
+                    <div id="kdoqiText" class="small mt-1 fst-italic">KDOQI: --</div>
+                </div>
+            </div>
+
+            <!-- Bảng tham chiếu CKiD U25 -->
+            <div class="card shadow-sm border-0 mb-4 bg-light">
+                <div class="card-body py-2 px-3">
+                    <p class="fw-bold text-secondary mb-2 small"><i class="bi bi-bar-chart-fill"></i> Tham chiếu CKiD U25 (2021)</p>
+                    <table class="table table-sm table-borderless mb-0" style="font-size: 13px;">
+                        <tr>
+                            <td class="text-muted">Theo Creatinine:</td>
+                            <td class="text-end fw-bold" id="ckidCr">--</td>
+                        </tr>
+                        <tr id="ckidCysRow" style="display: none;">
+                            <td class="text-muted">Theo Cystatin C:</td>
+                            <td class="text-end fw-bold" id="ckidCys">--</td>
+                        </tr>
+                        <tr id="ckidCombiRow" style="display: none; border-top: 1px dashed #ccc;">
+                            <td class="text-dark fw-semibold pt-2">Kết hợp (Cr-Cys):</td>
+                            <td class="text-end fw-bold text-primary pt-2" id="ckidCombi">--</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2: modal-lg) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start" style="font-size: 14px;">
+                    
+                    <h6 class="text-primary fw-bold">1. Công thức Schwartz Gốc</h6>
+                    <p class="mb-2 text-center font-monospace bg-light p-2 rounded border fw-bold">eGFR = (K × Chiều cao) / Serum Creatinine</p>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered theory-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Đối tượng</th>
+                                    <th>K (mg/dL)</th>
+                                    <th>K (µmol/L)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Sơ sinh (≤ 1 tuần)</td><td>0.33</td><td>29.2</td></tr>
+                                <tr><td>Nhũ nhi (1w - 2y)</td><td>0.45</td><td>39.78</td></tr>
+                                <tr><td>Trẻ em (2 - 12y)</td><td>0.55</td><td>48.6</td></tr>
+                                <tr><td>Trẻ nữ > 12 tuổi</td><td>0.55</td><td>48.6</td></tr>
+                                <tr><td>Trẻ nam > 12 tuổi</td><td>0.70</td><td>61.88</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="text-primary fw-bold">2. Quy đổi Creatinine máu</h6>
+                    <p class="fw-semibold bg-light p-2 rounded text-center border">1 mg/dL = 88.4 µmol/L</p>
+
+                    <h6 class="text-primary fw-bold mt-3">3. Phân độ KDIGO 2012 (G & A)</h6>
+                    <div class="row">
+                        <div class="col-sm-6 mb-2">
+                            <strong>Mức lọc GFR (G):</strong>
+                            <em class="small text-muted">(ml/phút/1.73m2)</em>
+                            <ul class="ps-3 mb-0">
+                                <li>G1: ≥ 90</li>
+                                <li>G2: 60 - 89</li>
+                                <li>G3a: 45 - 59</li>
+                                <li>G3b: 30 - 44</li>
+                                <li>G4: 15 - 29</li>
+                                <li>G5: < 15</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Albumin niệu (A):</strong>
+                            <em class="small text-muted">(ACR: mg/g)</em>
+                            <ul class="ps-3">
+                                <li>A1: < 30</li>
+                                <li>A2: 30 - 300</li>
+                                <li>A3: > 300</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-3">4. Ma trận Nguy cơ KDIGO 2012</h6>
+                    <div class="table-responsive">
+                        <!-- Đã tô màu Cell Background toàn bộ bảng khớp 100% hình ảnh tham chiếu -->
+                        <table class="table table-bordered theory-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="align-middle bg-light">Phân loại GFR<br>(mL/min/1.73m²)</th>
+                                    <th colspan="3" class="bg-light">Albumin niệu (ACR - mg/g)</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-success">A1 (< 30)</th>
+                                    <th class="text-warning">A2 (30 - 300)</th>
+                                    <th class="text-danger">A3 (> 300)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold bg-light">G1 (≥ 90)</td>
+                                    <td class="td-level-1">Thấp</td>
+                                    <td class="td-level-2">Trung bình</td>
+                                    <td class="td-level-3">Cao</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">G2 (60 - 89)</td>
+                                    <td class="td-level-1">Thấp</td>
+                                    <td class="td-level-2">Trung bình</td>
+                                    <td class="td-level-3">Cao</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">G3a (45 - 59)</td>
+                                    <td class="td-level-2">Trung bình</td>
+                                    <td class="td-level-3">Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">G3b (30 - 44)</td>
+                                    <td class="td-level-3">Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">G4 (15 - 29)</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-light">G5 (< 15)</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                    <td class="td-level-4">Rất Cao</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-3">5. Giai đoạn KDOQI</h6>
+                    <p class="mb-1">Giai đoạn 1 & 2 bắt buộc phải có bằng chứng tổn thương thận (VD: ACR ≥ 30 mg/g). Từ Giai đoạn 3 chẩn đoán chỉ cần dựa vào eGFR < 60.</p>
+
+                    <hr>
+                    <p class="small text-muted mb-0">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. Schwartz GJ et al. (1976) Pediatrics.<br>
+                        2. KDIGO 2012 Clinical Practice Guideline for CKD.<br>
+                        3. CKiD U25 (2021) eGFR equation for adolescents/young adults.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG (Quy tắc 1) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS (Quy tắc 2) -->
+    <script>
+        // Xử lý nút Switch 1 chạm cho Giới tính
+        function toggleGender() {
+            const btn = document.getElementById('genderBtn');
+            const val = document.getElementById('genderVal');
+            
+            if (val.value === 'male') {
+                val.value = 'female';
+                btn.innerHTML = '<i class="bi bi-gender-female"></i> Nữ';
+                btn.classList.remove('btn-outline-primary');
+                btn.classList.add('btn-toggle-female');
+            } else {
+                val.value = 'male';
+                btn.innerHTML = '<i class="bi bi-gender-male"></i> Nam';
+                btn.classList.remove('btn-toggle-female');
+                btn.classList.add('btn-outline-primary');
+            }
+        }
+
+        // Xử lý nút Switch 1 chạm cho Đơn vị Creatinine máu
+        function toggleCreaUnit() {
+            const btn = document.getElementById('creaUnitBtn');
+            const val = document.getElementById('creaUnitVal');
+            
+            if (val.value === 'umol') {
+                val.value = 'mgdl';
+                btn.innerText = 'mg/dL';
+            } else {
+                val.value = 'umol';
+                btn.innerText = 'µmol/L';
+            }
+        }
+
+        // Hiện/ẩn khối Tùy chọn
+        function toggleCys() {
+            document.getElementById('cysBlock').style.display = document.getElementById('hasCystatin').checked ? 'block' : 'none';
+        }
+        function toggleUrine() {
+            document.getElementById('urineBlock').style.display = document.getElementById('hasUrine').checked ? 'block' : 'none';
+        }
+
+        // HÀM TÍNH TOÁN CHÍNH
+        function calculate() {
+            // Lấy dữ liệu Input
+            const ageVal = parseFloat(document.getElementById('ageValue').value);
+            const ageUnit = document.getElementById('ageUnit').value;
+            const gender = document.getElementById('genderVal').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const serumCrea = parseFloat(document.getElementById('serumCrea').value);
+            const creaUnit = document.getElementById('creaUnitVal').value;
+
+            // Kiểm tra dữ liệu trống
+            if (isNaN(ageVal) || isNaN(height) || isNaN(serumCrea)) {
+                alert("Vui lòng nhập đầy đủ Tuổi, Chiều cao và Creatinine máu!");
+                return;
+            }
+
+            // Quy đổi tuổi ra Năm và Tuần để đối chiếu bảng hệ số K
+            let years = 0, weeks = 0;
+            if (ageUnit === 'years') { years = ageVal; weeks = ageVal * 52.14; }
+            else if (ageUnit === 'months') { years = ageVal / 12; weeks = ageVal * 4.345; }
+            else if (ageUnit === 'weeks') { years = ageVal / 52.14; weeks = ageVal; }
+
+            // Quy đổi Creatinine đồng nhất về cả 2 đơn vị để tính toán
+            let crea_umol = creaUnit === 'umol' ? serumCrea : serumCrea * 88.4;
+            let crea_mgdl = creaUnit === 'mgdl' ? serumCrea : serumCrea / 88.4;
+
+            // 1. TÍNH SCHWARTZ GỐC (Sử dụng Creatinine umol/L)
+            let K_umol = 0;
+            if (weeks <= 1) K_umol = 29.2;
+            else if (weeks > 1 && years <= 2) K_umol = 39.78;
+            else if (years > 2 && years <= 12) K_umol = 48.6;
+            else if (years > 12) K_umol = (gender === 'male') ? 61.88 : 48.6;
+
+            const eGFR_Schwartz = (K_umol * height) / crea_umol;
+
+            // 2. TÍNH THAM CHIẾU CKiD U25
+            const height_m = height / 100;
+            let k_cr = 0;
+            if (gender === 'male') {
+                if (years < 12) k_cr = 39.0 * Math.pow(1.008, years - 12);
+                else if (years <= 18) k_cr = 39.0 * Math.pow(1.045, years - 12);
+                else k_cr = 50.8;
+            } else {
+                if (years < 12) k_cr = 36.1 * Math.pow(1.008, years - 12);
+                else if (years <= 18) k_cr = 36.1 * Math.pow(1.023, years - 12);
+                else k_cr = 41.4;
+            }
+            const ckid_cr_val = k_cr * (height_m / crea_mgdl);
+            document.getElementById('ckidCr').innerText = ckid_cr_val.toFixed(1);
+
+            // Tùy chọn: Cystatin C
+            const hasCys = document.getElementById('hasCystatin').checked;
+            const cysValue = parseFloat(document.getElementById('cysValue').value);
+            if (hasCys && !isNaN(cysValue) && cysValue > 0) {
+                let k_cys = 0;
+                if (gender === 'male') {
+                    if (years < 15) k_cys = 87.2 * Math.pow(1.011, years - 15);
+                    else if (years <= 18) k_cys = 87.2 * Math.pow(0.960, years - 15);
+                    else k_cys = 77.1;
+                } else {
+                    if (years < 12) k_cys = 79.9 * Math.pow(1.004, years - 12);
+                    else if (years <= 18) k_cys = 79.9 * Math.pow(0.974, years - 12);
+                    else k_cys = 68.3;
+                }
+                const ckid_cys_val = k_cys / cysValue;
+                const ckid_combi_val = (ckid_cr_val + ckid_cys_val) / 2;
+
+                document.getElementById('ckidCysRow').style.display = 'table-row';
+                document.getElementById('ckidCombiRow').style.display = 'table-row';
+                document.getElementById('ckidCys').innerText = ckid_cys_val.toFixed(1);
+                document.getElementById('ckidCombi').innerText = ckid_combi_val.toFixed(1);
+            } else {
+                document.getElementById('ckidCysRow').style.display = 'none';
+                document.getElementById('ckidCombiRow').style.display = 'none';
+            }
+
+            // 3. TÍNH ACR & PHÂN ĐỘ KDIGO
+            let acr = null;
+            const hasUrine = document.getElementById('hasUrine').checked;
+            const uAlb = parseFloat(document.getElementById('urineAlb').value);
+            const uAlbUnit = document.getElementById('albUnit').value;
+            const uCrea = parseFloat(document.getElementById('urineCrea').value);
+            const uCreaUnit = document.getElementById('urineCreaUnit').value;
+
+            if (hasUrine && !isNaN(uAlb) && !isNaN(uCrea) && uCrea > 0) {
+                // Quy đổi Albumin về mg/L
+                let alb_mgl = uAlb;
+                if (uAlbUnit === 'gl') alb_mgl = uAlb * 1000;
+                else if (uAlbUnit === 'mgdl') alb_mgl = uAlb * 10;
+
+                // Quy đổi Creatinine niệu về mg/dL
+                let ucrea_mgdl = uCrea;
+                if (uCreaUnit === 'umol') ucrea_mgdl = uCrea / 88.4;
+                else if (uCreaUnit === 'mmol') ucrea_mgdl = (uCrea * 1000) / 88.4;
+
+                // Công thức tính ACR (mg/g)
+                acr = (alb_mgl / ucrea_mgdl) * 100;
+            }
+
+            // --- XUẤT KẾT QUẢ RA GIAO DIỆN ---
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('egfrVal').innerText = eGFR_Schwartz.toFixed(1);
+            document.getElementById('kFactor').innerText = K_umol;
+
+            const resultBox = document.getElementById('resultBox');
+            // Xóa toàn bộ class màu cũ trước khi gán mới
+            resultBox.className = 'result-box mb-3'; 
+
+            if (years < 2) {
+                // Phân độ đặc thù cho Nhũ Nhi (Mức 0)
+                document.getElementById('infantWarning').style.display = 'block';
+                document.getElementById('kdigoSection').style.display = 'none';
+                resultBox.classList.add('level-0');
+            } else {
+                // Phân độ KDIGO cho trẻ >= 2 tuổi
+                document.getElementById('infantWarning').style.display = 'none';
+                document.getElementById('kdigoSection').style.display = 'block';
+
+                // Giai đoạn G
+                let gCode = ''; let gStage = '';
+                if (eGFR_Schwartz >= 90) { gCode = 'G1'; gStage = 'G1 (≥ 90)'; }
+                else if (eGFR_Schwartz >= 60) { gCode = 'G2'; gStage = 'G2 (60-89)'; }
+                else if (eGFR_Schwartz >= 45) { gCode = 'G3a'; gStage = 'G3a (45-59)'; }
+                else if (eGFR_Schwartz >= 30) { gCode = 'G3b'; gStage = 'G3b (30-44)'; }
+                else if (eGFR_Schwartz >= 15) { gCode = 'G4'; gStage = 'G4 (15-29)'; }
+                else { gCode = 'G5'; gStage = 'G5 (< 15)'; }
+                
+                // Giai đoạn A
+                let aCode = ''; let aStage = 'Chưa có ACR';
+                if (acr !== null) {
+                    if (acr < 30) { aCode = 'A1'; aStage = `A1 (< 30) - ACR: ${acr.toFixed(1)}`; }
+                    else if (acr <= 300) { aCode = 'A2'; aStage = `A2 (30-300) - ACR: ${acr.toFixed(1)}`; }
+                    else { aCode = 'A3'; aStage = `A3 (> 300) - ACR: ${acr.toFixed(1)}`; }
+                }
+                
+                document.getElementById('gStageText').innerText = 'GFR: ' + gStage;
+                document.getElementById('aStageText').innerText = 'Albumin niệu: ' + aStage;
+
+                // Đánh giá Ma trận màu sắc (Khớp Rule 4)
+                let level = 1; let riskStr = "Không đủ dữ liệu phân tầng nguy cơ";
+                if (aCode !== '') {
+                    if (gCode === 'G1' || gCode === 'G2') {
+                        if (aCode === 'A1') { level = 1; riskStr = "NGUY CƠ THẤP"; }
+                        else if (aCode === 'A2') { level = 2; riskStr = "NGUY CƠ TRUNG BÌNH"; }
+                        else { level = 3; riskStr = "NGUY CƠ CAO"; }
+                    } else if (gCode === 'G3a') {
+                        if (aCode === 'A1') { level = 2; riskStr = "NGUY CƠ TRUNG BÌNH"; }
+                        else if (aCode === 'A2') { level = 3; riskStr = "NGUY CƠ CAO"; }
+                        else { level = 4; riskStr = "NGUY CƠ RẤT CAO"; }
+                    } else if (gCode === 'G3b') {
+                        if (aCode === 'A1') { level = 3; riskStr = "NGUY CƠ CAO"; }
+                        else { level = 4; riskStr = "NGUY CƠ RẤT CAO"; }
+                    } else {
+                        level = 4; riskStr = "NGUY CƠ RẤT CAO";
+                    }
+                } else {
+                    // Fallback theo eGFR nếu không có dữ liệu nước tiểu
+                    if (gCode === 'G1') level = 1;
+                    else if (gCode === 'G2') level = 2;
+                    else if (gCode === 'G3a' || gCode === 'G3b') level = 3;
+                    else level = 4;
+                }
+
+                // Áp dụng class màu sắc lâm sàng
+                resultBox.classList.add(`level-${level}`);
+                document.getElementById('riskText').innerText = riskStr;
+
+                // Giai đoạn KDOQI
+                let hasKidneyDamage = (acr !== null && acr >= 30);
+                let kdoqiStr = '';
+                if (eGFR_Schwartz >= 90) kdoqiStr = hasKidneyDamage ? 'Giai đoạn 1 (Có tổn thương thận)' : 'Chưa đủ TC GĐ 1 (Cần ACR ≥ 30)';
+                else if (eGFR_Schwartz >= 60) kdoqiStr = hasKidneyDamage ? 'Giai đoạn 2 (Có tổn thương thận)' : 'Chưa đủ TC GĐ 2 (Cần ACR ≥ 30)';
+                else if (eGFR_Schwartz >= 30) kdoqiStr = 'Giai đoạn 3 (GFR < 60)';
+                else if (eGFR_Schwartz >= 15) kdoqiStr = 'Giai đoạn 4 (GFR < 30)';
+                else kdoqiStr = 'Giai đoạn 5 (Suy thận mạn)';
+                document.getElementById('kdoqiText').innerText = "KDOQI: " + kdoqiStr;
+            }
+
+            // Tự động cuộn trang xuống khu vực kết quả (UX mượt mà)
+            setTimeout(() => {
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // HÀM RESET (Quy tắc 2: Phải có để ẩn kết quả)
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

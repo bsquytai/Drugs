@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tăng Kali máu - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Tùy chỉnh Nút Switch 1 chạm (Quy tắc 3) */
+        .btn-toggle-switch {
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        
+        /* Tùy chỉnh Accordion cho Phác đồ (Quy tắc 5) */
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0c5460;
+            font-weight: 700;
+        }
+        .accordion-button {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        /* Highlight Lọc máu khi Vô niệu */
+        .highlight-dialysis {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #842029;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(220, 53, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2 - Có nút Back thông minh về trang Hub) -->
+    <div id="common-ui" data-back-url="diengiai.html"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn (Quy tắc 2) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="m-0 text-primary fw-bold">Rối loạn Kali máu</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- PILLS ĐIỀU HƯỚNG CHUYỂN TRANG (Quy tắc 5) -->
+        <ul class="nav nav-pills nav-fill mb-4 bg-white p-1 rounded border shadow-sm">
+            <li class="nav-item">
+                <a class="nav-link text-secondary fw-semibold" href="ha-kali.html">Hạ Kali máu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active fw-bold" aria-current="page" href="#">Tăng Kali máu</a>
+            </li>
+        </ul>
+
+        <!-- FORM NHẬP LIỆU BẮT BUỘC (Quy tắc 2) -->
+        <form id="calcForm">
+            
+            <!-- KHỐI 1: TÌNH TRẠNG LÂM SÀNG -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body pt-2">
+                    <h6 class="section-title mt-0"><i class="bi bi-person-lines-fill"></i> 1. Tình trạng Lâm sàng</h6>
+                    
+                    <div class="row">
+                        <!-- Cân nặng: Bắt buộc, type="number" -->
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Cân nặng</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="weight" placeholder="Nhập" required>
+                                <span class="input-group-text fw-semibold">kg</span>
+                            </div>
+                        </div>
+
+                        <!-- Kali máu: Tùy chọn, type="number" -->
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Kali máu</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" id="kVal" placeholder="Tùy chọn">
+                                <span class="input-group-text fw-semibold">mmol/L</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút Switch 1 chạm: Biến đổi ECG (Quy tắc 3) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Điện tim (ECG)</label>
+                        <button type="button" id="ecgBtn" class="btn btn-outline-secondary btn-toggle-switch w-100 py-2" onclick="toggleECG()">
+                            Không có biến đổi ECG
+                        </button>
+                        <input type="hidden" id="ecgVal" value="no">
+                    </div>
+
+                    <!-- Nút Switch 1 chạm: Tình trạng nước tiểu -->
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold">Tình trạng nước tiểu</label>
+                        <button type="button" id="urineBtn" class="btn btn-outline-primary btn-toggle-switch w-100 py-2" onclick="toggleUrine()">
+                            Nước tiểu bình thường
+                        </button>
+                        <input type="hidden" id="urineVal" value="normal">
+                    </div>
+                </div>
+            </div>
+
+            <!-- KHỐI 2: CÀI ĐẶT CHẾ PHẨM (SETTINGS) -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body pt-2 bg-light rounded">
+                    <h6 class="section-title mt-0"><i class="bi bi-gear-fill text-secondary"></i> 2. Cài đặt Chế phẩm</h6>
+                    
+                    <!-- Canxi: Dropdown -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted mb-1">Loại Calcium bảo vệ cơ tim</label>
+                        <select id="caType" class="form-select fw-semibold">
+                            <option value="cacl2" selected>Calcium Chloride 10%</option>
+                            <option value="caglu">Calcium Gluconate 10%</option>
+                        </select>
+                    </div>
+
+                    <!-- Glucose: Dropdown -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted mb-1">Nồng độ Dextrose (Glucose)</label>
+                        <select id="dexType" class="form-select fw-semibold">
+                            <option value="10" selected>D10W - Dextrose 10%</option>
+                            <option value="5">D5W - Dextrose 5%</option>
+                            <option value="20">D20W - Dextrose 20%</option>
+                            <option value="30">D30W - Dextrose 30%</option>
+                        </select>
+                    </div>
+
+                    <!-- Bicarbonate: Dropdown -->
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold small text-muted mb-1">Nồng độ Sodium Bicarbonate</label>
+                        <select id="bicType" class="form-select fw-semibold">
+                            <option value="1.4" selected>1.4% (Đẳng trương)</option>
+                            <option value="4.2">4.2% (Bán ưu trương)</option>
+                            <option value="8.4">8.4% (Ưu trương)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NÚT HÀNH ĐỘNG TỔNG (Quy tắc 2: Tỷ lệ 70-30) -->
+            <div class="d-flex gap-2 mb-2">
+                <button type="button" onclick="calculateAll()" class="btn btn-primary fw-bold" style="flex: 7;">
+                    <i class="bi bi-calculator"></i> Tính Phác Đồ
+                </button>
+                <button type="reset" class="btn btn-outline-secondary fw-semibold" style="flex: 3;" onclick="resetResult()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                </button>
+            </div>
+        </form>
+
+        <!-- KHU VỰC KẾT QUẢ (Quy tắc 3: Ẩn mặc định) -->
+        <div id="resultSection" style="display: none; padding-top: 10px;">
+            
+            <!-- HỘP CẢNH BÁO PHÂN ĐỘ (Tuân thủ Quy tắc 4) -->
+            <div id="resRiskBox" class="result-box mb-4">
+                <p class="mb-1 fw-semibold text-uppercase">Đánh giá nguy cơ</p>
+                <h2 id="resRiskText" class="result-value-main" style="font-size: 1.8rem;">--</h2>
+                <div id="resRiskDesc" class="result-desc mt-2">--</div>
+            </div>
+
+            <!-- ACCORDION PHÁC ĐỒ 3 BƯỚC -->
+            <h6 class="fw-bold text-primary mb-3 text-uppercase" style="font-size: 0.95rem;">Phác đồ xử trí cấp cứu</h6>
+            
+            <div class="accordion mb-4 shadow-sm" id="protocolAccordion">
+                
+                <!-- BƯỚC 1: ỔN ĐỊNH CƠ TIM -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                            <i class="bi bi-heart-pulse-fill text-danger me-2"></i> 1. Bảo vệ màng cơ tim
+                        </button>
+                    </h2>
+                    <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-white text-start">
+                            <div class="alert alert-light border small text-muted py-2 mb-3">
+                                <strong>Chỉ định:</strong> Bắt buộc nếu có biến đổi ECG hoặc Kali máu ≥ 6.5 mmol/L. Tiêm ngay lập tức.
+                            </div>
+                            <h6 id="caName" class="fw-bold text-primary mb-1">--</h6>
+                            <div class="d-flex align-items-end mb-2">
+                                <span id="caVol" class="result-value-main text-dark" style="font-size: 2rem;">--</span>
+                                <span class="result-unit-main ms-2 pb-1">mL (Tiêm TM)</span>
+                            </div>
+                            <div id="caNote" class="result-desc p-2 rounded">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 2: DỊCH CHUYỂN KALI VÀO NỘI BÀO -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                            <i class="bi bi-box-arrow-in-right text-success me-2"></i> 2. Đẩy Kali vào nội bào
+                        </button>
+                    </h2>
+                    <div id="step2" class="accordion-collapse collapse" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-white text-start">
+                            
+                            <!-- Insulin + Glucose -->
+                            <div class="p-3 border rounded mb-3 bg-light">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-droplet-half"></i> Insulin + Dextrose</h6>
+                                <p class="mb-1"><strong>Insulin Regular:</strong> <span id="insVol" class="fw-bold text-primary fs-5">--</span> UI (Tiêm TM/Pha truyền)</p>
+                                <p class="mb-1"><strong><span id="dexName">--</span>:</strong> <span id="dexVol" class="fw-bold text-primary fs-5">--</span> mL</p>
+                                <div id="dexNote" class="small mt-2">--</div>
+                            </div>
+
+                            <!-- Salbutamol -->
+                            <div class="p-3 border rounded mb-3 bg-light">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-lungs"></i> Salbutamol (Khí dung)</h6>
+                                <p class="mb-0">Liều lượng: <span id="salbVol" class="fw-bold text-primary fs-5">--</span> mg / lần (Có thể lặp lại sau 2 giờ)</p>
+                            </div>
+
+                            <!-- Bicarbonate -->
+                            <div class="p-3 border rounded bg-light">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-ev-station"></i> Sodium Bicarbonate <span id="bicName">--</span></h6>
+                                <p class="mb-1">Thể tích: <span id="bicVol" class="fw-bold text-primary fs-5">--</span> mL (Truyền tĩnh mạch chậm)</p>
+                                <div class="small text-muted mt-1">* Hiệu quả nhất khi bệnh nhân có toan chuyển hóa kèm theo.</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 3: ĐÀO THẢI KALI -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                            <i class="bi bi-trash3-fill text-warning me-2"></i> 3. Đào thải Kali ra ngoài
+                        </button>
+                    </h2>
+                    <div id="step3" class="accordion-collapse collapse" data-bs-parent="#protocolAccordion">
+                        <div class="accordion-body bg-white text-start">
+                            
+                            <!-- Furosemide -->
+                            <div id="furoBox" class="p-3 border rounded mb-3">
+                                <h6 class="fw-bold"><i class="bi bi-capsule-pill"></i> Furosemide (Lợi tiểu quai)</h6>
+                                <p class="mb-1">Liều 1-2 mg/kg: <span id="furoVol" class="fw-bold text-primary fs-5">--</span> mg (Tiêm TM)</p>
+                                <div id="furoNote" class="small text-danger fw-bold mt-1" style="display:none;"></div>
+                            </div>
+
+                            <!-- Kayexalate -->
+                            <div class="p-3 border rounded mb-3 bg-light">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-cup-straw"></i> Nhựa trao đổi ion (Kayexalate)</h6>
+                                <p class="mb-1">Liều 1 g/kg: <span id="kayVol" class="fw-bold text-primary fs-5">--</span> g (Uống hoặc Thụt giữ)</p>
+                                <div class="small text-muted mt-1">* Tác dụng chậm (sau 2-4 giờ). Tránh dùng nếu tắc ruột.</div>
+                            </div>
+
+                            <!-- Lọc máu -->
+                            <div id="dialysisBox" class="p-3 border rounded">
+                                <h6 class="fw-bold mb-1"><i class="bi bi-activity"></i> Lọc máu cấp cứu</h6>
+                                <div id="dialysisNote" class="small mt-1">Cân nhắc nếu điều trị nội khoa thất bại, suy thận cấp, hoặc đe dọa tính mạng.</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    
+                    <h6 class="text-primary fw-bold">1. Phân độ Tăng Kali máu & ECG</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Mức độ</th>
+                                    <th>Kali (mmol/L)</th>
+                                    <th>Dấu hiệu ECG đặc trưng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Quy tắc 4: Tô nền màu bằng td-level-x -->
+                                <tr>
+                                    <td class="td-level-2">Nhẹ</td>
+                                    <td class="td-level-2">5.5 - 5.9</td>
+                                    <td class="text-start bg-light">Sóng T cao nhọn, đối xứng.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-3">Vừa</td>
+                                    <td class="td-level-3">6.0 - 6.4</td>
+                                    <td class="text-start bg-light">Khoảng PR kéo dài, mất sóng P.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-4">Nặng</td>
+                                    <td class="td-level-4">≥ 6.5</td>
+                                    <td class="text-start bg-light">QRS giãn rộng, hình ảnh sóng sin, Rung thất.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-3">2. So sánh Chế phẩm Calcium</h6>
+                    <ul>
+                        <li><strong>Calcium Chloride (CaCl2) 10%:</strong> 1 mL chứa 27.2 mg Canxi nguyên tố (gấp 3 lần Gluconate). Tác dụng cực nhanh và mạnh. <strong>Nhược điểm:</strong> Gây hoại tử mô nghiêm trọng nếu thoát mạch. Khuyến cáo tiêm qua CVC. Max liều Nhi khoa: 10 mL.</li>
+                        <li><strong>Calcium Gluconate 10%:</strong> 1 mL chứa 9 mg Canxi nguyên tố. An toàn hơn khi tiêm qua ven ngoại vi. Max liều Nhi khoa: 20 mL.</li>
+                    </ul>
+
+                    <h6 class="text-primary fw-bold mt-3">3. Nguyên tắc pha Dextrose đẩy Kali</h6>
+                    <p class="mb-2">Liều Glucose chuẩn là <strong>0.5 g/kg</strong>. Thể tích truyền phụ thuộc vào nồng độ pha:</p>
+                    <ul>
+                        <li><strong>D5W (5%):</strong> 10 mL/kg (Cẩn thận quá tải dịch).</li>
+                        <li><strong>D10W (10%):</strong> 5 mL/kg (Thường dùng nhất).</li>
+                        <li><strong>D20W (20%):</strong> 2.5 mL/kg.</li>
+                        <li><strong>D30W (30%):</strong> 1.67 mL/kg (Áp suất thẩm thấu cao, nên truyền CVC).</li>
+                    </ul>
+
+                    <!-- Quy tắc 2: Kẻ ngang và Tài liệu tham khảo -->
+                    <hr class="mt-4 mb-2">
+                    <div class="small text-muted">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. Phác đồ Điều trị Nhi khoa - Bệnh viện Nhi Đồng 1 (2020), Chương Rối loạn Nước Điện giải.<br>
+                        2. Kliegman RM, et al. Nelson Textbook of Pediatrics 21st Edition. Chapter 66: Fluid and Electrolyte.<br>
+                        3. UpToDate: Management of hyperkalemia in children.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS -->
+    <script>
+        // Xử lý nút Switch ECG
+        function toggleECG() {
+            const btn = document.getElementById('ecgBtn');
+            const val = document.getElementById('ecgVal');
+            
+            if (val.value === 'no') {
+                val.value = 'yes';
+                btn.innerText = 'CÓ biến đổi điện tim (Nguy kịch)';
+                btn.className = 'btn btn-danger btn-toggle-switch w-100 py-2';
+            } else {
+                val.value = 'no';
+                btn.innerText = 'Không có biến đổi ECG';
+                btn.className = 'btn btn-outline-secondary btn-toggle-switch w-100 py-2';
+            }
+        }
+
+        // Xử lý nút Switch Nước tiểu
+        function toggleUrine() {
+            const btn = document.getElementById('urineBtn');
+            const val = document.getElementById('urineVal');
+            
+            if (val.value === 'normal') {
+                val.value = 'anuria';
+                btn.innerText = 'Thiểu niệu / Vô niệu';
+                btn.className = 'btn btn-warning text-dark border-warning btn-toggle-switch w-100 py-2';
+            } else {
+                val.value = 'normal';
+                btn.innerText = 'Nước tiểu bình thường';
+                btn.className = 'btn btn-outline-primary btn-toggle-switch w-100 py-2';
+            }
+        }
+
+        // HÀM TÍNH TOÁN PHÁC ĐỒ
+        function calculateAll() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const kVal = parseFloat(document.getElementById('kVal').value);
+            const ecgVal = document.getElementById('ecgVal').value;
+            const urineVal = document.getElementById('urineVal').value;
+
+            if (isNaN(weight) || weight <= 0) {
+                alert("Vui lòng nhập Cân nặng hợp lệ!");
+                return;
+            }
+
+            /* =========================================================
+               1. PHÂN ĐỘ NGUY CƠ (Áp dụng Quy tắc 4)
+               ========================================================= */
+            let level = 1;
+            let riskStr = "CHƯA RÕ";
+            let riskDesc = "Vui lòng nhập nồng độ Kali máu.";
+
+            if (ecgVal === 'yes') {
+                level = 4; // Mức Đỏ
+                riskStr = "CẤP CỨU NGUY KỊCH (ĐE DỌA NGƯNG TIM)";
+                riskDesc = "Có biến đổi ECG. Bắt buộc xử trí bảo vệ màng cơ tim NGAY LẬP TỨC.";
+            } else if (!isNaN(kVal)) {
+                if (kVal >= 6.5) {
+                    level = 4;
+                    riskStr = "MỨC ĐỘ NẶNG (CẤP CỨU)";
+                    riskDesc = "Kali máu ≥ 6.5. Nguy cơ biến chứng tim mạch rất cao.";
+                } else if (kVal >= 6.0) {
+                    level = 3;
+                    riskStr = "MỨC ĐỘ VỪA";
+                    riskDesc = "Cần theo dõi sát Monitor và bắt đầu hạ Kali.";
+                } else if (kVal >= 5.5) {
+                    level = 2;
+                    riskStr = "MỨC ĐỘ NHẸ";
+                    riskDesc = "Ưu tiên ngưng các nguồn cung cấp Kali và đào thải.";
+                } else {
+                    level = 1;
+                    riskStr = "TRONG GIỚI HẠN BÌNH THƯỜNG";
+                    riskDesc = "Kali < 5.5 mmol/L.";
+                }
+            } else {
+                level = 3; // Mặc định cảnh báo cam nếu không nhập K nhưng bấm tính
+                riskStr = "ĐÁNH GIÁ THEO LÂM SÀNG";
+            }
+
+            // Render Khung Cảnh báo
+            const riskBox = document.getElementById('resRiskBox');
+            riskBox.className = `result-box mb-4 level-${level}`;
+            document.getElementById('resRiskText').innerText = riskStr;
+            document.getElementById('resRiskDesc').innerText = riskDesc;
+
+            /* =========================================================
+               2. TÍNH TOÁN BƯỚC 1: CANXI (Ổn định màng)
+               ========================================================= */
+            const caType = document.getElementById('caType').value;
+            let caVol = 0;
+            let caNameStr = "";
+            let caNoteStr = "";
+
+            if (caType === 'cacl2') {
+                caNameStr = "Calcium Chloride 10%";
+                caVol = weight * 0.2;
+                if (caVol > 10) caVol = 10; // Cập nhật ranh giới: Max 10ml theo chốt của Bác sĩ
+                caNoteStr = "<strong class='text-danger'>CẢNH BÁO:</strong> Bắt buộc tiêm qua tĩnh mạch trung tâm (CVC) hoặc ven rất lớn. Tiêm TM rất chậm (10-20 phút). Nguy cơ hoại tử mô nếu thoát mạch!";
+                document.getElementById('caNote').className = "result-desc p-2 rounded bg-danger text-white mt-2";
+            } else {
+                caNameStr = "Calcium Gluconate 10%";
+                caVol = weight * 0.5;
+                if (caVol > 20) caVol = 20; // Max 20ml
+                caNoteStr = "An toàn cho ven ngoại vi. Tiêm TM chậm (10-20 phút) dưới Monitor.";
+                document.getElementById('caNote').className = "result-desc p-2 rounded bg-success text-white mt-2";
+            }
+
+            document.getElementById('caName').innerText = caNameStr;
+            document.getElementById('caVol').innerText = caVol.toFixed(1);
+            document.getElementById('caNote').innerHTML = caNoteStr;
+
+            /* =========================================================
+               3. TÍNH TOÁN BƯỚC 2: ĐẨY KALI VÀO NỘI BÀO
+               ========================================================= */
+            // 3a. Insulin + Glucose
+            const insVol = weight * 0.1; // 0.1 UI/kg
+            document.getElementById('insVol').innerText = insVol.toFixed(1);
+
+            const dexType = document.getElementById('dexType').value;
+            let dexVol = 0;
+            let dexNoteStr = "";
+            document.getElementById('dexName').innerText = `Dextrose ${dexType}%`;
+
+            if (dexType === "5") {
+                dexVol = weight * 10;
+                dexNoteStr = "<span class='text-warning fw-bold'><i class='bi bi-exclamation-triangle'></i> Thể tích dịch rất lớn. Cẩn trọng quá tải tuần hoàn!</span>";
+            } else if (dexType === "10") {
+                dexVol = weight * 5;
+                dexNoteStr = "<span class='text-success'>Thể tích chuẩn. Truyền trong 30-60 phút.</span>";
+            } else if (dexType === "20") {
+                dexVol = weight * 2.5;
+                dexNoteStr = "<span class='text-success'>Thể tích thấp. Tốt cho bệnh nhân hạn chế dịch.</span>";
+            } else if (dexType === "30") {
+                dexVol = weight * 1.67;
+                dexNoteStr = "<span class='text-danger fw-bold'><i class='bi bi-exclamation-triangle'></i> Nồng độ ưu trương cao. Khuyến cáo truyền qua ven trung tâm.</span>";
+            }
+            document.getElementById('dexVol').innerText = dexVol.toFixed(1);
+            document.getElementById('dexNote').innerHTML = dexNoteStr;
+
+            // 3b. Salbutamol
+            const salbVol = (weight < 25) ? 2.5 : 5.0;
+            document.getElementById('salbVol').innerText = salbVol.toFixed(1);
+
+            // 3c. Bicarbonate (Liều 1 mEq/kg)
+            const bicType = document.getElementById('bicType').value;
+            let bicVol = 0;
+            if (bicType === "1.4") bicVol = weight * 6;      // ~0.16 mEq/mL
+            else if (bicType === "4.2") bicVol = weight * 2; // ~0.5 mEq/mL
+            else if (bicType === "8.4") bicVol = weight * 1; // 1 mEq/mL
+
+            document.getElementById('bicName').innerText = `${bicType}%`;
+            document.getElementById('bicVol').innerText = bicVol.toFixed(1);
+
+            /* =========================================================
+               4. TÍNH TOÁN BƯỚC 3: ĐÀO THẢI KALI & UX MAGIC VÔ NIỆU
+               ========================================================= */
+            // Furosemide
+            const furoMin = weight * 1;
+            const furoMax = weight * 2;
+            document.getElementById('furoVol').innerText = `${furoMin.toFixed(1)} - ${furoMax.toFixed(1)}`;
+            
+            const furoBox = document.getElementById('furoBox');
+            const furoNote = document.getElementById('furoNote');
+            
+            // Kayexalate
+            const kayVol = weight * 1;
+            document.getElementById('kayVol').innerText = kayVol.toFixed(1);
+
+            // Lọc máu
+            const dialysisBox = document.getElementById('dialysisBox');
+            const dialysisNote = document.getElementById('dialysisNote');
+
+            // Xử lý Giao diện thông minh khi VÔ NIỆU
+            if (urineVal === 'anuria') {
+                // Furosemide bị gạch chéo
+                furoBox.style.opacity = '0.5';
+                furoBox.style.textDecoration = 'line-through';
+                furoBox.classList.add('bg-light');
+                furoNote.innerText = "Kém hoặc Không hiệu quả do bệnh nhân thiểu/vô niệu.";
+                furoNote.style.display = 'block';
+
+                // Lọc máu sáng rực lên
+                dialysisBox.className = "p-3 rounded highlight-dialysis mt-3";
+                dialysisNote.innerHTML = "<strong>🔴 CHỈ ĐỊNH ƯU TIÊN:</strong> Bệnh nhân vô niệu, yêu cầu hội chẩn Thận nhân tạo cấp cứu ngay lập tức!";
+            } else {
+                // Bình thường
+                furoBox.style.opacity = '1';
+                furoBox.style.textDecoration = 'none';
+                furoBox.classList.remove('bg-light');
+                furoNote.style.display = 'none';
+
+                dialysisBox.className = "p-3 border rounded mt-3 bg-light";
+                dialysisNote.innerText = "Cân nhắc nếu điều trị nội khoa thất bại, suy thận cấp, hoặc đe dọa tính mạng.";
+            }
+
+            // Hiển thị toàn bộ kết quả và cuộn
+            document.getElementById('resultSection').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // HÀM RESET
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+            
+            // Reset Switch ECG
+            const ecgBtn = document.getElementById('ecgBtn');
+            const ecgVal = document.getElementById('ecgVal');
+            ecgVal.value = 'no';
+            ecgBtn.innerText = 'Không có biến đổi ECG';
+            ecgBtn.className = 'btn btn-outline-secondary btn-toggle-switch w-100 py-2';
+
+            // Reset Switch Nước tiểu
+            const urineBtn = document.getElementById('urineBtn');
+            const urineVal = document.getElementById('urineVal');
+            urineVal.value = 'normal';
+            urineBtn.innerText = 'Nước tiểu bình thường';
+            urineBtn.className = 'btn btn-outline-primary btn-toggle-switch w-100 py-2';
+        }
+    </script>
+</body>
+</html>

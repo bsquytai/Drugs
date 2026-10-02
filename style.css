@@ -1,0 +1,249 @@
+/* =========================================
+   FILE: style.css
+   Mô tả: Giao diện và Bảng màu cốt lõi
+   ========================================= */
+
+/* 1. HỆ THỐNG MÀU SẮC LÂM SÀNG */
+:root {
+    /* Các cấp độ cảnh báo lâm sàng */
+    --level-0-bg: #e7f1ff; --level-0-text: #0c5460; --level-0-border: #0d6efd; 
+    --level-1-bg: #d1e7dd; --level-1-text: #0f5132; --level-1-border: #198754; 
+    --level-2-bg: #fff3cd; --level-2-text: #856404; --level-2-border: #ffc107; 
+    --level-3-bg: #ffdfad; --level-3-text: #bd5200; --level-3-border: #fd7e14; 
+    --level-4-bg: #f8d7da; --level-4-text: #842029; --level-4-border: #dc3545; 
+    
+    /* Màu nền ứng dụng */
+    --bg-main: #f8f9fa;
+    --card-bg: #ffffff;
+    
+    /* ĐÂY CHÍNH LÀ BIẾN MÀU XANH MEDICAL QUYẾT ĐỊNH MÀU SẮC LOGO VÀ KHUNG TÌM KIẾM */
+    --primary-color: #0d6efd; 
+}
+
+/* 2. BỐ CỤC CHUNG */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-main);
+    color: #212529;
+    padding-top: 64px;
+    padding-bottom: 40px;
+    overflow-y: scroll; /* Bắt buộc để chống lỗi giật màn hình khi tìm kiếm */
+}
+
+/* 3. THANH ĐIỀU HƯỚNG (NAVBAR) */
+.navbar-custom { 
+    background-color: var(--card-bg); 
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05); 
+    padding: 10px 16px; 
+}
+
+.navbar-brand { 
+    font-weight: 700; 
+    color: var(--primary-color) !important; /* Bắt buộc có !important để đè màu đen của Bootstrap */
+    font-size: 18px; 
+    margin: 0; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+
+.btn-icon { 
+    background: none; 
+    border: none; 
+    font-size: 24px; 
+    color: #495057; 
+    padding: 0; 
+}
+
+/* 4. KHUNG TÌM KIẾM */
+.search-container { margin: 16px 0 24px 0; }
+
+.search-input { 
+    border-radius: 20px; 
+    padding: 12px 20px; 
+    border: 1px solid #dee2e6; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+    font-size: 15px; 
+}
+
+/* Khung chuyển xanh Medical khi click vào nhập liệu */
+.search-input:focus { 
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15); 
+    outline: none;
+}
+
+/* 5. GIAO DIỆN DANH MỤC CÔNG CỤ */
+.section-title { 
+    font-size: 13px; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    color: #adb5bd; 
+    margin: 24px 0 12px 4px; 
+    letter-spacing: 0.5px; 
+}
+
+.module-card { 
+    background: var(--card-bg); 
+    border-radius: 14px; 
+    border: none; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+    text-decoration: none; 
+    color: inherit; 
+    display: flex; 
+    align-items: center; 
+    padding: 16px; 
+    margin-bottom: 12px; 
+    transition: transform 0.1s; 
+}
+
+.module-card:active { 
+    transform: scale(0.97); 
+    background-color: #f8f9fa; 
+}
+
+/* Bảng màu Icon phân loại chuyên khoa */
+.icon-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; margin-right: 16px; }
+.icon-pharma { background: #d1e7dd; color: #198754; } 
+.icon-er { background: #f8d7da; color: #dc3545; } 
+.icon-nephro { background: #e7f1ff; color: #0d6efd; } 
+.icon-cardio { background: #ffe5d0; color: #fd7e14; } 
+.icon-gastro { background: #fff3cd; color: #856404; } 
+.icon-immune { background: #cff4fc; color: #055160; } 
+.icon-endo { background: #e2e3e5; color: #383d41; } 
+
+.module-info { flex-grow: 1; }
+.module-title { font-weight: 600; font-size: 16px; margin: 0 0 4px 0; color: #212529; }
+.module-desc { font-size: 13px; color: #6c757d; margin: 0; line-height: 1.4; }
+.chevron-icon { color: #ced4da; font-size: 20px; }
+
+/* Nút Về đầu trang (Back to top) */
+#back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.2s ease;
+  z-index: 1040; /* Nằm trên nội dung thường, dưới Modal (1050+) */
+}
+
+#back-to-top.show {
+  opacity: 0.9;
+  visibility: visible;
+}
+
+#back-to-top:active {
+  transform: scale(0.92);
+}
+
+/* TỐI ƯU HIỂN THỊ TRÊN MÁY TÍNH (Chống kéo giãn) */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* HỆ THỐNG MÀU SẮC LÂM SÀNG BẮT BUỘC */
+.result-box {
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    /* THÊM DÒNG NÀY ĐỂ FIX LỖI CUỘN TRANG CHO TOÀN BỘ APP */
+    scroll-margin-top: 80px;
+}
+.level-0 { background-color: #e7f1ff; color: #0c5460; border: 1px solid #0d6efd; }
+.level-1 { background-color: #d1e7dd; color: #0f5132; border: 1px solid #198754; }
+.level-2 { background-color: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+.level-3 { background-color: #ffdfad; color: #bd5200; border: 1px solid #fd7e14; }
+.level-4 { background-color: #f8d7da; color: #842029; border: 1px solid #dc3545; }
+
+/* CUSTOM UI: NÚT SWITCH 1 CHẠM & BẢNG LÝ THUYẾT */
+.btn-toggle-switch {
+    min-width: 90px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+/* Style riêng cho nút chọn Giới tính Nữ */
+.btn-toggle-female {
+    color: #d81b60;
+    border-color: #d81b60;
+    background-color: #fff;
+}
+.btn-toggle-female:hover, .btn-toggle-female:focus {
+    background-color: #fce4ec;
+    color: #d81b60;
+}
+
+/* Chuẩn hóa Bảng trong Modal Lý thuyết */
+.theory-table th, .theory-table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 13.5px;
+}
+
+/* =========================================
+   TYPOGRAPHY BẮT BUỘC (Kích thước chữ)
+   ========================================= */
+/* Tiêu đề của từng mục (Thông tin, Cận lâm sàng...) */
+.section-title {
+    font-size: 1rem; /* Tương đương 16px */
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #6c757d; /* text-secondary */
+}
+
+/* Số kết quả chính siêu to */
+.result-value-main {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+/* Đơn vị của kết quả chính */
+.result-unit-main {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Các đoạn text phụ / cảnh báo trong khung kết quả */
+.result-desc {
+    font-size: 0.875rem; /* Tương đương 14px */
+    font-weight: 500;
+}
+
+/* =========================================
+   MÀU SẮC DÀNH RIÊNG CHO Ô BẢNG (TABLE CELL)
+   (Dùng !important để ghi đè hiệu ứng hover/striped của Bootstrap)
+   ========================================= */
+.td-level-0 { background-color: #e7f1ff !important; color: #0c5460 !important; font-weight: 600; }
+.td-level-1 { background-color: #d1e7dd !important; color: #0f5132 !important; font-weight: 600; }
+.td-level-2 { background-color: #fff3cd !important; color: #856404 !important; font-weight: 600; }
+.td-level-3 { background-color: #ffdfad !important; color: #bd5200 !important; font-weight: 600; }
+.td-level-4 { background-color: #f8d7da !important; color: #842029 !important; font-weight: 600; }
+
+/* Custom Styles cho Nút Switch Giới tính */
+.btn-toggle-female {
+    color: #d81b60 !important;
+    border-color: #d81b60 !important;
+    background-color: #fff !important;
+}
+.btn-toggle-female:hover, .btn-toggle-female:focus {
+    background-color: #fce4ec !important;
+    color: #d81b60 !important;
+}

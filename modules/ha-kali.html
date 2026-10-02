@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hạ Kali máu - Lâm Sàng Pro</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Chung của hệ thống (Quy tắc 1) -->
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Tùy chỉnh Nút Switch 1 chạm (Quy tắc 3) */
+        .btn-toggle-switch {
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-toggle-route-central {
+            color: #fff;
+            background-color: #fd7e14; /* Cam cảnh báo cho đường trung tâm */
+            border-color: #fd7e14;
+        }
+        
+        /* Tùy chỉnh Accordion cho chuẩn UI Y khoa */
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0c5460;
+            font-weight: 700;
+        }
+        .accordion-button {
+            font-weight: 600;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG XƯƠNG: Chèn Menu chung (Quy tắc 2) -->
+    <div id="common-ui" data-back-url="diengiai.html"></div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Tiêu đề & Nút mở Modal Hướng dẫn (Quy tắc 2) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="m-0 text-primary fw-bold">Rối loạn Kali máu</h5>
+            <button type="button" class="btn btn-outline-info btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#theoryModal">
+                <i class="bi bi-journal-text"></i> Lý thuyết
+            </button>
+        </div>
+
+        <!-- PILLS ĐIỀU HƯỚNG CHUYỂN TRANG (Quy tắc 5) -->
+        <ul class="nav nav-pills nav-fill mb-4 bg-white p-1 rounded border shadow-sm">
+            <li class="nav-item">
+                <a class="nav-link active fw-bold" aria-current="page" href="#">Hạ Kali máu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-secondary fw-semibold" href="tang-kali.html">Tăng Kali máu</a>
+            </li>
+        </ul>
+
+        <!-- FORM NHẬP LIỆU BẮT BUỘC (Quy tắc 2) -->
+        <form id="calcForm">
+            
+            <!-- KHU VỰC THÔNG TIN CHUNG -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body pt-2">
+                    <h6 class="section-title mt-0"><i class="bi bi-person-fill"></i> Thông tin chung</h6>
+                    
+                    <div class="row">
+                        <!-- Cân nặng: Bắt buộc, type="number" (Quy tắc 3) -->
+                        <div class="col-6 mb-2">
+                            <label class="form-label fw-semibold">Cân nặng</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" class="form-control" id="weight" placeholder="Nhập" required>
+                                <span class="input-group-text fw-semibold">kg</span>
+                            </div>
+                        </div>
+
+                        <!-- Kali máu: Tùy chọn, type="number" -->
+                        <div class="col-6 mb-2">
+                            <label class="form-label fw-semibold">Kali máu</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" id="kVal" placeholder="Tùy chọn">
+                                <span class="input-group-text fw-semibold">mmol/L</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HỆ THỐNG ACCORDION: TĨNH MẠCH VÀ ĐƯỜNG UỐNG -->
+            <div class="accordion mb-4 shadow-sm" id="kaliAccordion">
+                
+                <!-- ACCORDION 1: BÙ TĨNH MẠCH (IV) -->
+                <div class="accordion-item border-0 border-bottom">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIV">
+                            <i class="bi bi-droplet-fill text-primary me-2"></i> Phân hệ 1: Bù tĩnh mạch (IV)
+                        </button>
+                    </h2>
+                    <div id="collapseIV" class="accordion-collapse collapse" data-bs-parent="#kaliAccordion">
+                        <div class="accordion-body bg-light">
+                            
+                            <!-- Liều bù: Dropdown (3 tùy chọn) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Liều bù</label>
+                                <div class="input-group">
+                                    <select id="doseIV" class="form-select bg-white fw-semibold text-center">
+                                        <option value="0.3">0.3</option>
+                                        <option value="0.5" selected>0.5</option>
+                                        <option value="1.0">1.0</option>
+                                    </select>
+                                    <span class="input-group-text">mEq/kg/liều</span>
+                                </div>
+                            </div>
+
+                            <!-- Đường truyền: Switch 1 chạm (2 tùy chọn) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Đường truyền tĩnh mạch</label>
+                                <button type="button" id="routeBtn" class="btn btn-outline-primary btn-toggle-switch w-100 py-2" onclick="toggleRoute()">
+                                    Ngoại vi (Max 40 mEq/L)
+                                </button>
+                                <input type="hidden" id="routeVal" value="peripheral">
+                            </div>
+
+                            <!-- Thời gian truyền: Dropdown (3 tùy chọn) -->
+                            <div class="mb-2">
+                                <label class="form-label fw-semibold">Thời gian truyền</label>
+                                <div class="input-group">
+                                    <select id="timeIV" class="form-select bg-white fw-semibold text-center">
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    <span class="input-group-text">Giờ</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCORDION 2: BÙ ĐƯỜNG UỐNG (PO) -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePO">
+                            <i class="bi bi-capsule text-success me-2"></i> Phân hệ 2: Bù đường uống (PO)
+                        </button>
+                    </h2>
+                    <div id="collapsePO" class="accordion-collapse collapse" data-bs-parent="#kaliAccordion">
+                        <div class="accordion-body bg-light">
+                            
+                            <!-- Liều mục tiêu: Dropdown -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Liều mục tiêu</label>
+                                <div class="input-group">
+                                    <select id="dosePO" class="form-select bg-white fw-semibold text-center">
+                                        <option value="1.0">1.0</option>
+                                        <option value="1.5">1.5</option>
+                                        <option value="2.0" selected>2.0</option>
+                                        <option value="2.5">2.5</option>
+                                        <option value="3.0">3.0</option>
+                                        <option value="3.5">3.5</option>
+                                        <option value="4.0">4.0</option>
+                                    </select>
+                                    <span class="input-group-text">mEq/kg/ngày</span>
+                                </div>
+                            </div>
+
+                            <!-- Chế phẩm: Dropdown -->
+                            <div class="mb-2">
+                                <label class="form-label fw-semibold">Chế phẩm quy đổi</label>
+                                <select id="productPO" class="form-select bg-white fw-semibold">
+                                    <option value="ampoule">Ống KCl 10% (10ml = 13.4 mEq)</option>
+                                    <option value="tab500">Viên KCl 500mg (6.7 mEq)</option>
+                                    <option value="tab600">Viên KCl 600mg (8.0 mEq)</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- NÚT HÀNH ĐỘNG TỔNG (Quy tắc 2: Tỷ lệ 70-30 trên cùng 1 hàng dưới form) -->
+            <div class="d-flex gap-2 mb-2">
+                <button type="button" onclick="calculateAll()" class="btn btn-primary fw-bold" style="flex: 7;">
+                    <i class="bi bi-calculator"></i> Tính toán
+                </button>
+                <button type="reset" class="btn btn-outline-secondary fw-semibold" style="flex: 3;" onclick="resetResult()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Làm mới
+                </button>
+            </div>
+        </form>
+
+        <!-- KHU VỰC KẾT QUẢ (Quy tắc 3: Ẩn mặc định ban đầu) -->
+        <div id="resultSection" style="display: none; padding-top: 10px;">
+            
+            <!-- KHUNG KẾT QUẢ TĨNH MẠCH -->
+            <div id="resBoxIV" class="result-box mb-3" style="display: none;">
+                <p class="section-title text-uppercase mb-1">Tốc độ bơm tiêm điện</p>
+                <div id="ivRateVal" class="result-value-main">--</div>
+                <div class="result-unit-main mb-2">mL/giờ</div>
+                
+                <div class="badge bg-light text-dark border mb-3 p-2 fs-6">Đạt: <span id="ivSpeedDesc" class="fw-bold">--</span> mEq/kg/giờ</div>
+                
+                <hr class="my-2 opacity-25">
+                <div id="ivRecipeDesc" class="result-desc text-start mt-3 p-2 bg-white rounded border">--</div>
+                <div id="ivWarning" class="result-desc text-start mt-2 fw-bold" style="display:none;"></div>
+            </div>
+
+            <!-- KHUNG KẾT QUẢ ĐƯỜNG UỐNG -->
+            <div id="resBoxPO" class="result-box mb-3" style="display: none;">
+                <p class="section-title text-uppercase mb-1">Y Lệnh Đường Uống</p>
+                
+                <!-- Kết quả cho Ống uống -->
+                <div id="poAmpouleResult" style="display:none;">
+                    <div id="poMlVal" class="result-value-main text-primary">--</div>
+                    <div class="result-unit-main mb-2">mL / ngày</div>
+                    <div class="result-desc mt-3 p-3 bg-white rounded border text-start">
+                        Bác sĩ tự chia thành 2-4 cữ uống/ngày. <br>
+                        <strong>Lưu ý:</strong> Cần pha loãng với nước/đường và uống sau ăn.
+                    </div>
+                </div>
+
+                <!-- Kết quả UX Magic cho Thuốc Viên -->
+                <div id="poTabletResult" style="display:none;">
+                    <div class="badge bg-light text-dark border mb-3 p-2 w-100 text-start fs-6">
+                        Mục tiêu lý thuyết: <span id="poTargetMeq" class="fw-bold text-primary">--</span> mEq/ngày<br>
+                        <span class="text-muted fw-normal">(Tương đương: <span id="poExactTabs">--</span> viên)</span>
+                    </div>
+                    
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <div class="p-2 border rounded bg-white text-start shadow-sm">
+                                <span class="fw-bold text-success"><i class="bi bi-check-circle-fill"></i> Gợi ý 1:</span> Dùng <span class="result-value-main" style="font-size: 1.5rem;" id="poFloorTabs">--</span> <strong>viên/ngày</strong><br>
+                                <span class="result-desc text-muted">Đạt liều thực tế: <span id="poFloorDose" class="fw-bold text-dark">--</span> mEq/kg/ngày</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="p-2 border rounded bg-white text-start shadow-sm">
+                                <span class="fw-bold text-primary"><i class="bi bi-check-circle-fill"></i> Gợi ý 2:</span> Dùng <span class="result-value-main" style="font-size: 1.5rem;" id="poCeilTabs">--</span> <strong>viên/ngày</strong><br>
+                                <span class="result-desc text-muted">Đạt liều thực tế: <span id="poCeilDose" class="fw-bold text-dark">--</span> mEq/kg/ngày</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-desc mt-3 small text-muted text-start">
+                        * Bác sĩ chọn 1 trong 2 mốc trên và tự phân bổ cữ uống trong ngày (nguyên viên). Uống sau ăn.
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <!-- MODAL LÝ THUYẾT (Quy tắc 2) -->
+    <div class="modal fade" id="theoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-dark">
+                    <!-- Icon Modal chuẩn (Quy tắc 2) -->
+                    <h6 class="modal-title fw-bold"><i class="bi bi-book"></i> Lý thuyết & Tham chiếu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    
+                    <h6 class="text-primary fw-bold">1. Phân độ Hạ Kali máu</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Mức độ</th>
+                                    <th>Kali máu (mmol/L)</th>
+                                    <th>Khuyến cáo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Quy tắc 4: Tô màu bảng bằng class td-level-x -->
+                                <tr>
+                                    <td class="td-level-1">Nhẹ</td>
+                                    <td class="td-level-1">3.0 - 3.4</td>
+                                    <td class="text-start bg-light">Ưu tiên bù đường uống.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-3">Vừa</td>
+                                    <td class="td-level-3">2.5 - 2.9</td>
+                                    <td class="text-start bg-light">Bù tĩnh mạch chậm.</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-level-4">Nặng</td>
+                                    <td class="td-level-4">< 2.5</td>
+                                    <td class="text-start bg-light">Cấp cứu bù tĩnh mạch. Mắc Monitor theo dõi.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-3">2. Nguyên tắc an toàn Truyền Tĩnh Mạch</h6>
+                    <ul class="mb-3">
+                        <li class="text-danger fw-bold">TUYỆT ĐỐI KHÔNG tiêm tĩnh mạch trực tiếp Kali.</li>
+                        <li><strong>Tốc độ truyền an toàn:</strong> Trẻ em ≤ 0.5 mEq/kg/giờ (Cấp cứu có thể đến 1.0 qua tĩnh mạch trung tâm). Người lớn ≤ 10 - 20 mEq/giờ.</li>
+                        <li><strong>Nồng độ dịch pha an toàn:</strong> 
+                            <ul>
+                                <li>Đường ngoại vi: ≤ 40 mEq/L (Tránh viêm loét tĩnh mạch).</li>
+                                <li>Đường trung tâm: Thường pha 80 mEq/L (Có thể lên tới 120 mEq/L nếu cần thiết nhưng hạn chế).</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h6 class="text-primary fw-bold mt-3">3. Hệ số quy đổi chế phẩm</h6>
+                    <ul>
+                        <li>1 Ống <strong>KCl 10% (10ml)</strong> chứa 1.34 g KCl ≈ <strong>13.4 mEq</strong> Kali.</li>
+                        <li>1 Viên <strong>Kalium chloratum 500mg</strong> ≈ <strong>6.7 mEq</strong> Kali.</li>
+                        <li>1 Viên <strong>Kaleorid / Kaldyum 600mg</strong> ≈ <strong>8.0 mEq</strong> Kali.</li>
+                    </ul>
+
+                    <!-- Quy tắc 2: Kẻ ngang và Tài liệu tham khảo -->
+                    <hr class="mt-4 mb-2">
+                    <div class="small text-muted">
+                        <strong>Tài liệu tham khảo:</strong><br>
+                        1. Phác đồ Điều trị Nhi khoa - Bệnh viện Nhi Đồng 1 (2020), Chương Rối loạn Nước Điện giải - Rối loạn Kali máu.<br>
+                        2. Kliegman RM, et al. Nelson Textbook of Pediatrics 21st Edition. Chapter 66: Fluid and Electrolyte.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS CHUNG CỦA HỆ THỐNG -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <!-- MODULE-SPECIFIC JS -->
+    <script>
+        // Xử lý nút Switch 1 chạm Đường truyền (Quy tắc 3)
+        function toggleRoute() {
+            const btn = document.getElementById('routeBtn');
+            const val = document.getElementById('routeVal');
+            
+            if (val.value === 'peripheral') {
+                val.value = 'central';
+                btn.innerText = 'Trung tâm (Max 80 mEq/L)';
+                btn.classList.add('btn-toggle-route-central');
+                btn.classList.remove('btn-outline-primary');
+            } else {
+                val.value = 'peripheral';
+                btn.innerText = 'Ngoại vi (Max 40 mEq/L)';
+                btn.classList.remove('btn-toggle-route-central');
+                btn.classList.add('btn-outline-primary');
+            }
+        }
+
+        // HÀM TÍNH TOÁN TỔNG (Xử lý Accordion tương ứng)
+        function calculateAll() {
+            // Lấy thông tin chung
+            const weight = parseFloat(document.getElementById('weight').value);
+            const kVal = parseFloat(document.getElementById('kVal').value);
+
+            // Bắt buộc phải có Cân nặng
+            if (isNaN(weight) || weight <= 0) {
+                alert("Vui lòng nhập Cân nặng hợp lệ!");
+                return;
+            }
+
+            // Cảnh báo Kali máu (Nếu có nhập)
+            let isEmergency = false;
+            let alertMsg = "";
+            if (!isNaN(kVal) && kVal < 2.5) {
+                isEmergency = true;
+                alertMsg = "⚠️ BÁO ĐỘNG: Kali máu < 2.5 mmol/L. Nguy cơ ngưng tim! Yêu cầu mắc Monitor theo dõi ECG liên tục.";
+            }
+
+            // Kiểm tra trạng thái Accordion đang mở
+            const ivCollapse = document.getElementById('collapseIV');
+            const poCollapse = document.getElementById('collapsePO');
+            
+            // Nếu cả 2 đều đóng, báo lỗi
+            if (!ivCollapse.classList.contains('show') && !poCollapse.classList.contains('show')) {
+                alert("Vui lòng mở ít nhất 1 phương án bù Kali (Tĩnh mạch hoặc Uống) để tính toán!");
+                return;
+            }
+
+            // Hiện khung kết quả tổng
+            document.getElementById('resultSection').style.display = 'block';
+
+            /* =========================================================
+               1. TÍNH BÙ TĨNH MẠCH (IV)
+               ========================================================= */
+            if (ivCollapse.classList.contains('show')) {
+                const doseIV = parseFloat(document.getElementById('doseIV').value);
+                const timeIV = parseFloat(document.getElementById('timeIV').value);
+                const routeVal = document.getElementById('routeVal').value;
+
+                // Công thức tính toán
+                const totalMeq = weight * doseIV; // Tổng mEq cần bù
+                const volKCl = totalMeq / 1.34; // Thể tích KCl 10% (1mL = 1.34 mEq)
+                
+                const maxConc = (routeVal === 'peripheral') ? 40 : 80; // Nồng độ Max
+                const totalVol = (totalMeq * 1000) / maxConc; // Tổng thể tích dịch an toàn
+                const volDiluent = Math.round(totalVol - volKCl); // Thể tích dung môi NaCl 0.9%
+
+                const rateMLH = totalVol / timeIV; // Tốc độ BTĐ (mL/giờ)
+                const speedMeq = (totalMeq / timeIV) / weight; // Tốc độ truyền (mEq/kg/giờ)
+
+                // Phân mức Cảnh báo màu sắc Lâm Sàng Pro (Quy tắc 4)
+                let ivLevel = 1; // Mức 1: Xanh lá
+                let ivWarnText = "";
+
+                if (isEmergency) {
+                    ivLevel = 4; // Mức 4: Đỏ cấp cứu
+                    ivWarnText = alertMsg;
+                } else if (speedMeq > 0.5) {
+                    ivLevel = 4; // Mức 4: Đỏ báo động tốc độ
+                    ivWarnText = "⚠️ CẢNH BÁO: Tốc độ truyền > 0.5 mEq/kg/giờ. Nguy cơ loạn nhịp cao, bắt buộc mắc Monitor theo dõi!";
+                }
+
+                // Render UI Tĩnh Mạch
+                const resBoxIV = document.getElementById('resBoxIV');
+                resBoxIV.className = `result-box level-${ivLevel}`; // Xóa margin bottom mặc định của result-box
+                
+                document.getElementById('ivRateVal').innerText = rateMLH.toFixed(1);
+                document.getElementById('ivSpeedDesc').innerText = speedMeq.toFixed(2);
+                
+                document.getElementById('ivRecipeDesc').innerHTML = `<strong>Y Lệnh Pha:</strong> Lấy <strong>${volKCl.toFixed(1)} mL</strong> KCl 10% pha vào <strong>${volDiluent} mL</strong> dịch (NaCl 0.9% hoặc D5W).`;
+
+                const warnDiv = document.getElementById('ivWarning');
+                if (ivWarnText !== "") {
+                    warnDiv.innerText = ivWarnText;
+                    warnDiv.style.display = 'block';
+                    warnDiv.className = `result-desc text-start mt-2 fw-bold text-danger`;
+                } else {
+                    warnDiv.style.display = 'none';
+                }
+
+                resBoxIV.style.display = 'block';
+            } else {
+                document.getElementById('resBoxIV').style.display = 'none';
+            }
+
+            /* =========================================================
+               2. TÍNH BÙ ĐƯỜNG UỐNG (PO)
+               ========================================================= */
+            if (poCollapse.classList.contains('show')) {
+                const dosePO = parseFloat(document.getElementById('dosePO').value);
+                const product = document.getElementById('productPO').value;
+
+                const targetMeq = weight * dosePO;
+
+                const resBoxPO = document.getElementById('resBoxPO');
+                const ampResult = document.getElementById('poAmpouleResult');
+                const tabResult = document.getElementById('poTabletResult');
+
+                // Áp dụng Cảnh báo màu sắc chung (Quy tắc 4)
+                let poLevel = isEmergency ? 4 : 1;
+                resBoxPO.className = `result-box level-${poLevel}`;
+
+                if (product === 'ampoule') {
+                    // Thuật toán cho Ống uống
+                    const totalML = targetMeq / 1.34;
+                    document.getElementById('poMlVal').innerText = totalML.toFixed(1);
+                    
+                    ampResult.style.display = 'block';
+                    tabResult.style.display = 'none';
+                } else {
+                    // Thuật toán UX Magic cho Thuốc Viên
+                    let meqPerTab = (product === 'tab500') ? 6.7 : 8.0;
+                    
+                    const exactTabs = targetMeq / meqPerTab;
+                    const floorTabs = Math.floor(exactTabs);
+                    const ceilTabs = Math.ceil(exactTabs);
+
+                    const realDoseFloor = (floorTabs * meqPerTab) / weight;
+                    const realDoseCeil = (ceilTabs * meqPerTab) / weight;
+
+                    document.getElementById('poTargetMeq').innerText = targetMeq.toFixed(1);
+                    document.getElementById('poExactTabs').innerText = exactTabs.toFixed(1);
+                    
+                    document.getElementById('poFloorTabs').innerText = floorTabs;
+                    document.getElementById('poFloorDose').innerText = realDoseFloor.toFixed(2);
+                    
+                    document.getElementById('poCeilTabs').innerText = ceilTabs;
+                    document.getElementById('poCeilDose').innerText = realDoseCeil.toFixed(2);
+
+                    tabResult.style.display = 'block';
+                    ampResult.style.display = 'none';
+                }
+
+                resBoxPO.style.display = 'block';
+            } else {
+                document.getElementById('resBoxPO').style.display = 'none';
+            }
+
+            // Tự động cuộn trang xuống khu vực kết quả
+            setTimeout(() => {
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // HÀM RESET (Quy tắc 2)
+        function resetResult() {
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('resBoxIV').style.display = 'none';
+            document.getElementById('resBoxPO').style.display = 'none';
+            
+            // Reset Switch Đường truyền
+            const routeBtn = document.getElementById('routeBtn');
+            const routeVal = document.getElementById('routeVal');
+            routeVal.value = 'peripheral';
+            routeBtn.innerText = 'Ngoại vi (Max 40 mEq/L)';
+            routeBtn.className = 'btn btn-outline-primary btn-toggle-switch w-100 py-2';
+        }
+    </script>
+</body>
+</html>

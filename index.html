@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lâm Sàng Pro</title>
+
+    <!-- Font chữ Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Nhúng file CSS dùng chung của bạn -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- THANH ĐIỀU HƯỚNG CỐ ĐỊNH -->
+    <nav class="navbar navbar-custom fixed-top">
+        <div class="container-fluid px-2">
+            <button class="btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-heart-pulse-fill"></i> Lâm Sàng Pro
+            </a>
+            <button class="btn-icon" type="button" onclick="document.getElementById('searchInput').focus();">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- KHU VỰC NỘI DUNG CHÍNH -->
+    <div class="container">
+        
+        <!-- Thanh tìm kiếm -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="form-control search-input" placeholder="Tìm công cụ, bệnh lý, thuốc..." onkeyup="filterModules()">
+        </div>
+
+        <div id="moduleList">
+            
+            <!-- 1. TRA CỨU & DƯỢC LÂM SÀNG -->
+            <div class="section-title">Tra Cứu & Dược Lâm Sàng</div>
+            <a href="modules/tracuu_thuoc.html" class="module-card">
+                <div class="icon-box icon-pharma"><i class="bi bi-capsule"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Tra cứu thuốc</h3>
+                    <p class="module-desc">Liều lượng, chỉ định, chống chỉ định</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/khangsinh.html" class="module-card">
+                <div class="icon-box icon-pharma"><i class="bi bi-shield-check"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Kháng sinh thay thế</h3>
+                    <p class="module-desc">Lựa chọn an toàn khi dị ứng kháng sinh</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 2. HỒI SỨC & CẤP CỨU -->
+            <div class="section-title">Hồi Sức & Cấp Cứu</div>
+            <a href="modules/diengiai.html" class="module-card">
+                <div class="icon-box icon-er"><i class="bi bi-activity"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Rối loạn điện giải</h3>
+                    <p class="module-desc">Xử trí Hạ/Tăng Na+, K+, Ca2+</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/toankiem.html" class="module-card">
+                <div class="icon-box icon-er"><i class="bi bi-lungs"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Rối loạn toan kiềm</h3>
+                    <p class="module-desc">Phân tích khí máu động mạch (ABG)</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/bs_cannang.html" class="module-card">
+                <div class="icon-box icon-er"><i class="bi bi-person-fill-gear"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Cân nặng điều trị</h3>
+                    <p class="module-desc">Tính IBW, AdjBW cho bệnh nhân béo phì</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/bsa.html" class="module-card">
+                <div class="icon-box icon-er"><i class="bi bi-person-bounding-box"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Diện tích da (BSA)</h3>
+                    <p class="module-desc">Tính diện tích bề mặt cơ thể</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 3. THẬN - TIẾT NIỆU -->
+            <div class="section-title">Thận - Tiết Niệu</div>
+            <a href="modules/upcr.html" class="module-card">
+                <div class="icon-box icon-nephro"><i class="bi bi-droplet-half"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Tỷ số UPCR</h3>
+                    <p class="module-desc">Protein niệu, ngưỡng Hội chứng thận hư</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/egfr.html" class="module-card">
+                <div class="icon-box icon-nephro"><i class="bi bi-moisture"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Đánh giá eGFR</h3>
+                    <p class="module-desc">Schwartz (Nhi), CKD-EPI 2021</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/ckd.html" class="module-card">
+                <div class="icon-box icon-nephro"><i class="bi bi-clipboard2-pulse"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Điều trị CKD</h3>
+                    <p class="module-desc">Quản lý Bệnh thận mạn, chỉnh liều thuốc</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 4. TIM MẠCH -->
+            <div class="section-title">Tim Mạch</div>
+            <a href="modules/huyetap.html" class="module-card">
+                <div class="icon-box icon-cardio"><i class="bi bi-heart-half"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Phân độ Tăng Huyết Áp</h3>
+                    <p class="module-desc">Đối chiếu bách phân vị theo tuổi, chiều cao</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/kawasaki.html" class="module-card">
+                <div class="icon-box icon-cardio"><i class="bi bi-bezier2"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Z-score Mạch vành</h3>
+                    <p class="module-desc">Đánh giá giãn mạch vành trong Kawasaki</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 5. TIÊU HÓA & DINH DƯỠNG -->
+            <div class="section-title">Tiêu Hóa & Dinh Dưỡng</div>
+            <a href="modules/tieuchay.html" class="module-card">
+                <div class="icon-box icon-gastro"><i class="bi bi-diagram-3"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Phác đồ tiêu chảy</h3>
+                    <p class="module-desc">Đánh giá mất nước, kế hoạch bù dịch</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/thechat_who.html" class="module-card">
+                <div class="icon-box icon-gastro"><i class="bi bi-graph-up"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Thể chất & Dinh dưỡng</h3>
+                    <p class="module-desc">Z-score BMI, Cân nặng, Chiều cao (WHO)</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+            <a href="modules/tpn.html" class="module-card">
+                <div class="icon-box icon-gastro"><i class="bi bi-prescription2"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Tính toán TPN</h3>
+                    <p class="module-desc">Dinh dưỡng tĩnh mạch: Dịch, đường, đạm</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 6. MIỄN DỊCH - KHỚP -->
+            <div class="section-title">Miễn Dịch - Khớp</div>
+            <a href="modules/lupus.html" class="module-card">
+                <div class="icon-box icon-immune"><i class="bi bi-shield-plus"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Thang điểm Lupus</h3>
+                    <p class="module-desc">EULAR/ACR, SLICC, SLEDAI-2K</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+            <!-- 7. NỘI TIẾT - CHUYỂN HÓA -->
+            <div class="section-title">Nội Tiết - Chuyển Hóa</div>
+            <a href="modules/dka.html" class="module-card">
+                <div class="icon-box icon-endo"><i class="bi bi-bandaid"></i></div>
+                <div class="module-info">
+                    <h3 class="module-title">Điều trị DKA</h3>
+                    <p class="module-desc">Toan ceton: Bù dịch, truyền Insulin</p>
+                </div>
+                <i class="bi bi-chevron-right chevron-icon"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- SIDEBAR MENU (Mở ngang) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-primary">Lâm Sàng Pro</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action py-3"><i class="bi bi-house me-2"></i> Trang chủ</a>
+                <a href="modules/tracuu_thuoc.html" class="list-group-item list-group-item-action py-3"><i class="bi bi-capsule me-2"></i> Tra cứu Thuốc</a>
+                <a href="#" class="list-group-item list-group-item-action py-3"><i class="bi bi-gear me-2"></i> Cài đặt</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Nhúng file JS dùng chung của bạn -->
+    <script src="js/main.js"></script>
+</body>
+</html>
