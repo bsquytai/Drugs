@@ -3,24 +3,55 @@
    HỆ THỐNG LÕI CỦA LÂM SÀNG PRO
    ========================================= */
 
-// 0. Tự động chèn Meta Tags cho chế độ Web App Standalone (ẩn thanh URL Safari iOS)
-(function initPWAHead() {
-  const metaTags = [
-    { name: 'apple-mobile-web-app-capable', content: 'yes' },
-    { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
-    { name: 'apple-mobile-web-app-title', content: 'Lâm Sàng Pro' },
-    { name: 'mobile-web-app-capable', content: 'yes' }
-  ];
+// 0. TỰ ĐỘNG TIÊM META TAGS VÀ MANIFEST (Khỏi cần dán vào HTML)
+(function autoInjectPWA() {
+    // Xác định đang ở trang chủ hay trong thư mục modules/
+    const isModule = window.location.pathname.includes('/modules/');
+    const rootPath = isModule ? '../' : './';
 
-  metaTags.forEach(tagData => {
-    if (!document.querySelector(`meta[name="${tagData.name}"]`)) {
-      const meta = document.createElement('meta');
-      meta.name = tagData.name;
-      meta.content = tagData.content;
-      document.head.appendChild(meta);
+    // 0a. Tiêm Manifest
+    if (!document.querySelector('link[rel="manifest"]')) {
+        const manifest = document.createElement('link');
+        manifest.rel = 'manifest';
+        manifest.href = rootPath + 'manifest.json';
+        document.head.appendChild(manifest);
     }
-  });
+
+    // 0b. Tiêm Apple Meta Tags
+    const metaTags = [
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        { name: 'apple-mobile-web-app-title', content: 'Lâm Sàng Pro' },
+        { name: 'mobile-web-app-capable', content: 'yes' }
+    ];
+
+    metaTags.forEach(tag => {
+        if (!document.querySelector(`meta[name="${tag.name}"]`)) {
+            const meta = document.createElement('meta');
+            meta.name = tag.name;
+            meta.content = tag.content;
+            document.head.appendChild(meta);
+        }
+    });
 })();
+
+// 0.1. ÉP CHUYỂN TRANG NGẦM TRÊN iOS (Chống hiện thanh URL)
+function fixIosLinkBug() {
+    // Kiểm tra xem người dùng có đang mở qua icon ngoài màn hình chính không
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isStandalone && isIOS) {
+        document.addEventListener('click', function(event) {
+            const a = event.target.closest('a');
+            // Nếu click vào một link nội bộ (cùng tên miền GitHub)
+            if (a && a.href && a.host === window.location.host) {
+                event.preventDefault(); // Chặn hành vi mở tab của Safari
+                window.location.href = a.href; // Tải trang ngay trong cửa sổ App hiện tại
+            }
+        }, false);
+    }
+}
 
 // 1. HÀM LỘT BỎ DẤU TIẾNG VIỆT (Dùng cho tìm kiếm)
 function removeVietnameseTones(str) {
