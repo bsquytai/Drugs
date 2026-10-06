@@ -1,0 +1,9 @@
+{
+  "name": "Lâm Sàng Pro",
+  "short_name": "Lâm Sàng",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#0d6efd",
+  "scope": "."
+}
